@@ -217,58 +217,69 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 .merge-hint{font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.5}
 .merge-hint b{color:var(--text)}
 
-/* Login gate */
-#loginScreen{
-  position:fixed;inset:0;z-index:9999;
-  background:radial-gradient(1200px 600px at 50% -10%, #182238 0%, var(--bg) 60%);
-  display:flex;align-items:center;justify-content:center;padding:16px;
+/* Mode tabs */
+.mode-tabs{
+  display:flex;gap:8px;background:var(--panel);border:1px solid var(--line);
+  border-radius:14px;padding:6px;margin-bottom:16px;
 }
-#loginScreen.hide{display:none}
-.login-card{
-  width:100%;max-width:340px;background:var(--panel);border:1px solid var(--line);
-  border-radius:var(--radius);padding:26px 24px;text-align:center;
+.mode-tab{
+  flex:1;border:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:14px;
+  padding:12px 10px;border-radius:10px;background:transparent;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;
 }
-.login-card h1{font-size:20px;font-weight:800;margin-bottom:4px}
-.login-card h1 .dot{color:var(--amber)}
-.login-card p{color:var(--muted);font-size:13px;margin-bottom:18px}
-.login-card input{
-  width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);
-  border-radius:10px;padding:11px 12px;font-family:inherit;font-size:14px;outline:none;margin-bottom:10px;
+.mode-tab svg{width:17px;height:17px}
+.mode-tab:hover{color:var(--text)}
+.mode-tab.active{background:linear-gradient(135deg,var(--amber-deep),var(--amber));color:#241a05;box-shadow:0 4px 16px rgba(255,184,77,.25)}
+
+/* Upload zone */
+.dropzone{
+  border:2px dashed var(--line);border-radius:14px;
+  padding:34px 18px;text-align:center;cursor:pointer;
+  transition:border-color .2s, background .2s;
+  background:rgba(255,255,255,.015);
 }
-.login-card input:focus{border-color:var(--amber)}
-.login-card .remember{
-  display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);
-  margin:2px 0 16px;justify-content:center;
+.dropzone:hover,.dropzone.dragover{border-color:var(--amber);background:rgba(255,184,77,.05)}
+.dropzone .dz-icon{font-size:34px;margin-bottom:8px}
+.dropzone .dz-title{font-weight:600;font-size:15px}
+.dropzone .dz-sub{color:var(--muted);font-size:12.5px;margin-top:5px}
+.dropzone .dz-sub b{color:var(--amber)}
+.up-item{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  background:var(--panel2);border:1px solid var(--line);
+  border-radius:12px;padding:11px 14px;margin-top:10px;animation:pop .25s ease;
 }
-.login-card .btn-login{
-  width:100%;background:var(--amber);color:#241a05;border:none;border-radius:14px;
-  padding:12px;font-weight:700;font-size:14.5px;cursor:pointer;font-family:inherit;
+.up-item .fbadge{
+  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;
+  background:rgba(90,166,255,.12);color:var(--blue);
+  border-radius:8px;padding:6px 9px;min-width:46px;text-align:center;text-transform:uppercase;
 }
-.login-card .btn-login:active{transform:scale(.98)}
-.login-card .login-err{color:var(--red);font-size:12.5px;margin-top:10px;display:none}
-.login-card .login-err.show{display:block}
+.up-item .meta{flex:1;min-width:140px}
+.up-item .meta .name{font-size:13.5px;font-weight:600;word-break:break-all}
+.up-item .meta .sub{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.btn-cut{background:var(--amber);color:#241a05;box-shadow:0 6px 22px rgba(255,184,77,.3)}
 </style>
 </head>
 <body>
-<div id="loginScreen">
-  <div class="login-card">
-    <h1>PHÒNG THÂU<span class="dot">●</span>3'</h1>
-    <p>Vui lòng đăng nhập để sử dụng ứng dụng</p>
-    <input type="text" id="loginUser" placeholder="Tên đăng nhập" autocomplete="username">
-    <input type="password" id="loginPass" placeholder="Mật khẩu" autocomplete="current-password">
-    <label class="remember"><input type="checkbox" id="loginRemember" checked style="width:auto;margin:0"> Ghi nhớ đăng nhập trên máy này</label>
-    <button class="btn-login" id="btnLogin">Đăng nhập</button>
-    <div class="login-err" id="loginErr">Sai tên đăng nhập hoặc mật khẩu.</div>
-  </div>
-</div>
 <div class="app">
   <header>
     <h1>PHÒNG THÂU<span class="dot">●</span>3'</h1>
-    <p>Thâu âm chất lượng cao — tự động cắt chính xác mỗi file 3 phút</p>
+    <p>Thâu âm hoặc upload MP3/WAV — tự động cắt chính xác mỗi file 3 phút</p>
   </header>
 
+  <!-- Chế độ -->
+  <div class="mode-tabs">
+    <button class="mode-tab active" id="tabRec">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4"/></svg>
+      Thâu âm
+    </button>
+    <button class="mode-tab" id="tabUpload">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
+      Cắt file upload
+    </button>
+  </div>
+
   <!-- Mic -->
-  <div class="card">
+  <div class="card" id="micCard">
     <div class="mic-row">
       <label>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4"/></svg>
@@ -308,6 +319,26 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
     <div class="err" id="err"></div>
   </div>
 
+  <!-- Upload & cắt -->
+  <div class="card" id="uploadCard" style="display:none">
+    <div class="dropzone" id="dropzone">
+      <div class="dz-icon">🎵</div>
+      <div class="dz-title">Kéo thả file âm thanh vào đây, hoặc bấm để chọn</div>
+      <div class="dz-sub">Hỗ trợ <b>MP3</b> và <b>WAV</b> · có thể chọn nhiều file cùng lúc · mỗi file sẽ được cắt chính xác thành các phần 3 phút</div>
+      <input type="file" id="fileInput" accept=".mp3,.wav,audio/mpeg,audio/wav,audio/x-wav,audio/wave" multiple style="display:none">
+    </div>
+    <div id="upList"></div>
+    <div class="controls" style="margin-top:16px">
+      <button class="btn btn-cut" id="btnCutFiles" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/></svg>
+        Cắt file thành các phần 3 phút
+      </button>
+      <button class="btn btn-clear" id="btnClearFiles" disabled>Bỏ chọn tất cả</button>
+    </div>
+    <div class="processing" id="upProcessing"><span class="spinner"></span><span id="upProcessingText">Đang cắt file…</span></div>
+    <div class="err" id="upErr"></div>
+  </div>
+
   <!-- Segments -->
   <div class="card">
     <div class="seg-head">
@@ -323,7 +354,7 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
         </button>
       </div>
     </div>
-    <div id="segList"><div class="empty">Chưa có file nào. Bấm <b>Thâu âm</b> để bắt đầu.</div></div>
+    <div id="segList"><div class="empty">Chưa có file nào. Bấm <b>Thâu âm</b> hoặc <b>upload file</b> để bắt đầu.</div></div>
   </div>
 
   <!-- Murf Voice Changer -->
@@ -378,41 +409,6 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 </div>
 
 <script>
-/* ---------- Đăng nhập bảo mật ---------- */
-// LƯU Ý: đây chỉ là lớp bảo vệ cơ bản phía trình duyệt (chặn người dùng thông thường
-// thao tác trực tiếp trên giao diện), KHÔNG phải bảo mật thật sự — ai xem mã nguồn
-// file này (View Page Source) vẫn thấy được tài khoản/mật khẩu bên dưới.
-const LOGIN_USER='minhtriet1973';
-const LOGIN_PASS='minhtriet1973';
-const LOGIN_FLAG='phong_thau_logged_in';
-
-const loginScreen=document.getElementById('loginScreen'),
-      loginUser=document.getElementById('loginUser'),
-      loginPass=document.getElementById('loginPass'),
-      loginRemember=document.getElementById('loginRemember'),
-      btnLogin=document.getElementById('btnLogin'),
-      loginErr=document.getElementById('loginErr');
-
-function tryLogin(){
-  const u=loginUser.value.trim(), p=loginPass.value;
-  if(u===LOGIN_USER && p===LOGIN_PASS){
-    loginErr.classList.remove('show');
-    if(loginRemember.checked) localStorage.setItem(LOGIN_FLAG,'1');
-    else localStorage.removeItem(LOGIN_FLAG);
-    loginScreen.classList.add('hide');
-  }else{
-    loginErr.classList.add('show');
-  }
-}
-btnLogin.onclick=tryLogin;
-loginPass.addEventListener('keydown', e=>{ if(e.key==='Enter') tryLogin(); });
-loginUser.addEventListener('keydown', e=>{ if(e.key==='Enter') loginPass.focus(); });
-
-// Nếu đã đăng nhập & chọn "ghi nhớ" trước đó trên máy này thì bỏ qua màn hình đăng nhập.
-if(localStorage.getItem(LOGIN_FLAG)==='1'){
-  loginScreen.classList.add('hide');
-}
-
 const SEG_SEC = 180; // 3 phút chính xác
 let mediaStream=null, mediaRecorder=null, chunks=[];
 let audioCtx=null, analyser=null, rafId=null;
@@ -659,24 +655,10 @@ async function processRecording(){
     const audio=await decodeCtx.decodeAudioData(buf);
     decodeCtx.close();
 
-    const sr=audio.sampleRate, total=audio.length;
-    const segLen=SEG_SEC*sr;
-    const n=Math.ceil(total/segLen);
-    const baseIdx=segments.length;
     const stamp=new Date();
     const dstr=stamp.getFullYear()+String(stamp.getMonth()+1).padStart(2,'0')+String(stamp.getDate()).padStart(2,'0')+'_'+String(stamp.getHours()).padStart(2,'0')+String(stamp.getMinutes()).padStart(2,'0');
-
-    for(let i=0;i<n;i++){
-      const s=i*segLen, e=Math.min(s+segLen,total), len=e-s;
-      const ch=audio.numberOfChannels;
-      const chData=[];
-      for(let c=0;c<ch;c++) chData.push(audio.getChannelData(c).subarray(s,e));
-      const wav=encodeWAV(chData,sr,len);
-      const url=URL.createObjectURL(wav);
-      const seg={blob:wav,url,dur:len/sr,name:`thau_am_${dstr}_part${String(baseIdx+i+1).padStart(2,'0')}.wav`,created:Date.now()};
-      try{ if(db) seg.id=await dbAdd(seg); }catch(e){ console.warn('Lưu IndexedDB lỗi:',e); }
-      segments.push(seg);
-    }
+    const baseIdx=segments.length;
+    await sliceAndStore(audio,(i)=>`thau_am_${dstr}_part${String(baseIdx+i+1).padStart(2,'0')}.wav`);
     renderSegments();
   }catch(e){ showErr('Lỗi xử lý âm thanh: '+e.message); }
   processing.classList.remove('show');
@@ -686,6 +668,25 @@ async function processRecording(){
   timerEl.firstChild.nodeValue='00:00'; segNow.textContent='1'; segLeft.textContent='03:00'; segFill.style.width='0%';
   analyser=null;
   if(audioCtx){audioCtx.close();audioCtx=null;}
+}
+
+/* Cắt AudioBuffer thành các đoạn 3 phút, lưu IndexedDB & thêm vào danh sách */
+async function sliceAndStore(audio,nameFn){
+  const sr=audio.sampleRate, total=audio.length;
+  const segLen=SEG_SEC*sr;
+  const n=Math.ceil(total/segLen);
+  for(let i=0;i<n;i++){
+    const s=i*segLen, e=Math.min(s+segLen,total), len=e-s;
+    const ch=audio.numberOfChannels;
+    const chData=[];
+    for(let c=0;c<ch;c++) chData.push(audio.getChannelData(c).subarray(s,e));
+    const wav=encodeWAV(chData,sr,len);
+    const url=URL.createObjectURL(wav);
+    const seg={blob:wav,url,dur:len/sr,name:nameFn(i,n),created:Date.now()};
+    try{ if(db) seg.id=await dbAdd(seg); }catch(e){ console.warn('Lưu IndexedDB lỗi:',e); }
+    segments.push(seg);
+  }
+  return n;
 }
 
 function encodeWAV(chData,sampleRate,len){
@@ -717,7 +718,7 @@ function stopPlaying(){
 function renderSegments(){
   segCount.textContent=segments.length?`(${segments.length} file)`:'';
   btnDelAll.style.display=btnDlAll.style.display=segments.length?'inline-flex':'none';
-  if(!segments.length){segList.innerHTML='<div class="empty">Chưa có file nào. Bấm <b>Thâu âm</b> để bắt đầu.</div>';return;}
+  if(!segments.length){segList.innerHTML='<div class="empty">Chưa có file nào. Bấm <b>Thâu âm</b> hoặc <b>upload file</b> để bắt đầu.</div>';return;}
   segList.innerHTML='';
   segments.forEach((s,i)=>{
     const d=document.createElement('div'); d.className='seg-item';
@@ -819,21 +820,109 @@ btnDlAll.onclick=()=>{
   }, i*400));
 };
 
+/* ---------- Chế độ: Thâu âm / Cắt file upload ---------- */
+const tabRec=$('tabRec'), tabUpload=$('tabUpload'),
+      micCard=$('micCard'), recCard=$('recCard'), uploadCard=$('uploadCard');
+function setMode(mode){
+  const rec=mode==='rec';
+  tabRec.classList.toggle('active',rec);
+  tabUpload.classList.toggle('active',!rec);
+  micCard.style.display=rec?'':'none';
+  recCard.style.display=rec?'':'none';
+  uploadCard.style.display=rec?'none':'';
+}
+tabRec.onclick=()=>setMode('rec');
+tabUpload.onclick=()=>{
+  if(isRecording){ showErr('Đang thâu âm — hãy dừng thâu trước khi chuyển sang chế độ cắt file.'); return; }
+  setMode('upload');
+};
+
+/* ---------- Upload & cắt file mp3/wav ---------- */
+const dropzone=$('dropzone'), fileInput=$('fileInput'), upList=$('upList'),
+      btnCutFiles=$('btnCutFiles'), btnClearFiles=$('btnClearFiles'),
+      upProcessing=$('upProcessing'), upProcessingText=$('upProcessingText'), upErr=$('upErr');
+let uploadFiles=[]; // File[]
+
+function showUpErr(m){upErr.textContent=m;upErr.classList.add('show');setTimeout(()=>upErr.classList.remove('show'),7000)}
+function isAudioFile(f){
+  return /\.(mp3|wav)$/i.test(f.name) || /^audio\/(mpeg|mp3|wav|x-wav|wave)$/i.test(f.type);
+}
+function addFiles(list){
+  let rejected=0;
+  [...list].forEach(f=>{
+    if(!isAudioFile(f)){ rejected++; return; }
+    if(uploadFiles.some(x=>x.name===f.name&&x.size===f.size)) return; // tránh trùng
+    uploadFiles.push(f);
+  });
+  if(rejected) showUpErr(rejected+' file bị bỏ qua — chỉ hỗ trợ MP3 và WAV.');
+  renderUpList();
+}
+function renderUpList(){
+  btnCutFiles.disabled=btnClearFiles.disabled=!uploadFiles.length;
+  upList.innerHTML=uploadFiles.map((f,i)=>`
+    <div class="up-item">
+      <div class="fbadge">${/\.wav$/i.test(f.name)?'WAV':'MP3'}</div>
+      <div class="meta">
+        <div class="name">${f.name}</div>
+        <div class="sub">${(f.size/1048576).toFixed(1)} MB</div>
+      </div>
+      <div class="acts">
+        <button class="btn-mini del" data-ui="${i}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0l1 13h8l1-13"/></svg> Bỏ
+        </button>
+      </div>
+    </div>`).join('');
+}
+upList.onclick=e=>{
+  const b=e.target.closest('button[data-ui]'); if(!b)return;
+  uploadFiles.splice(+b.dataset.ui,1); renderUpList();
+};
+dropzone.onclick=()=>fileInput.click();
+fileInput.onchange=()=>{ addFiles(fileInput.files); fileInput.value=''; };
+['dragenter','dragover'].forEach(ev=>dropzone.addEventListener(ev,e=>{e.preventDefault();dropzone.classList.add('dragover');}));
+['dragleave','drop'].forEach(ev=>dropzone.addEventListener(ev,e=>{e.preventDefault();dropzone.classList.remove('dragover');}));
+dropzone.addEventListener('drop',e=>{ if(e.dataTransfer&&e.dataTransfer.files) addFiles(e.dataTransfer.files); });
+btnClearFiles.onclick=()=>{ uploadFiles=[]; renderUpList(); };
+
+btnCutFiles.onclick=async()=>{
+  if(!uploadFiles.length) return;
+  btnCutFiles.disabled=true; btnClearFiles.disabled=true;
+  upProcessing.classList.add('show');
+  let totalParts=0, failed=[];
+  const decodeCtx=new (window.AudioContext||window.webkitAudioContext)();
+  for(let fi=0;fi<uploadFiles.length;fi++){
+    const f=uploadFiles[fi];
+    upProcessingText.textContent=`Đang cắt file ${fi+1}/${uploadFiles.length}: ${f.name}…`;
+    try{
+      const buf=await f.arrayBuffer();
+      const audio=await decodeCtx.decodeAudioData(buf);
+      const base=f.name.replace(/\.(mp3|wav)$/i,'').replace(/[^\p{L}\p{N}_\- ]/gu,'').trim().replace(/\s+/g,'_')||'file';
+      totalParts+=await sliceAndStore(audio,(i,n)=> n>1 ? `${base}_part${String(i+1).padStart(2,'0')}.wav` : `${base}.wav`);
+    }catch(e){ failed.push(f.name); console.warn('Decode lỗi:',f.name,e); }
+  }
+  decodeCtx.close();
+  renderSegments();
+  upProcessing.classList.remove('show');
+  if(failed.length) showUpErr('Không đọc được: '+failed.join(', ')+' — file có thể bị hỏng hoặc sai định dạng.');
+  if(totalParts){
+    uploadFiles=[]; renderUpList();
+    upProcessingText.textContent='';
+    // cuộn xuống danh sách kết quả
+    segList.closest('.card').scrollIntoView({behavior:'smooth',block:'start'});
+  }else{
+    btnCutFiles.disabled=btnClearFiles.disabled=!uploadFiles.length;
+  }
+};
+
 /* ---------- Murf AI — Đổi giọng ---------- */
 const MURF_API='https://api.murf.ai/v1';
-// API key mặc định cài sẵn trong code — dùng luôn trên mọi máy, không cần nhập lại.
-// LƯU Ý BẢO MẬT: đây là file HTML tĩnh chạy phía trình duyệt, ai xem "View Page Source"
-// hoặc tải file này đều thấy được key này. Chỉ dùng cách này khi file KHÔNG public.
-const MURF_API_KEY_DEFAULT='ap2_dbca3349-87fa-4c8b-b8b5-3d15718c9227';
 const murfKeyInput=$('murfKeyInput'), btnToggleKey=$('btnToggleKey'), btnSaveKey=$('btnSaveKey'),
       btnLoadVoices=$('btnLoadVoices'), voiceChip=$('voiceChip'),
       voiceSearch=$('voiceSearch'), voiceGrid=$('voiceGrid'), btnConvertAll=$('btnConvertAll'),
       convProgressWrap=$('convProgressWrap'), convProgressText=$('convProgressText'), convProgressFill=$('convProgressFill'),
       murfErr=$('murfErr');
 
-// Ưu tiên key đã lưu riêng trên máy (nếu người dùng từng bấm "Lưu key" để đổi key khác),
-// nếu chưa có thì dùng key mặc định cài sẵn trong code.
-let murfApiKey=localStorage.getItem('murf_api_key')||MURF_API_KEY_DEFAULT;
+let murfApiKey=localStorage.getItem('murf_api_key')||'';
 let voiceList=[];
 let selectedVoice=null;
 try{ selectedVoice=JSON.parse(localStorage.getItem('murf_selected_voice')||'null'); }catch(e){}
