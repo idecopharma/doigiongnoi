@@ -257,9 +257,54 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 .up-item .meta .name{font-size:13.5px;font-weight:600;word-break:break-all}
 .up-item .meta .sub{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px}
 .btn-cut{background:var(--amber);color:#241a05;box-shadow:0 6px 22px rgba(255,184,77,.3)}
+
+/* Login gate */
+.gate{
+  position:fixed;inset:0;z-index:999;
+  background:radial-gradient(1200px 600px at 50% -10%, #182238 0%, var(--bg) 60%);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.gate-box{
+  width:100%;max-width:380px;background:var(--panel);
+  border:1px solid var(--line);border-radius:18px;padding:30px 26px;
+  text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+.gate-box .g-icon{font-size:38px;margin-bottom:10px}
+.gate-box h2{font-size:19px;font-weight:800;letter-spacing:.5px}
+.gate-box p{color:var(--muted);font-size:13px;margin:6px 0 18px}
+.gate-box input{
+  width:100%;background:var(--panel2);color:var(--text);
+  border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+  font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;text-align:center;
+  letter-spacing:1px;
+}
+.gate-box input:focus{border-color:var(--amber)}
+.gate-box input.shake{border-color:var(--red);animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.gate-remember{display:flex;align-items:center;justify-content:center;gap:7px;color:var(--muted);font-size:12.5px;margin-top:12px;cursor:pointer;user-select:none}
+.gate-btn{
+  width:100%;margin-top:16px;border:none;cursor:pointer;font-family:inherit;font-weight:700;
+  border-radius:12px;padding:13px;font-size:15px;
+  background:linear-gradient(135deg,var(--amber-deep),var(--amber));color:#241a05;
+  box-shadow:0 6px 22px rgba(255,184,77,.3);
+}
+.gate-btn:active{transform:scale(.98)}
+.gate-err{color:var(--red);font-size:12.5px;margin-top:10px;min-height:16px}
 </style>
 </head>
 <body>
+<!-- Màn hình đăng nhập nội bộ -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <div class="g-icon">🔐</div>
+    <h2>PHÒNG THÂU<span style="color:var(--amber)">●</span>3'</h2>
+    <p>Ứng dụng nội bộ — vui lòng nhập mật khẩu để tiếp tục</p>
+    <input type="password" id="gatePass" placeholder="Mật khẩu" autocomplete="current-password">
+    <label class="gate-remember"><input type="checkbox" id="gateRemember" style="width:auto;accent-color:var(--amber)"> Ghi nhớ đăng nhập trên máy này</label>
+    <button class="gate-btn" id="gateBtn">Đăng nhập</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
 <div class="app">
   <header>
     <h1>PHÒNG THÂU<span class="dot">●</span>3'</h1>
@@ -362,7 +407,7 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
     <div class="seg-head"><h2>Đổi giọng bằng Murf AI</h2></div>
 
     <div class="api-row">
-      <input type="password" id="murfKeyInput" placeholder="Dán API key Murf vào đây…" autocomplete="off">
+      <input type="password" id="murfKeyInput" placeholder="Key nội bộ đã nhúng sẵn — chỉ nhập khi muốn dùng key khác" autocomplete="off">
       <button class="icon-btn" id="btnToggleKey" title="Hiện/ẩn key">👁</button>
       <button class="icon-btn" id="btnSaveKey">Lưu key</button>
     </div>
@@ -409,6 +454,33 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 </div>
 
 <script>
+/* ---------- Đăng nhập nội bộ ---------- */
+(function(){
+  const APP_PASS='minhtriet1973';
+  const gate=document.getElementById('gate'),
+        gatePass=document.getElementById('gatePass'),
+        gateBtn=document.getElementById('gateBtn'),
+        gateErr=document.getElementById('gateErr'),
+        gateRemember=document.getElementById('gateRemember');
+  function unlock(){ gate.style.display='none'; }
+  // Đã ghi nhớ trên máy hoặc đã đăng nhập trong phiên này
+  if(localStorage.getItem('pt3_auth')==='1' || sessionStorage.getItem('pt3_auth')==='1'){ unlock(); }
+  else{ setTimeout(()=>gatePass.focus(),100); }
+  function tryLogin(){
+    if(gatePass.value===APP_PASS){
+      sessionStorage.setItem('pt3_auth','1');
+      if(gateRemember.checked) localStorage.setItem('pt3_auth','1');
+      unlock();
+    }else{
+      gateErr.textContent='Mật khẩu không đúng, vui lòng thử lại.';
+      gatePass.classList.remove('shake'); void gatePass.offsetWidth; gatePass.classList.add('shake');
+      gatePass.select();
+    }
+  }
+  gateBtn.onclick=tryLogin;
+  gatePass.onkeydown=e=>{ if(e.key==='Enter') tryLogin(); };
+})();
+
 const SEG_SEC = 180; // 3 phút chính xác
 let mediaStream=null, mediaRecorder=null, chunks=[];
 let audioCtx=null, analyser=null, rafId=null;
@@ -916,13 +988,14 @@ btnCutFiles.onclick=async()=>{
 
 /* ---------- Murf AI — Đổi giọng ---------- */
 const MURF_API='https://api.murf.ai/v1';
+const DEFAULT_MURF_KEY='ap2_2fb6dcb2-9d93-4e8e-a9da-b9298a2e8e33'; // key nội bộ nhúng sẵn
 const murfKeyInput=$('murfKeyInput'), btnToggleKey=$('btnToggleKey'), btnSaveKey=$('btnSaveKey'),
       btnLoadVoices=$('btnLoadVoices'), voiceChip=$('voiceChip'),
       voiceSearch=$('voiceSearch'), voiceGrid=$('voiceGrid'), btnConvertAll=$('btnConvertAll'),
       convProgressWrap=$('convProgressWrap'), convProgressText=$('convProgressText'), convProgressFill=$('convProgressFill'),
       murfErr=$('murfErr');
 
-let murfApiKey=localStorage.getItem('murf_api_key')||'';
+let murfApiKey=localStorage.getItem('murf_api_key')||DEFAULT_MURF_KEY;
 let voiceList=[];
 let selectedVoice=null;
 try{ selectedVoice=JSON.parse(localStorage.getItem('murf_selected_voice')||'null'); }catch(e){}
