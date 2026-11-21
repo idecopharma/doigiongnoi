@@ -3,28 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phòng Thâu — Cắt file & Lồng tiếng video</title>
+<title>Phòng Thâu Studio — Giọng nói · Video AI · Lồng tiếng</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0e1420;
-  --panel:#161e2e;
-  --panel2:#1c2638;
-  --line:#28344a;
-  --text:#e8edf6;
-  --muted:#8b98ad;
-  --amber:#ffb84d;
-  --amber-deep:#e8920f;
-  --red:#ff5d5d;
-  --green:#4dd6a0;
-  --blue:#5aa6ff;
+  --bg:#f4f6fb;
+  --panel:#ffffff;
+  --panel2:#f6f8fc;
+  --line:#dfe4ee;
+  --text:#1b2333;
+  --muted:#667189;
+  --amber:#f5a524;
+  --amber-deep:#e08a0b;
+  --amber-ink:#b45309;
+  --red:#dc3d3d;
+  --green:#0f9a6a;
+  --blue:#2c74d6;
+  --scope:#f1f4fa;
   --radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:'Be Vietnam Pro',system-ui,sans-serif;
-  background:radial-gradient(1200px 600px at 50% -10%, #182238 0%, var(--bg) 60%);
+  background:radial-gradient(1200px 600px at 50% -10%, #fff4e0 0%, var(--bg) 60%);
   color:var(--text);
   min-height:100vh;
   display:flex;justify-content:center;
@@ -33,10 +35,11 @@ body{
 .app{width:100%;max-width:760px}
 header{text-align:center;margin-bottom:22px}
 header h1{font-weight:800;font-size:26px;letter-spacing:.5px}
-header h1 .dot{color:var(--amber)}
+header h1 .dot{color:var(--amber-ink)}
 header p{color:var(--muted);font-size:13.5px;margin-top:4px}
 
 .card{
+  box-shadow:0 2px 10px rgba(30,45,80,.05);
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:var(--radius);
@@ -63,7 +66,7 @@ select:focus{border-color:var(--amber)}
 /* Waveform */
 .scope{
   position:relative;
-  background:#0a0f1a;
+  background:var(--scope);
   border:1px solid var(--line);
   border-radius:12px;
   overflow:hidden;
@@ -77,7 +80,7 @@ canvas{width:100%;height:100%;display:block}
   color:var(--muted);letter-spacing:1px;text-transform:uppercase;
   display:flex;align-items:center;gap:7px;
 }
-.rec-dot{width:9px;height:9px;border-radius:50%;background:#3a4660}
+.rec-dot{width:9px;height:9px;border-radius:50%;background:#b9c2d3}
 .recording .rec-dot{background:var(--red);animation:blink 1s infinite}
 @keyframes blink{50%{opacity:.25}}
 
@@ -93,7 +96,7 @@ canvas{width:100%;height:100%;display:block}
   display:block;font-size:12px;font-weight:500;color:var(--muted);
   letter-spacing:.5px;margin-top:2px;
 }
-.timer .seg-hint b{color:var(--amber)}
+.timer .seg-hint b{color:var(--amber-ink)}
 
 /* Progress to 3 min */
 .segbar{height:5px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:12px auto 18px;max-width:420px}
@@ -117,7 +120,7 @@ canvas{width:100%;height:100%;display:block}
 .btn-clear:hover:not(:disabled){color:var(--red);border-color:var(--red)}
 
 /* Processing */
-.processing{display:none;text-align:center;color:var(--amber);font-size:14px;padding:10px;gap:10px;align-items:center;justify-content:center}
+.processing{display:none;text-align:center;color:var(--amber-ink);font-size:14px;padding:10px;gap:10px;align-items:center;justify-content:center}
 .processing.show{display:flex}
 .spinner{width:16px;height:16px;border:2px solid rgba(255,184,77,.25);border-top-color:var(--amber);border-radius:50%;animation:spin .8s linear infinite;flex:0 0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -140,7 +143,7 @@ canvas{width:100%;height:100%;display:block}
 .btn-mini.del:hover{border-color:var(--red)}
 .btn-mini.play{color:var(--blue)}
 .btn-mini.play:hover{border-color:var(--blue)}
-.btn-mini.conv{color:var(--amber)}
+.btn-mini.conv{color:var(--amber-ink)}
 .btn-mini.conv:hover{border-color:var(--amber)}
 
 .seg-item{
@@ -152,7 +155,7 @@ canvas{width:100%;height:100%;display:block}
 @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .seg-item .idx{
   font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;
-  background:rgba(255,184,77,.12);color:var(--amber);
+  background:rgba(255,184,77,.12);color:var(--amber-ink);
   border-radius:8px;padding:6px 9px;min-width:42px;text-align:center;
 }
 .seg-item .meta{flex:1;min-width:140px}
@@ -162,7 +165,7 @@ canvas{width:100%;height:100%;display:block}
 .empty{color:var(--muted);text-align:center;font-size:13.5px;padding:18px 0}
 .err{color:var(--red);font-size:13px;text-align:center;margin-top:10px;display:none}
 .err.show{display:block}
-footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
+footer{text-align:center;color:#8a94a8;font-size:11.5px;margin-top:8px}
 
 /* Murf voice changer */
 .api-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
@@ -242,7 +245,7 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 .dropzone .dz-icon{font-size:34px;margin-bottom:8px}
 .dropzone .dz-title{font-weight:600;font-size:15px}
 .dropzone .dz-sub{color:var(--muted);font-size:12.5px;margin-top:5px}
-.dropzone .dz-sub b{color:var(--amber)}
+.dropzone .dz-sub b{color:var(--amber-ink)}
 .up-item{
   display:flex;align-items:center;gap:12px;flex-wrap:wrap;
   background:var(--panel2);border:1px solid var(--line);
@@ -261,13 +264,13 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 /* Login gate */
 .gate{
   position:fixed;inset:0;z-index:999;
-  background:radial-gradient(1200px 600px at 50% -10%, #182238 0%, var(--bg) 60%);
+  background:radial-gradient(1200px 600px at 50% -10%, #fff4e0 0%, var(--bg) 60%);
   display:flex;align-items:center;justify-content:center;padding:20px;
 }
 .gate-box{
   width:100%;max-width:380px;background:var(--panel);
   border:1px solid var(--line);border-radius:18px;padding:30px 26px;
-  text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45);
+  text-align:center;box-shadow:0 20px 60px rgba(30,45,80,.15);
 }
 .gate-box .g-icon{font-size:38px;margin-bottom:10px}
 .gate-box h2{font-size:19px;font-weight:800;letter-spacing:.5px}
@@ -298,9 +301,9 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 .dub-step .hint{font-size:12px;color:var(--muted);margin-left:auto;text-align:right}
 .dub-drop{border:2px dashed var(--line);border-radius:12px;padding:16px;text-align:center;cursor:pointer;color:var(--muted);font-size:13px;transition:border-color .2s,background .2s;margin-bottom:12px}
 .dub-drop:hover,.dub-drop.dragover{border-color:var(--amber);background:rgba(255,184,77,.05);color:var(--text)}
-.dub-drop b{color:var(--amber)}
+.dub-drop b{color:var(--amber-ink)}
 .dv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
-.dv-card{position:relative;border:2px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;background:#0a0f1a;transition:border-color .15s,transform .15s}
+.dv-card{position:relative;border:2px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;background:#e9edf5;transition:border-color .15s,transform .15s}
 .dv-card:hover{border-color:var(--blue)}
 .dv-card.active{border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,184,77,.18)}
 .dv-card video{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;pointer-events:none}
@@ -321,8 +324,8 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 .src-badge{font-family:'Be Vietnam Pro',sans-serif;font-size:10.5px;font-weight:700;border-radius:6px;padding:2px 6px;margin-left:4px}
 .src-badge.upload{background:rgba(90,166,255,.15);color:var(--blue)}
 .src-badge.murf{background:rgba(77,214,160,.15);color:var(--green)}
-.src-badge.merged{background:rgba(255,184,77,.15);color:var(--amber)}
-.warn-badge{color:var(--amber);font-family:'Be Vietnam Pro',sans-serif;font-size:11px}
+.src-badge.merged{background:rgba(255,184,77,.15);color:var(--amber-ink)}
+.warn-badge{color:var(--amber-ink);font-family:'Be Vietnam Pro',sans-serif;font-size:11px}
 .dub-summary{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
 .dub-summary .pill{background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:12.5px;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dub-summary .pill b{color:var(--text)}
@@ -345,6 +348,43 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 .job-msg.fail{color:var(--red)}
 .job-acts{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 details.dub-set{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 18px;margin-bottom:16px}
+.fb-box{background:#f0f6ff;border:1px solid #cfe0f7;border-radius:12px;padding:12px 14px;margin:4px 0 10px}
+.fb-title{font-weight:700;font-size:13.5px;margin-bottom:10px;color:var(--blue);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fb-state{font-weight:600;font-size:11px;border-radius:99px;padding:3px 9px;background:#e6eaf2;color:var(--muted)}
+.fb-state.on{background:rgba(15,154,106,.12);color:var(--green)}
+.fb-state.err{background:rgba(220,61,61,.1);color:var(--red)}
+.guide{background:#fff8eb;border:1px solid #f6d9a6;border-radius:12px;padding:14px 16px;margin-top:6px}
+.guide.flash{animation:flash 1.2s ease 2}
+@keyframes flash{50%{box-shadow:0 0 0 4px rgba(245,165,36,.45)}}
+.guide-title{font-weight:700;font-size:14px;margin-bottom:6px;color:var(--amber-ink)}
+.guide-steps{margin:10px 0 4px 20px;font-size:13px;line-height:1.65}
+.guide-steps li{margin-bottom:4px}
+.guide-steps a{color:var(--blue);font-weight:600}
+.guide-steps code,.dub-set .note code{background:#fff;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:11.5px}
+.conn-status{font-size:12.5px;margin:-2px 0 8px;display:none;padding:9px 12px;border-radius:10px}
+.conn-status.show{display:block}
+.conn-status.ok{background:rgba(15,154,106,.1);color:var(--green)}
+.conn-status.bad{background:rgba(220,61,61,.08);color:var(--red)}
+.conn-status.wait{background:var(--panel2);color:var(--muted)}
+.proxy-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:99px;padding:5px 11px;margin-bottom:12px}
+.proxy-chip.ok{background:rgba(15,154,106,.1);color:var(--green)}
+.proxy-chip.bad{background:rgba(220,61,61,.08);color:var(--red);cursor:pointer}
+.g-prompt{width:100%;min-height:96px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-family:inherit;font-size:14px;line-height:1.5;outline:none;resize:vertical}
+.g-prompt:focus{border-color:var(--amber)}
+.g-tip{font-size:12px;color:var(--muted);margin:8px 0 12px;line-height:1.5}
+.g-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.g-opts label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);font-weight:600}
+.g-opts select{min-width:0;width:100%}
+.g-prompt-view{font-size:12px;color:var(--muted);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.studio-flow{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:-8px 0 16px;font-size:12.5px}
+.studio-flow .sf{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:6px 12px;cursor:pointer;color:var(--muted);font-weight:600;transition:all .15s}
+.studio-flow .sf b{width:20px;height:20px;border-radius:50%;background:var(--panel2);display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--text)}
+.studio-flow .sf:hover{border-color:var(--amber);color:var(--text)}
+.studio-flow .sf.on{border-color:var(--amber);color:var(--amber-ink);background:#fff8eb}
+.studio-flow .sf.on b{background:var(--amber);color:#241a05}
+.studio-flow .arr{color:#b9c2d3}
+.mode-tabs{flex-wrap:wrap}
+.mode-tab{min-width:150px}
 details.dub-set summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--muted)}
 details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
 .dub-set .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
@@ -353,9 +393,9 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
 .dub-set .row select{font-family:inherit}
 .dub-set .note{font-size:12px;color:var(--muted);line-height:1.55}
 .dub-set .note b{color:var(--text)}
-.dub-set textarea{width:100%;height:260px;background:#0a0f1a;color:#cfe3ff;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:11.5px;margin-top:8px}
-.btn-mini.ins{color:#b79bff}
-.btn-mini.ins:hover{border-color:#b79bff}
+.dub-set textarea{width:100%;height:260px;background:#f6f8fc;color:#1b2333;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:11.5px;margin-top:8px}
+.btn-mini.ins{color:#6d3fe0}
+.btn-mini.ins:hover{border-color:#6d3fe0}
 </style>
 </head>
 <body>
@@ -363,7 +403,7 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
 <div class="gate" id="gate">
   <div class="gate-box">
     <div class="g-icon">🔐</div>
-    <h2>PHÒNG THÂU<span style="color:var(--amber)">●</span>3'</h2>
+    <h2>PHÒNG THÂU<span style="color:var(--amber-ink)">●</span>3'</h2>
     <p>Ứng dụng nội bộ — vui lòng nhập mật khẩu để tiếp tục</p>
     <input type="password" id="gatePass" placeholder="Mật khẩu" autocomplete="current-password">
     <label class="gate-remember"><input type="checkbox" id="gateRemember" style="width:auto;accent-color:var(--amber)"> Ghi nhớ đăng nhập trên máy này</label>
@@ -373,9 +413,14 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
 </div>
 <div class="app">
   <header>
-    <h1>PHÒNG THÂU<span class="dot">●</span>3'</h1>
-    <p>Thâu âm hoặc upload MP3/WAV — tự động cắt chính xác mỗi file 3 phút</p>
+    <h1>PHÒNG THÂU<span class="dot">●</span>STUDIO</h1>
+    <p>Giọng nói → Video AI (Grok) → Lồng tiếng khẩu hình (DreamFace) — trọn quy trình trong một trang</p>
   </header>
+  <div class="studio-flow" id="studioFlow">
+    <span class="sf" data-go="rec"><b>1</b>Giọng nói · thâu &amp; đổi giọng</span><span class="arr">→</span>
+    <span class="sf" data-go="grok"><b>2</b>Video AI · Grok 480p→720p</span><span class="arr">→</span>
+    <span class="sf" data-go="dub"><b>3</b>Lồng tiếng · DreamFace</span>
+  </div>
 
   <!-- Chế độ -->
   <div class="mode-tabs">
@@ -386,6 +431,10 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
     <button class="mode-tab" id="tabUpload">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
       Cắt file upload
+    </button>
+    <button class="mode-tab" id="tabGrok">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+      Video AI
     </button>
     <button class="mode-tab" id="tabDub">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="14" height="14" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>
@@ -521,47 +570,119 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
   </div>
 
 
-  <!-- ===== Tab: Lồng tiếng video ===== -->
+  <!-- ===== Tab: Tạo video AI (Kie · Grok Imagine image-to-video) ===== -->
+  <div id="grokWrap" style="display:none">
+    <details class="dub-set" id="grokSet">
+      <summary>⚙️ Cài đặt Kie API (Grok Imagine)</summary>
+      <div class="row"><label>Kie API key</label><input type="password" id="kieKeyInput" autocomplete="off" placeholder="Dán API key Kie.ai (kie.ai → API Key)"><button class="icon-btn" id="kieKeyToggle">👁</button></div>
+      <div class="row" style="justify-content:flex-end">
+        <button class="btn-mini" id="kieTestBtn">🔌 Kiểm tra key &amp; credit</button>
+        <button class="btn-mini dl" id="kieSaveBtn">💾 Lưu (kèm Firebase)</button>
+      </div>
+      <div class="conn-status" id="kieConnStatus"></div>
+      <div class="note">Key Kie được lưu trên máy và đồng bộ lên Firebase cùng cấu hình lồng tiếng (nếu đã nhập Firebase URL ở tab Lồng tiếng). Nếu trình duyệt chặn gọi Kie (CORS), app tự đi qua Proxy Worker của tab Lồng tiếng.</div>
+    </details>
+
+    <div class="card">
+      <div class="dub-step"><span class="n">1</span><h2>Chọn ảnh nhân vật</h2><span class="hint">JPG/PNG/WEBP · ≤10MB<br>ảnh rõ mặt, nhìn thẳng</span></div>
+      <div class="dub-drop" id="giDrop">🖼️ Kéo thả hoặc <b>bấm để upload ảnh</b> — có thể chọn nhiều ảnh</div>
+      <input type="file" id="giInput" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" multiple style="display:none">
+      <div class="dv-grid" id="giGrid"></div>
+    </div>
+
+    <div class="card">
+      <div class="dub-step"><span class="n">2</span><h2>Mô tả chuyển động</h2><span class="hint">Grok Imagine · image-to-video</span></div>
+      <textarea class="g-prompt" id="gPrompt" placeholder="Ví dụ: Người phụ nữ mỉm cười, nhìn thẳng camera và nói chuyện tự nhiên, đầu khẽ gật, ánh sáng studio mềm, máy quay tĩnh."></textarea>
+      <div class="g-tip">💡 Để lồng tiếng đẹp: mô tả nhân vật <b>nhìn thẳng camera, đang nói</b>, máy quay tĩnh. Grok luôn tạo kèm âm thanh — không sao, bước lồng tiếng sẽ thay bằng giọng của bạn.</div>
+      <div class="g-opts">
+        <label>Chế độ<select id="gMode"><option value="normal">Normal</option><option value="fun">Fun</option><option value="spicy">Spicy</option></select></label>
+        <label>Thời lượng<select id="gDuration"><option value="6">6 giây</option><option value="10">10 giây</option></select></label>
+        <label>Khung hình<select id="gAspect"><option value="9:16">9:16 dọc</option><option value="16:9">16:9 ngang</option><option value="1:1">1:1 vuông</option><option value="2:3">2:3</option><option value="3:2">3:2</option></select></label>
+        <label>Độ phân giải<select id="gRes" disabled><option value="480p">480p (tạo nhanh)</option></select></label>
+      </div>
+      <label class="dub-opt"><input type="checkbox" id="gAutoUp" checked style="accent-color:var(--amber)"> Tự nâng cấp lên <b>&nbsp;720p&nbsp;</b> ngay khi tạo xong</label>
+      <label class="dub-opt"><input type="checkbox" id="gAutoDub" style="accent-color:var(--amber)"> Xong là tự <b>&nbsp;chèn qua Lồng tiếng &amp; tạo luôn&nbsp;</b> (dùng audio đang chọn ở tab Lồng tiếng)</label>
+      <div class="controls">
+        <button class="btn btn-dub" id="btnGrokCreate" disabled>🎞️ Tạo video AI</button>
+      </div>
+      <div class="dub-msg" id="grokMsg"></div>
+    </div>
+
+    <div class="card">
+      <div class="seg-head">
+        <h2>Video AI đã tạo <span class="count" id="gJobCount"></span></h2>
+        <button class="btn-mini del" id="btnGJobClear" style="display:none">Xóa tất cả</button>
+      </div>
+      <div id="gJobList"><div class="empty">Chưa có video nào. Chọn ảnh, nhập mô tả rồi bấm <b>Tạo video AI</b>.</div></div>
+    </div>
+  </div>
+
+  <!-- ===== Tab: Lồng tiếng video (DreamFace · DreamAPI LipSync) ===== -->
   <div id="dubWrap" style="display:none">
     <details class="dub-set" id="dubSet">
-      <summary>⚙️ Cài đặt API lồng tiếng (DashScope · VideoRetalk)</summary>
-      <div class="row"><label>API key</label><input type="password" id="dubKeyInput" autocomplete="off"><button class="icon-btn" id="dubKeyToggle">👁</button></div>
-      <div class="row"><label>Khu vực</label>
-        <select id="dubRegion">
-          <option value="bj">Bắc Kinh — dashscope.aliyuncs.com (VideoRetalk)</option>
-          <option value="intl">Quốc tế — dashscope-intl.aliyuncs.com</option>
+      <summary>⚙️ Cài đặt API lồng tiếng (DreamFace · DreamAPI)</summary>
+      <div class="row"><label>API key</label><input type="password" id="dubKeyInput" autocomplete="off" placeholder="sk-… (key DreamAPI tại api.newportai.com)"><button class="icon-btn" id="dubKeyToggle">👁</button></div>
+      <div class="row"><label>Model</label>
+        <select id="dubModel">
+          <option value="lipsync2">LipSync 2.0 — khẩu hình chính xác hơn (khuyên dùng)</option>
+          <option value="lipsync1">LipSync 1.0 — nhanh, rẻ hơn</option>
         </select>
       </div>
-      <div class="row"><label>Proxy URL</label><input type="text" id="dubProxyInput" placeholder="https://ten-worker.ten-ban.workers.dev (bắt buộc nếu bị CORS)"></div>
+      <div class="row"><label>Proxy URL</label><input type="text" id="dubProxyInput" placeholder="https://long-tieng.idecocorp2015.workers.dev (dùng khi trình duyệt bị chặn CORS)"></div>
+      <div class="fb-box">
+        <div class="fb-title">☁️ Đồng bộ Firebase Realtime <span class="fb-state" id="fbState">chưa kết nối</span></div>
+        <div class="row"><label>Firebase URL</label><input type="text" id="fbUrlInput" placeholder="https://ten-du-an-default-rtdb.asia-southeast1.firebasedatabase.app"></div>
+        <div class="row"><label>Tên máy này</label><input type="text" id="fbDeviceInput" placeholder="Ví dụ: Máy kế toán, Laptop Triết…"></div>
+        <div class="row"><label>Mã bảo mật</label><input type="password" id="fbAuthInput" placeholder="(tuỳ chọn) Database secret / ID token nếu rules yêu cầu" autocomplete="off"></div>
+        <div class="row" style="justify-content:flex-end;margin-bottom:0">
+          <button class="btn-mini" id="fbLoadBtn">⬇ Tải cấu hình từ Firebase</button>
+          <button class="btn-mini dl" id="fbSaveBtn">⬆ Lưu lên Firebase</button>
+        </div>
+        <div class="note" style="margin-top:8px">Chỉ lưu <b>cấu hình</b>: key DreamFace, key Kie, key Murf, model và Proxy URL tại <code>phong_thau/longtieng_config</code>. Máy nào mở app cũng tự tải về và tự cập nhật ngay khi có máy khác đổi (realtime). Bấm <b>Lưu cài đặt</b> cũng tự đẩy lên Firebase. Video lồng tiếng làm xong được <b>ghi link lên Firebase</b> để mọi máy xem/tải; còn audio, ảnh, video gốc chỉ lưu trên máy này.</div>
+      </div>
       <div class="row" style="justify-content:flex-end">
-        <button class="btn-mini" id="dubShowWorker">📄 Xem mã Cloudflare Worker</button>
+        <button class="btn-mini" id="dubTestConn">🔌 Kiểm tra kết nối &amp; số credit</button>
         <button class="btn-mini dl" id="dubSaveSet">💾 Lưu cài đặt</button>
       </div>
-      <div class="note">DashScope không cho trình duyệt gọi trực tiếp (CORS), nên cần một <b>Cloudflare Worker</b> làm proxy — giống cách widget Qwen đang dùng. Dán mã bên dưới vào Worker mới, Deploy, rồi điền link Worker vào ô Proxy URL. Model <b>videoretalk</b> chỉ chạy ở khu vực <b>Bắc Kinh</b>, nên API key phải là key của khu vực này.</div>
+      <div class="conn-status" id="dubConnStatus"></div>
+      <div class="guide" id="dubGuide">
+        <div class="guide-title">🔒 Proxy (Cloudflare Worker) dùng khi nào?</div>
+        <div class="note">App gọi thẳng <b>api.newportai.com</b> trước. Nếu trình duyệt chặn (lỗi CORS), app tự chuyển qua Worker của bạn. Worker cũ đang chạy mã cho Alibaba, nên cần <b>dán lại mã mới</b> bên dưới (mã mới hỗ trợ cả DreamAPI):</div>
+        <ol class="guide-steps">
+          <li>Vào <a href="https://dash.cloudflare.com/" target="_blank" rel="noopener">dash.cloudflare.com</a> → <b>Workers &amp; Pages</b> → bấm vào Worker <code>long-tieng</code> → <b>Edit code</b>.</li>
+          <li>Bấm vào vùng mã → <b>Ctrl+A</b> → <b>Delete</b>.</li>
+          <li>Bấm nút <b>Sao chép mã Worker</b> bên dưới → quay lại Cloudflare → <b>Ctrl+V</b> → bấm <b>Deploy</b>.</li>
+          <li>Quay lại app → bấm <b>Kiểm tra kết nối &amp; số credit</b>.</li>
+        </ol>
+        <div class="row" style="justify-content:flex-start;margin:6px 0 0">
+          <button class="btn-mini dl" id="dubCopyWorker">📋 Sao chép mã Worker</button>
+          <button class="btn-mini" id="dubShowWorker">📄 Xem mã</button>
+        </div>
+      </div>
       <div id="dubWorkerBox" style="display:none">
         <textarea id="dubWorkerText" readonly></textarea>
-        <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn-mini" id="dubCopyWorker">📋 Sao chép mã</button></div>
       </div>
     </details>
 
     <div class="card">
-      <div class="dub-step"><span class="n">1</span><h2>Chọn video nhân vật</h2><span class="hint">MP4/MOV · 2–120 giây · ≤300MB<br>mặt nhìn thẳng, rõ nét</span></div>
+      <div class="dub-step"><span class="n">1</span><h2>Chọn video nhân vật</h2><span class="hint">MP4/MOV/WEBM · 2 giây–3 phút · ≤200MB<br>mặt nhìn thẳng, rõ nét</span></div>
       <div class="dub-drop" id="dvDrop">🎬 Kéo thả hoặc <b>bấm để upload video ngắn</b> — có thể chọn nhiều file</div>
-      <input type="file" id="dvInput" accept="video/mp4,video/quicktime,.mp4,.mov" multiple style="display:none">
+      <input type="file" id="dvInput" accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm" multiple style="display:none">
       <div class="dv-grid" id="dvGrid"></div>
     </div>
 
     <div class="card">
-      <div class="dub-step"><span class="n">2</span><h2>Chọn audio lồng tiếng</h2><span class="hint">MP3/WAV/AAC · tối đa 180 giây · ≤30MB<br>hoặc bấm <b style="color:#b79bff">Chèn</b> ở file đã đổi giọng</span></div>
+      <div class="dub-step"><span class="n">2</span><h2>Chọn audio lồng tiếng</h2><span class="hint">MP3/WAV/M4A/AAC · tối đa 180 giây<br>hoặc bấm <b style="color:#6d3fe0">Chèn</b> ở file đã đổi giọng</span></div>
       <div class="dub-drop" id="daDrop">🎵 Kéo thả hoặc <b>bấm để upload MP3/WAV</b> (tối đa 3 phút)</div>
-      <input type="file" id="daInput" accept=".mp3,.wav,.aac,audio/mpeg,audio/wav,audio/x-wav,audio/aac" multiple style="display:none">
+      <input type="file" id="daInput" accept=".mp3,.wav,.m4a,.aac,audio/mpeg,audio/wav,audio/x-wav,audio/aac,audio/mp4" multiple style="display:none">
       <div id="daList"></div>
     </div>
 
     <div class="card">
       <div class="dub-step"><span class="n">3</span><h2>Tạo video lồng tiếng</h2></div>
+      <div style="text-align:center"><span class="proxy-chip" id="proxyChip"></span></div>
       <div class="dub-summary" id="dubSummary"></div>
-      <label class="dub-opt"><input type="checkbox" id="dubLoop" checked style="accent-color:var(--amber)"> Lặp video (tua ngược–xuôi) cho khớp độ dài audio</label>
+      <label class="dub-opt"><input type="checkbox" id="dubEnhance" checked style="accent-color:var(--amber)"> Làm nét khuôn mặt (video enhance)</label>
       <div class="controls">
         <button class="btn btn-dub" id="btnDubCreate" disabled>✨ Tạo video lồng tiếng</button>
       </div>
@@ -575,17 +696,26 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
       </div>
       <div id="jobList"><div class="empty">Chưa có video nào. Chọn video + audio rồi bấm <b>Tạo video lồng tiếng</b>.</div></div>
     </div>
+
+    <div class="card">
+      <div class="seg-head">
+        <h2>☁️ Video lồng tiếng trên Firebase <span class="count" id="cloudCount"></span></h2>
+        <button class="btn-mini" id="btnCloudSync">⟳ Đẩy video chưa lưu</button>
+      </div>
+      <div class="note" style="font-size:12px;color:var(--muted);margin:-4px 0 12px">Mọi máy dùng chung Firebase đều thấy danh sách này và tự cập nhật realtime. Mỗi video được ghi kèm tên máy đã tạo.</div>
+      <div id="cloudList"><div class="empty">Chưa kết nối Firebase — nhập Firebase URL trong ⚙️ Cài đặt.</div></div>
+    </div>
   </div>
 
-<script type="text/plain" id="workerSrc">// Cloudflare Worker — proxy cho PHÒNG THÂU · Lồng tiếng video (DashScope VideoRetalk)
-const API_HOSTS = ['dashscope.aliyuncs.com', 'dashscope-intl.aliyuncs.com'];
+<script type="text/plain" id="workerSrc">// Cloudflare Worker — proxy cho PHÒNG THÂU STUDIO (DreamFace DreamAPI + Kie Grok + DashScope)
+const API_HOSTS = ['api.newportai.com', 'api.kie.ai', 'kieai.redpandaai.co', 'dashscope.aliyuncs.com', 'dashscope-intl.aliyuncs.com'];
+const FILE_HOST_OK = h => /(^|\.)(aliyuncs\.com|newportai\.com|dreamfaceapp\.com|redpandaai\.co|kie\.ai|aiquickdraw\.com|myqcloud\.com|amazonaws\.com|cloudfront\.net|googleapis\.com)$/.test(h);
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
-  'Access-Control-Allow-Headers': 'Authorization,Content-Type,X-DashScope-Async,X-DashScope-OssResourceResolve,X-Target-Host',
+  'Access-Control-Allow-Headers': 'Authorization,Content-Type,X-Target-Host,X-DashScope-Async,X-DashScope-OssResourceResolve',
   'Access-Control-Max-Age': '86400'
 };
-const okAli = h => /(^|\.)aliyuncs\.com$/.test(h);
 function j(o, s) { return new Response(JSON.stringify(o), { status: s, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
 
 export default {
@@ -594,16 +724,16 @@ export default {
     const url = new URL(req.url);
     try {
       let resp;
-      if (url.pathname === '/oss-upload') {            // upload file lên kho tạm OSS
+      if (url.pathname === '/oss-upload') {            // upload file lên kho lưu trữ (OSS)
         const host = new URL(url.searchParams.get('host'));
-        if (!okAli(host.hostname)) return j({ message: 'host not allowed' }, 400);
+        if (!FILE_HOST_OK(host.hostname)) return j({ message: 'upload host not allowed: ' + host.hostname }, 400);
         resp = await fetch(host.toString(), { method: 'POST', headers: { 'Content-Type': req.headers.get('Content-Type') }, body: req.body });
       } else if (url.pathname === '/fetch') {          // tải video kết quả về
         const t = new URL(url.searchParams.get('url'));
-        if (!okAli(t.hostname)) return j({ message: 'host not allowed' }, 400);
+        if (!FILE_HOST_OK(t.hostname)) return j({ message: 'file host not allowed: ' + t.hostname }, 400);
         resp = await fetch(t.toString());
-      } else if (url.pathname.startsWith('/api/')) {   // gọi API DashScope
-        const host = req.headers.get('X-Target-Host') || 'dashscope.aliyuncs.com';
+      } else if (url.pathname.startsWith('/api/')) {   // gọi API
+        const host = req.headers.get('X-Target-Host') || 'api.newportai.com';
         if (!API_HOSTS.includes(host)) return j({ message: 'host not allowed' }, 400);
         const h = new Headers();
         for (const k of ['Authorization', 'Content-Type', 'X-DashScope-Async', 'X-DashScope-OssResourceResolve']) {
@@ -701,12 +831,12 @@ const DB_NAME='phong_thau_db', STORE='segments', MERGED_STORE='merged';
 let db=null;
 function openDB(){
   return new Promise((res,rej)=>{
-    const rq=indexedDB.open(DB_NAME,3);
+    const rq=indexedDB.open(DB_NAME,4);
     rq.onupgradeneeded=e=>{
       const d=e.target.result;
       if(!d.objectStoreNames.contains(STORE)) d.createObjectStore(STORE,{keyPath:'id',autoIncrement:true});
       if(!d.objectStoreNames.contains(MERGED_STORE)) d.createObjectStore(MERGED_STORE,{keyPath:'id'});
-      ['dub_videos','dub_audios','dub_jobs'].forEach(n=>{ if(!d.objectStoreNames.contains(n)) d.createObjectStore(n,{keyPath:'id',autoIncrement:true}); });
+      ['dub_videos','dub_audios','dub_jobs','grok_images','grok_jobs'].forEach(n=>{ if(!d.objectStoreNames.contains(n)) d.createObjectStore(n,{keyPath:'id',autoIncrement:true}); });
     };
     rq.onsuccess=e=>{db=e.target.result;res(db)};
     rq.onerror=()=>rej(rq.error);
@@ -804,15 +934,15 @@ window.addEventListener('resize',resizeCanvas); resizeCanvas();
 function drawWave(){
   rafId=requestAnimationFrame(drawWave);
   const W=canvas.width,H=canvas.height;
-  ctx2d.fillStyle='#0a0f1a'; ctx2d.fillRect(0,0,W,H);
-  ctx2d.strokeStyle='#1e2a40'; ctx2d.lineWidth=1;
+  ctx2d.fillStyle='#f1f4fa'; ctx2d.fillRect(0,0,W,H);
+  ctx2d.strokeStyle='#dbe1ec'; ctx2d.lineWidth=1;
   ctx2d.beginPath(); ctx2d.moveTo(0,H/2); ctx2d.lineTo(W,H/2); ctx2d.stroke();
   if(!analyser) return;
   const data=new Uint8Array(analyser.fftSize);
   analyser.getByteTimeDomainData(data);
   const grad=ctx2d.createLinearGradient(0,0,W,0);
   grad.addColorStop(0,'#e8920f'); grad.addColorStop(.5,'#ffb84d'); grad.addColorStop(1,'#e8920f');
-  ctx2d.strokeStyle=isPaused?'#3a4660':grad;
+  ctx2d.strokeStyle=isPaused?'#b9c2d3':grad;
   ctx2d.lineWidth=2*devicePixelRatio; ctx2d.beginPath();
   const step=W/data.length;
   for(let i=0;i<data.length;i++){
@@ -1074,14 +1204,23 @@ const tabRec=$('tabRec'), tabUpload=$('tabUpload'),
 function setMode(mode){
   tabRec.classList.toggle('active',mode==='rec');
   tabUpload.classList.toggle('active',mode==='upload');
+  $('tabGrok').classList.toggle('active',mode==='grok');
   $('tabDub').classList.toggle('active',mode==='dub');
   micCard.style.display=recCard.style.display=mode==='rec'?'':'none';
   uploadCard.style.display=mode==='upload'?'':'none';
-  const dub=mode==='dub';
-  $('dubWrap').style.display=dub?'':'none';
-  $('segCard').style.display=$('murfCard').style.display=$('mergeCard').style.display=dub?'none':'';
+  const studio=mode==='dub'||mode==='grok';
+  $('dubWrap').style.display=mode==='dub'?'':'none';
+  $('grokWrap').style.display=mode==='grok'?'':'none';
+  $('segCard').style.display=$('murfCard').style.display=$('mergeCard').style.display=studio?'none':'';
+  document.querySelectorAll('#studioFlow .sf').forEach(el=>el.classList.toggle('on',el.dataset.go===(mode==='upload'?'rec':mode)));
 }
 tabRec.onclick=()=>setMode('rec');
+$('tabGrok').onclick=()=>{
+  if(isRecording){ showErr('Đang thâu âm — hãy dừng thâu trước khi chuyển tab.'); return; }
+  setMode('grok');
+};
+document.querySelectorAll('#studioFlow .sf').forEach(el=>el.onclick=()=>{ if(isRecording&&el.dataset.go!=='rec'){ showErr('Đang thâu âm — hãy dừng thâu trước.'); return; } setMode(el.dataset.go); window.scrollTo({top:0,behavior:'smooth'}); });
+document.querySelector('#studioFlow .sf[data-go="rec"]').classList.add('on');
 $('tabDub').onclick=()=>{
   if(isRecording){ showErr('Đang thâu âm — hãy dừng thâu trước khi chuyển sang lồng tiếng video.'); return; }
   setMode('dub');
@@ -1203,6 +1342,7 @@ btnSaveKey.onclick=()=>{
   murfApiKey=murfKeyInput.value.trim();
   localStorage.setItem('murf_api_key',murfApiKey);
   showMurfErr('Đã lưu API key trên trình duyệt này.',true);
+  if(typeof fbSave==='function'&&fbUrl) fbSave().then(ok=>ok&&showMurfErr('Đã lưu key Murf trên máy và lên Firebase.',true));
 };
 
 async function fetchVoicesForModel(model){
@@ -1456,33 +1596,39 @@ function renderMerged(){
 
 
 /* =====================================================================
-   TAB LỒNG TIẾNG VIDEO — khẩu hình khớp audio (DashScope · VideoRetalk)
+   TAB LỒNG TIẾNG VIDEO — DreamFace · DreamAPI LipSync (api.newportai.com)
    ===================================================================== */
-const DUB_KEY_DEFAULT='sk-1182b5bd89a847018aa60edff2f59cb1'; // key nội bộ nhúng sẵn
-const DUB_MAX_AUDIO=180, DUB_API_AUDIO_WARN=120, DUB_VIDEO_MIN=2, DUB_VIDEO_MAX=120;
-const DUB_HOSTS={bj:'dashscope.aliyuncs.com',intl:'dashscope-intl.aliyuncs.com'};
+const DF_BASE='https://api.newportai.com', DF_HOST='api.newportai.com';
+const DUB_KEY_DEFAULT='sk-cf339132b28c4e11bd95adfe332c1ba0'; // key DreamAPI nhúng sẵn
+const DUB_KEY_OLD=['sk-1182b5bd89a847018aa60edff2f59cb1','sk-ws-H.YXXXIDD.QSzv.MEUCICoqZC5vObARhY1b9LDpREq_N0WoP95aJCsK-eRAjzZiAiEAujTpwSeOUyGQnuEF8eVuzS-YPbSamK1iGr6vLpSzus4'];
+const DUB_PROXY_DEFAULT='https://long-tieng.idecocorp2015.workers.dev';
+const DF_MODELS={lipsync2:{path:'/api/async/lipsync/2.0',label:'LipSync 2.0'},lipsync1:{path:'/api/async/lipsync',label:'LipSync 1.0'}};
+const DUB_MAX_AUDIO=180, DUB_MIN_DUR=2, DUB_VIDEO_MAX=180;
 const DUB_ST={dub_videos:'dub_videos',dub_audios:'dub_audios',dub_jobs:'dub_jobs'};
+const DF_URL_TTL=20*3600e3; // dùng lại link file đã upload trong 20 giờ
+
 let dubKey=localStorage.getItem('dub_api_key')||DUB_KEY_DEFAULT;
-let dubRegion=localStorage.getItem('dub_region')||'bj';
-let dubProxy=localStorage.getItem('dub_proxy')||'';
+if(DUB_KEY_OLD.includes(dubKey)){ dubKey=DUB_KEY_DEFAULT; localStorage.setItem('dub_api_key',dubKey); }
+let dubModel=localStorage.getItem('dub_model')||'lipsync2'; if(!DF_MODELS[dubModel]) dubModel='lipsync2';
+let dubProxy=localStorage.getItem('dub_proxy')||DUB_PROXY_DEFAULT;
+let dfViaProxy=localStorage.getItem('df_via_proxy')==='1'; // nhớ: gọi trực tiếp bị CORS → dùng proxy
 let dubVideos=[], dubAudios=[], dubJobs=[];
 let dubSelVideo=+localStorage.getItem('dub_sel_video')||null, dubSelAudio=+localStorage.getItem('dub_sel_audio')||null;
-let dubPlay=null; // {id, audio}
+let dubPlay=null;
 const dubPolling=new Set();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const mb=b=>(b/1048576).toFixed(1)+' MB';
 function stampStr(){const d=new Date();return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+String(d.getSeconds()).padStart(2,'0');}
 function safeName(n){return (n||'file').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').replace(/[^A-Za-z0-9._-]+/g,'_').slice(-80)||'file';}
 
-/* --- IndexedDB chung cho các store lồng tiếng --- */
+/* --- IndexedDB --- */
 function idbAll(store){return new Promise((res,rej)=>{const rq=db.transaction(store,'readonly').objectStore(store).getAll();rq.onsuccess=()=>res(rq.result||[]);rq.onerror=()=>rej(rq.error);});}
 function idbPut(store,rec){return new Promise((res,rej)=>{const r={...rec};delete r.url;delete r.blobUrl;if(r.id==null)delete r.id;const rq=db.transaction(store,'readwrite').objectStore(store).put(r);rq.onsuccess=()=>res(rq.result);rq.onerror=()=>rej(rq.error);});}
 function idbDel(store,id){return new Promise((res,rej)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).delete(id);tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});}
 async function dubSave(store,rec){ if(!db) return; try{ const id=await idbPut(store,rec); if(rec.id==null) rec.id=id; }catch(e){ console.warn('Lưu IndexedDB lỗi:',e); showDubMsg('Không lưu được vào bộ nhớ trình duyệt (có thể đầy dung lượng): '+e.message); } }
+function showDubMsg(m,ok){const el=$('dubMsg');el.textContent=m;el.style.color=ok?'var(--green)':'var(--red)';el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),ok?3500:9000);}
 
-function showDubMsg(m,ok){const el=$('dubMsg');el.textContent=m;el.style.color=ok?'var(--green)':'var(--red)';el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),ok?3000:8000);}
-
-/* --- Đọc thời lượng / kích thước media --- */
+/* --- Đọc thời lượng media --- */
 function getMediaMeta(blob,kind){
   return new Promise(res=>{
     const el=document.createElement(kind), u=URL.createObjectURL(blob);
@@ -1493,9 +1639,7 @@ function getMediaMeta(blob,kind){
       if(el.duration===Infinity||isNaN(el.duration)){ el.ontimeupdate=()=>{el.ontimeupdate=null;out();}; el.currentTime=1e7; return; }
       out();
     };
-    el.onerror=()=>fin(null);
-    setTimeout(()=>fin(null),15000);
-    el.src=u;
+    el.onerror=()=>fin(null); setTimeout(()=>fin(null),15000); el.src=u;
   });
 }
 async function getAudioDur(blob){
@@ -1505,58 +1649,208 @@ async function getAudioDur(blob){
 }
 
 /* --- Cài đặt --- */
-const dubKeyInput=$('dubKeyInput'), dubRegionSel=$('dubRegion'), dubProxyInput=$('dubProxyInput');
-dubKeyInput.value=dubKey; dubRegionSel.value=dubRegion; dubProxyInput.value=dubProxy;
+const dubKeyInput=$('dubKeyInput'), dubModelSel=$('dubModel'), dubProxyInput=$('dubProxyInput');
+dubKeyInput.value=dubKey; dubModelSel.value=dubModel; dubProxyInput.value=dubProxy;
 $('dubWorkerText').value=$('workerSrc').textContent.trim();
-if(!dubProxy) $('dubSet').open=true;
+function setConn(kind,msg){ const el=$('dubConnStatus'); el.className='conn-status show '+kind; el.textContent=msg; }
+function dubKeyProblem(k){
+  k=(k||'').trim();
+  if(!k) return 'Chưa nhập API key DreamAPI.';
+  if(/^sk-(ws|sp)[-.]/i.test(k)) return 'Đây là key Alibaba Token Plan, không phải key DreamFace. Lấy key tại api.newportai.com (dạng sk- + 32 ký tự).';
+  if(!/^sk-[A-Za-z0-9]{16,}$/.test(k)) return 'API key có định dạng lạ ('+k.slice(0,6)+'…). Key DreamAPI có dạng sk- + 32 ký tự chữ/số.';
+  return '';
+}
+dubKeyInput.addEventListener('input',()=>{ const kp=dubKeyProblem(dubKeyInput.value); if(kp) setConn('bad','⚠ '+kp); else $('dubConnStatus').classList.remove('show'); });
 $('dubKeyToggle').onclick=()=>{dubKeyInput.type=dubKeyInput.type==='password'?'text':'password';};
 $('dubShowWorker').onclick=()=>{const b=$('dubWorkerBox');b.style.display=b.style.display==='none'?'':'none';};
-$('dubCopyWorker').onclick=async()=>{try{await navigator.clipboard.writeText($('dubWorkerText').value);showDubMsg('Đã sao chép mã Worker.',true);}catch(e){$('dubWorkerText').select();document.execCommand('copy');showDubMsg('Đã sao chép mã Worker.',true);}};
-$('dubSaveSet').onclick=()=>{
-  dubKey=dubKeyInput.value.trim()||DUB_KEY_DEFAULT; dubRegion=dubRegionSel.value; dubProxy=dubProxyInput.value.trim().replace(/\/+$/,'');
-  localStorage.setItem('dub_api_key',dubKey); localStorage.setItem('dub_region',dubRegion); localStorage.setItem('dub_proxy',dubProxy);
-  showDubMsg('Đã lưu cài đặt lồng tiếng.',true);
-};
+$('dubCopyWorker').onclick=async()=>{try{await navigator.clipboard.writeText($('dubWorkerText').value);}catch(e){$('dubWorkerText').select();document.execCommand('copy');}showDubMsg('Đã sao chép mã Worker — dán vào Cloudflare rồi bấm Deploy.',true);setConn('ok','📋 Đã sao chép mã Worker.');};
+function readDubSettings(){
+  let px=dubProxyInput.value.trim().replace(/\/+$/,'');
+  if(px&&!/^https?:\/\//i.test(px)) px='https://'+px;
+  if(/newportai|dashscope/i.test(px)){ setConn('bad','Ô Proxy URL phải là link Cloudflare Worker (…workers.dev), không phải địa chỉ API.'); return false; }
+  dubKey=dubKeyInput.value.trim()||DUB_KEY_DEFAULT; dubModel=dubModelSel.value; dubProxy=px; dubProxyInput.value=px;
+  localStorage.setItem('dub_api_key',dubKey); localStorage.setItem('dub_model',dubModel); localStorage.setItem('dub_proxy',dubProxy);
+  renderProxyChip(); return true;
+}
+function renderProxyChip(){
+  const c=$('proxyChip');
+  c.className='proxy-chip ok'; c.onclick=null;
+  c.textContent='🟢 '+DF_MODELS[dubModel].label+' · '+(dfViaProxy&&dubProxy?'qua Proxy '+dubProxy.replace(/^https?:\/\//,''):'gọi trực tiếp DreamAPI'+(dubProxy?' (dự phòng: Proxy)':''));
+}
+function openDubGuide(){
+  setMode('dub'); const s=$('dubSet'); s.open=true;
+  s.scrollIntoView({behavior:'smooth',block:'start'});
+  const g=$('dubGuide'); g.classList.remove('flash'); void g.offsetWidth; g.classList.add('flash');
+}
 
-/* --- Gọi API DashScope (qua proxy nếu có) --- */
-function dsBase(){ return dubProxy ? dubProxy : 'https://'+DUB_HOSTS[dubRegion]; }
-async function dsFetch(path,opts={}){
-  const headers=Object.assign({'Authorization':'Bearer '+dubKey},opts.headers||{});
-  if(dubProxy) headers['X-Target-Host']=DUB_HOSTS[dubRegion];
+/* --- Gọi DreamAPI: thử trực tiếp, bị CORS thì tự chuyển qua Proxy --- */
+async function rawFetch(url,opts,viaProxy){
+  if(!viaProxy) return fetch(url,opts);
+  const u=new URL(url);
+  const headers=Object.assign({},opts.headers||{},{'X-Target-Host':u.host});
+  return fetch(dubProxy+u.pathname+u.search,{...opts,headers});
+}
+async function dfCall(path,body,form){
+  const kp=dubKeyProblem(dubKey); if(kp) throw new Error(kp);
+  const opts={method:'POST',headers:{'Authorization':'Bearer '+dubKey,'Content-Type':form?'application/x-www-form-urlencoded':'application/json'},
+              body:form?new URLSearchParams(body||{}).toString():JSON.stringify(body||{})};
   let res;
-  try{ res=await fetch(dsBase()+path,{...opts,headers}); }
-  catch(e){ throw new Error(dubProxy?'Không kết nối được Proxy ('+e.message+')':'Trình duyệt chặn gọi trực tiếp DashScope (CORS) — hãy tạo Cloudflare Worker và điền Proxy URL trong ⚙️ Cài đặt.'); }
-  let data=null; try{ data=await res.json(); }catch(_){}
-  if(!res.ok||(data&&data.code&&!data.output&&!data.data)){
-    throw new Error(((data&&(data.message||data.code))||'HTTP '+res.status)+(res.status===401?' — API key sai hoặc không thuộc khu vực đã chọn':''));
+  const tryProxy=async()=>{ if(!dubProxy) throw new Error('NOPROXY'); res=await rawFetch(DF_BASE+path,opts,true); };
+  try{
+    if(dfViaProxy&&dubProxy) await tryProxy();
+    else{
+      try{ res=await rawFetch(DF_BASE+path,opts,false); }
+      catch(e){ await tryProxy(); dfViaProxy=true; localStorage.setItem('df_via_proxy','1'); renderProxyChip(); }
+    }
+  }catch(e){
+    if(e.message==='NOPROXY'){ openDubGuide(); throw new Error('Trình duyệt chặn gọi trực tiếp DreamAPI (CORS) và chưa có Proxy URL.'); }
+    openDubGuide();
+    throw new Error('Không kết nối được Proxy '+dubProxy.replace(/^https?:\/\//,'')+' — hãy dán lại mã Worker mới và bấm Deploy.');
   }
-  return data;
+  let data=null; try{ data=await res.json(); }catch(_){}
+  if(res.status===400&&data&&/host not allowed/.test(data.message||'')){ openDubGuide(); throw new Error('Worker đang chạy mã cũ (chỉ cho Alibaba) — dán lại mã Worker mới rồi Deploy.'); }
+  if(res.status===401||(data&&data.code===401)) throw new Error('API key DreamAPI sai hoặc đã hết hạn (401).');
+  if(!res.ok) throw new Error((data&&(data.message||data.msg))||('HTTP '+res.status));
+  if(!data) throw new Error('Phản hồi không hợp lệ từ DreamAPI');
+  if(data.code!==0) throw new Error('['+data.code+'] '+(data.message||'Lỗi DreamAPI')+(data.code===10192?' — tham số không hợp lệ':''));
+  return data.data||{};
 }
-async function ossUpload(blob,fileName){
-  const pol=await dsFetch('/api/v1/uploads?action=getPolicy&model=videoretalk',{method:'GET'});
-  const d=pol.data; if(!d) throw new Error('Không lấy được quyền upload kho tạm');
-  const key=`${d.upload_dir}/${Date.now()}_${safeName(fileName)}`;
+
+/* Upload 3 bước: get_policy → POST lên OSS → policy_upload_finish → URL công khai */
+async function dfUpload(blob,fileName){
+  const name=safeName(fileName);
+  const p=await dfCall('/api/file/v1/get_policy',{scene:'Dream-CN'});
+  const host=p.host, accessId=p.accessId||p.OSSAccessKeyId, key=p.key||((p.dir||'')+Date.now()+'_'+name);
+  if(!host||!accessId||!p.policy||!p.signature) throw new Error('Không nhận đủ thông tin upload từ DreamAPI');
   const fd=new FormData();
-  fd.append('OSSAccessKeyId',d.oss_access_key_id);
-  fd.append('Signature',d.signature);
-  fd.append('policy',d.policy);
-  fd.append('x-oss-object-acl',d.x_oss_object_acl);
-  fd.append('x-oss-forbid-overwrite',d.x_oss_forbid_overwrite);
-  fd.append('key',key);
-  fd.append('success_action_status','200');
-  fd.append('file',blob,safeName(fileName));
-  const url=dubProxy? dubProxy+'/oss-upload?host='+encodeURIComponent(d.upload_host) : d.upload_host;
-  let res; try{ res=await fetch(url,{method:'POST',body:fd}); }catch(e){ throw new Error('Upload lên kho tạm thất bại (CORS/mạng): '+e.message); }
-  if(!res.ok) throw new Error('Upload lên kho tạm lỗi HTTP '+res.status);
-  return 'oss://'+key;
+  fd.append('key',key); fd.append('policy',p.policy); fd.append('OSSAccessKeyId',accessId);
+  fd.append('signature',p.signature); if(p.callback) fd.append('callback',p.callback);
+  fd.append('success_action_status','200'); fd.append('file',blob,name);
+  let res;
+  try{ res=await fetch(host,{method:'POST',body:fd}); }
+  catch(e){
+    if(!dubProxy) throw new Error('Upload file bị trình duyệt chặn (CORS) — cần Proxy URL.');
+    try{ res=await fetch(dubProxy+'/oss-upload?host='+encodeURIComponent(host),{method:'POST',body:fd}); }
+    catch(e2){ throw new Error('Upload file thất bại qua cả Proxy: '+e2.message); }
+  }
+  let up=null; try{ up=await res.json(); }catch(_){}
+  if(!res.ok) throw new Error('Upload file lỗi HTTP '+res.status+(up&&up.message?' — '+up.message:''));
+  const reqId=(up&&up.data&&up.data.reqId)||p.reqId;
+  if(!reqId) throw new Error('Upload xong nhưng không nhận được mã xác nhận (reqId)');
+  const fin=await dfCall('/api/file/v1/policy_upload_finish',{reqId});
+  if(!fin.url) throw new Error('DreamAPI không trả về link file đã upload');
+  return fin.url;
 }
-async function ensureOss(rec,store){
-  if(rec.ossUrl&&rec.ossExp>Date.now()+3600e3&&rec.ossRegion===dubRegion) return rec.ossUrl; // link tạm còn hạn → dùng lại
-  const u=await ossUpload(rec.blob,rec.name);
-  rec.ossUrl=u; rec.ossExp=Date.now()+47*3600e3; rec.ossRegion=dubRegion;
-  await dubSave(store,rec);
+async function ensureUploaded(rec,store){
+  if(rec.dfUrl&&rec.dfExp>Date.now()) return rec.dfUrl;
+  const u=await dfUpload(rec.blob,rec.name);
+  rec.dfUrl=u; rec.dfExp=Date.now()+DF_URL_TTL; await dubSave(store,rec);
   return u;
 }
+
+/* --- Cài đặt: lưu & kiểm tra --- */
+$('dubSaveSet').onclick=async()=>{
+  if(!readDubSettings()) return;
+  showDubMsg('Đã lưu cài đặt lồng tiếng.',true); setConn('wait','Đã lưu. Bấm "Kiểm tra kết nối" để thử.');
+  if(readFbInputs()&&fbUrl&&await fbSave()) setConn('wait','Đã lưu trên máy và lên Firebase. Bấm "Kiểm tra kết nối" để thử.');
+};
+$('dubTestConn').onclick=async()=>{
+  if(!readDubSettings()) return;
+  const kp=dubKeyProblem(dubKey); if(kp){ setConn('bad','✕ '+kp); return; }
+  setConn('wait','Đang kiểm tra kết nối DreamAPI…');
+  try{
+    const d=await dfCall('/api/remaining_credits',{},true);
+    const cr=d.remainingCredits??d.remaining_credits??d.credits??d.balance??(typeof d==='number'?d:null);
+    setConn('ok','✓ Kết nối tốt — API key hợp lệ'+(cr!=null?' · Credit còn lại: '+cr:'')+(dfViaProxy?' (qua Proxy)':' (gọi trực tiếp)')+'. Có thể tạo video lồng tiếng.');
+  }catch(e){ setConn('bad','✕ '+e.message); }
+};
+dubModelSel.onchange=()=>{ dubModel=dubModelSel.value; localStorage.setItem('dub_model',dubModel); renderProxyChip(); };
+renderProxyChip();
+
+/* ---------- Firebase Realtime: lưu & đồng bộ API key + Proxy + model ---------- */
+// Firebase riêng cho PHÒNG THÂU STUDIO (dự án luudulieu3) — app gọi qua REST nên chỉ cần databaseURL
+const PT_FIREBASE_CONFIG={
+  apiKey:"AIzaSyBnrF-C4g-aiQW_cG9jHKJ76haeT08kUXw",
+  authDomain:"luudulieu3.firebaseapp.com",
+  databaseURL:"https://luudulieu3-default-rtdb.firebaseio.com",
+  projectId:"luudulieu3",
+  storageBucket:"luudulieu3.firebasestorage.app",
+  messagingSenderId:"1021267308412",
+  appId:"1:1021267308412:web:c8f48a4e646b980a5afef9",
+  measurementId:"G-62CMX9RRB2"
+};
+const DUB_FB_DEFAULT=PT_FIREBASE_CONFIG.databaseURL;
+const DUB_FB_OLD=['https://kehoachnew-532cf-default-rtdb.firebaseio.com']; // URL cũ → tự chuyển sang luudulieu3
+const FB_PATH='phong_thau/longtieng_config';
+const fbUrlInput=$('fbUrlInput'), fbAuthInput=$('fbAuthInput');
+let fbUrl=(()=>{ const s=localStorage.getItem('dub_fb_url'); if(!s||DUB_FB_OLD.includes(s.replace(/\/+$/,''))){ localStorage.setItem('dub_fb_url',DUB_FB_DEFAULT); return DUB_FB_DEFAULT; } return s; })(), fbAuth=localStorage.getItem('dub_fb_auth')||'', fbStream=null, fbLastSig='';
+fbUrlInput.value=fbUrl; fbAuthInput.value=fbAuth;
+function fbState(kind,txt){ const s=$('fbState'); s.className='fb-state'+(kind?' '+kind:''); s.textContent=txt; }
+function fbEndpoint(){ return fbUrl.replace(/\/+$/,'')+'/'+FB_PATH+'.json'+(fbAuth?'?auth='+encodeURIComponent(fbAuth):''); }
+function readFbInputs(){
+  let u=fbUrlInput.value.trim().replace(/\/+$/,'');
+  if(u&&!/^https?:\/\//i.test(u)) u='https://'+u;
+  let host=''; try{ host=u?new URL(u).hostname:''; }catch(_){ fbState('err','URL Firebase không hợp lệ'); return false; }
+  if(u&&!/(firebaseio\.com|firebasedatabase\.app)$/i.test(host)){ fbState('err','URL không phải Firebase Realtime'); return false; }
+  fbUrl=u; fbAuth=fbAuthInput.value.trim(); fbUrlInput.value=u;
+  localStorage.setItem('dub_fb_url',fbUrl); localStorage.setItem('dub_fb_auth',fbAuth);
+  return true;
+}
+function applyRemoteConfig(c,from){
+  if(!c||typeof c!=='object') return false;
+  if(c.apiKey&&(DUB_KEY_OLD.includes(c.apiKey)||dubKeyProblem(c.apiKey))){ c={...c,apiKey:DUB_KEY_DEFAULT}; setTimeout(()=>fbSave(),0); }
+  const sig=JSON.stringify([c.apiKey,c.model,c.proxy,c.kieKey||'',c.murfKey||'']);
+  if(sig===fbLastSig) return false; fbLastSig=sig;
+  if(c.murfKey){ murfApiKey=c.murfKey; murfKeyInput.value=c.murfKey; localStorage.setItem('murf_api_key',c.murfKey); }
+  if(c.kieKey){ kieKey=c.kieKey; kieKeyInput.value=c.kieKey; localStorage.setItem('kie_api_key',c.kieKey); }
+  if(c.apiKey){ dubKey=c.apiKey; dubKeyInput.value=c.apiKey; localStorage.setItem('dub_api_key',c.apiKey); }
+  if(c.model&&DF_MODELS[c.model]){ dubModel=c.model; dubModelSel.value=c.model; localStorage.setItem('dub_model',c.model); }
+  if(typeof c.proxy==='string'){ dubProxy=c.proxy; dubProxyInput.value=c.proxy; localStorage.setItem('dub_proxy',c.proxy); }
+  renderProxyChip();
+  const when=c.updatedAt?new Date(c.updatedAt).toLocaleString('vi-VN'):'';
+  setConn('ok','☁️ Đã nhận cấu hình từ Firebase'+(from?' ('+from+')':'')+(when?' — cập nhật lúc '+when:''));
+  return true;
+}
+async function fbLoad(){
+  if(!fbUrl){ fbState('','chưa nhập URL'); return; }
+  try{
+    const r=await fetch(fbEndpoint()); const d=await r.json().catch(()=>null);
+    if(!r.ok) throw new Error((d&&d.error)||'HTTP '+r.status);
+    if(d) applyRemoteConfig(d,'tải về'); else setConn('wait','Firebase chưa có cấu hình — bấm "Lưu lên Firebase" để tạo.');
+    fbState('on','đã kết nối');
+    cloudListen(); setTimeout(syncPendingVideos,1500);
+  }catch(e){ fbState('err','lỗi: '+e.message); setConn('bad','Không đọc được Firebase: '+e.message+(/permission/i.test(e.message)?' — rules đang chặn, cần mở quyền cho nhánh '+FB_PATH+' hoặc nhập mã bảo mật':'')); }
+}
+async function fbSave(){
+  if(!fbUrl) return false;
+  const c={apiKey:dubKey,model:dubModel,proxy:dubProxy,kieKey:kieKey||'',murfKey:murfApiKey||'',updatedAt:Date.now()};
+  try{
+    const r=await fetch(fbEndpoint(),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(c)});
+    const d=await r.json().catch(()=>null);
+    if(!r.ok) throw new Error((d&&d.error)||'HTTP '+r.status);
+    fbLastSig=JSON.stringify([c.apiKey,c.model,c.proxy,c.kieKey,c.murfKey]); fbState('on','đã lưu lên Firebase'); return true;
+  }catch(e){ fbState('err','lỗi ghi: '+e.message); setConn('bad','Không ghi được lên Firebase: '+e.message); return false; }
+}
+function fbListen(){
+  if(fbStream){ fbStream.close(); fbStream=null; }
+  if(!fbUrl||!window.EventSource) return;
+  try{
+    fbStream=new EventSource(fbEndpoint());
+    const onEv=ev=>{ try{ const m=JSON.parse(ev.data); if(!m) return;
+      if(m.path==='/'&&m.data) applyRemoteConfig(m.data,'realtime'); else if(m.path&&m.path!=='/') fbLoad(); }catch(_){} };
+    fbStream.addEventListener('put',onEv); fbStream.addEventListener('patch',onEv);
+    fbStream.onopen=()=>fbState('on','đang đồng bộ realtime');
+    fbStream.onerror=()=>fbState('err','mất kết nối realtime — đang thử lại');
+  }catch(e){ console.warn('Firebase stream:',e); }
+}
+$('fbLoadBtn').onclick=async()=>{ if(!readFbInputs()) return; fbLastSig=''; await fbLoad(); fbListen(); };
+$('fbSaveBtn').onclick=async()=>{
+  if(!readFbInputs()) return;
+  if(!fbUrl){ fbState('err','chưa nhập Firebase URL'); return; }
+  if(!readDubSettings()) return;
+  if(await fbSave()){ setConn('ok','☁️ Đã lưu API key, model và Proxy lên Firebase.'); fbListen(); }
+};
+if(fbUrl){ fbLoad().then(fbListen); } else fbState('','chưa nhập URL');
 
 /* --- Bước 1: Video --- */
 const dvDrop=$('dvDrop'), dvInput=$('dvInput'), dvGrid=$('dvGrid');
@@ -1565,19 +1859,16 @@ dvInput.onchange=()=>{ addDubVideos(dvInput.files); dvInput.value=''; };
 async function addDubVideos(files){
   const errs=[];
   for(const f of [...files]){
-    if(!/\.(mp4|mov)$/i.test(f.name)&&!/^video\/(mp4|quicktime)$/i.test(f.type)){ errs.push(f.name+': chỉ hỗ trợ MP4/MOV'); continue; }
-    if(f.size>300*1048576){ errs.push(f.name+': lớn hơn 300MB'); continue; }
+    if(!/\.(mp4|mov|webm)$/i.test(f.name)&&!/^video\/(mp4|quicktime|webm)$/i.test(f.type)){ errs.push(f.name+': chỉ hỗ trợ MP4/MOV/WEBM'); continue; }
+    if(f.size>200*1048576){ errs.push(f.name+': lớn hơn 200MB'); continue; }
     const m=await getMediaMeta(f,'video');
     if(!m||!isFinite(m.dur)){ errs.push(f.name+': không đọc được video'); continue; }
-    if(m.dur<=DUB_VIDEO_MIN||m.dur>=DUB_VIDEO_MAX){ errs.push(`${f.name}: dài ${fmt(m.dur)} — cần 2–120 giây`); continue; }
+    if(m.dur<DUB_MIN_DUR||m.dur>DUB_VIDEO_MAX){ errs.push(`${f.name}: dài ${fmt(m.dur)} — cần 2 giây đến 3 phút`); continue; }
     const blob=new Blob([await f.arrayBuffer()],{type:f.type||'video/mp4'});
     const v={blob,name:f.name,size:f.size,dur:m.dur,w:m.w,h:m.h,created:Date.now()};
     await dubSave(DUB_ST.dub_videos,v);
     v.url=URL.createObjectURL(blob);
-    dubVideos.unshift(v);
-    dubSelVideo=v.id; localStorage.setItem('dub_sel_video',v.id);
-    const minE=Math.min(m.w,m.h), maxE=Math.max(m.w,m.h);
-    if(minE&&(minE<640||maxE>2048)) errs.push(`${f.name}: độ phân giải ${m.w}×${m.h} — khuyến nghị cạnh 640–2048px, có thể bị từ chối`);
+    dubVideos.unshift(v); dubSelVideo=v.id; localStorage.setItem('dub_sel_video',v.id);
   }
   renderDubVideos();
   if(errs.length) showDubMsg(errs.join(' · '));
@@ -1594,7 +1885,7 @@ function renderDubVideos(){
     </div>`).join('');
   renderDubSummary();
 }
-dvGrid.onclick=async e=>{
+dvGrid.onclick=e=>{
   const del=e.target.closest('[data-del]');
   if(del){
     e.stopPropagation();
@@ -1623,26 +1914,23 @@ daInput.onchange=()=>{ addDubAudioFiles(daInput.files); daInput.value=''; };
 async function addDubAudioFiles(files){
   const errs=[];
   for(const f of [...files]){
-    if(!/\.(mp3|wav|aac)$/i.test(f.name)&&!/^audio\/(mpeg|mp3|wav|x-wav|wave|aac)$/i.test(f.type)){ errs.push(f.name+': chỉ hỗ trợ MP3/WAV/AAC'); continue; }
+    if(!/\.(mp3|wav|m4a|aac)$/i.test(f.name)&&!/^audio\//i.test(f.type)){ errs.push(f.name+': chỉ hỗ trợ MP3/WAV/M4A/AAC'); continue; }
     const r=await addDubAudio(new Blob([await f.arrayBuffer()],{type:f.type||'audio/mpeg'}),f.name,'upload');
     if(r!==true) errs.push(r);
   }
   if(errs.length) showDubMsg(errs.join(' · '));
 }
-/* trả về true nếu thêm thành công, ngược lại trả về chuỗi lỗi */
 async function addDubAudio(blob,name,source){
-  if(blob.size>30*1048576) return name+': lớn hơn 30MB';
+  if(blob.size>50*1048576) return name+': lớn hơn 50MB';
   const dur=await getAudioDur(blob);
   if(!dur) return name+': không đọc được audio';
   if(dur>DUB_MAX_AUDIO+0.5) return `${name}: dài ${fmt(dur)} — tối đa 3 phút (180 giây)`;
-  if(dur<=DUB_VIDEO_MIN) return name+': quá ngắn (cần trên 2 giây)';
+  if(dur<DUB_MIN_DUR) return name+': quá ngắn (cần từ 2 giây)';
   const a={blob,name,size:blob.size,dur,source,created:Date.now()};
   await dubSave(DUB_ST.dub_audios,a);
   a.url=URL.createObjectURL(blob);
-  dubAudios.unshift(a);
-  dubSelAudio=a.id; localStorage.setItem('dub_sel_audio',a.id);
-  renderDubAudios();
-  return true;
+  dubAudios.unshift(a); dubSelAudio=a.id; localStorage.setItem('dub_sel_audio',a.id);
+  renderDubAudios(); return true;
 }
 /* Nút "Chèn" từ file đã đổi giọng → tự chuyển sang tab lồng tiếng */
 async function dubInsertAudio(blob,name,source){
@@ -1650,10 +1938,7 @@ async function dubInsertAudio(blob,name,source){
   const ex=dubAudios.find(a=>a.name===name&&a.size===blob.size);
   setMode('dub');
   if(ex){ dubSelAudio=ex.id; localStorage.setItem('dub_sel_audio',ex.id); renderDubAudios(); showDubMsg('Audio này đã có — đã chọn sẵn.',true); }
-  else{
-    const r=await addDubAudio(blob,name,source);
-    if(r===true) showDubMsg('Đã chèn "'+name+'" vào phần audio lồng tiếng.',true); else showDubMsg(r);
-  }
+  else{ const r=await addDubAudio(blob,name,source); if(r===true) showDubMsg('Đã chèn "'+name+'" vào phần audio lồng tiếng.',true); else showDubMsg(r); }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function stopDubPlay(){ if(dubPlay){ dubPlay.audio.pause(); dubPlay=null; renderDubAudios(); } }
@@ -1666,8 +1951,7 @@ function renderDubAudios(){
       <span class="radio"></span>
       <div class="meta">
         <div class="name">${esc(a.name)}</div>
-        <div class="sub">${fmt(a.dur)} · ${mb(a.size)}<span class="src-badge ${a.source}">${srcLbl[a.source]||'Audio'}</span>
-          ${a.dur>=DUB_API_AUDIO_WARN?'<span class="warn-badge"> · ⚠ trên 2 phút</span>':''}</div>
+        <div class="sub">${fmt(a.dur)} · ${mb(a.size)}<span class="src-badge ${a.source}">${srcLbl[a.source]||'Audio'}</span></div>
       </div>
       <div class="acts" style="display:flex;gap:7px">
         <button class="btn-mini play" data-ap="${a.id}">${playing?'⏸ Dừng':'▶ Nghe'}</button>
@@ -1697,7 +1981,7 @@ daList.onclick=e=>{
   dubSelAudio=+it.dataset.aid; localStorage.setItem('dub_sel_audio',dubSelAudio); renderDubAudios();
 };
 
-/* --- Bước 3: Tạo --- */
+/* --- Bước 3: Tạo video --- */
 function renderDubSummary(){
   const v=dubVideos.find(x=>x.id===dubSelVideo), a=dubAudios.find(x=>x.id===dubSelAudio);
   $('dubSummary').innerHTML=`<span class="pill">🎬 ${v?'<b>'+esc(v.name)+'</b> · '+fmt(v.dur):'Chưa chọn video'}</span>
@@ -1707,27 +1991,45 @@ function renderDubSummary(){
 $('btnDubCreate').onclick=()=>{
   const v=dubVideos.find(x=>x.id===dubSelVideo), a=dubAudios.find(x=>x.id===dubSelAudio);
   if(!v||!a){ showDubMsg('Vui lòng chọn 1 video và 1 audio.'); return; }
-  if(a.dur>=DUB_API_AUDIO_WARN&&!confirm(`Audio dài ${fmt(a.dur)}. Model VideoRetalk ghi giới hạn audio dưới 2 phút nên có thể bị từ chối. Vẫn gửi thử?`)) return;
-  createDubJob(v,a,$('dubLoop').checked);
+  const kp=dubKeyProblem(dubKey);
+  if(kp){ showDubMsg(kp); const s=$('dubSet'); s.open=true; setConn('bad','✕ '+kp); s.scrollIntoView({behavior:'smooth'}); return; }
+  createDubJob(v,a,$('dubEnhance').checked,dubModel);
 };
-async function createDubJob(v,a,loop){
-  const job={videoId:v.id,audioId:a.id,videoName:v.name,audioName:a.name,audioDur:a.dur,loop,
-             status:'UPLOADING',msg:'Đang tải video lên kho tạm…',created:Date.now()};
+async function createDubJob(v,a,enhance,model){
+  model=DF_MODELS[model]?model:'lipsync2';
+  const job={videoId:v.id,audioId:a.id,videoName:v.name,audioName:a.name,audioDur:a.dur,enhance,model,
+             status:'UPLOADING',msg:'Đang tải video lên DreamFace…',created:Date.now()};
   await dubSave(DUB_ST.dub_jobs,job);
   dubJobs.unshift(job); renderJobs();
   showDubMsg('Đã gửi yêu cầu — video sẽ xuất hiện trong danh sách bên dưới.',true);
   try{
-    const vurl=await ensureOss(v,DUB_ST.dub_videos);
-    job.msg='Đang tải audio lên kho tạm…'; updateJobRow(job);
-    const aurl=await ensureOss(a,DUB_ST.dub_audios);
+    const vurl=await ensureUploaded(v,DUB_ST.dub_videos);
+    job.msg='Đang tải audio lên DreamFace…'; updateJobRow(job);
+    const aurl=await ensureUploaded(a,DUB_ST.dub_audios);
     job.msg='Đang gửi yêu cầu tạo video…'; updateJobRow(job);
-    const r=await dsFetch('/api/v1/services/aigc/image2video/video-synthesis',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','X-DashScope-Async':'enable','X-DashScope-OssResourceResolve':'enable'},
-      body:JSON.stringify({model:'videoretalk',input:{video_url:vurl,audio_url:aurl},parameters:{video_extension:!!loop}})
-    });
-    if(!r||!r.output||!r.output.task_id) throw new Error('Không nhận được mã tác vụ');
-    job.taskId=r.output.task_id; job.status='PENDING'; job.msg='Đang xếp hàng…';
+    const body=model==='lipsync2'
+      ? {srcVideoUrl:vurl,audioUrl:aurl,videoParams:{video_width:0,video_height:0,video_enhance:enhance?1:0,fps:'25'}}
+      : {srcVideoUrl:vurl,audioUrl:aurl,videoParams:{video_width:0,video_height:0,video_enhance:!!enhance}};
+    // Máy chủ bận (13015, tài khoản miễn phí bị xếp hàng) → tự thử lại, không báo lỗi ngay
+    const BUSY_MAX=20, BUSY_WAIT=30;
+    let r=null;
+    for(let tryN=1;;tryN++){
+      try{ r=await dfCall(DF_MODELS[model].path,body); break; }
+      catch(e){
+        const busy=/^\[(13015|429)\]|busy|rate limit/i.test(e.message);
+        if(!busy||tryN>=BUSY_MAX||!dubJobs.includes(job)) throw new Error(busy?'Máy chủ DreamFace vẫn bận sau '+BUSY_MAX+' lần thử. Tài khoản miễn phí bị xếp hàng giờ cao điểm — nạp thêm credit tại api.newportai.com hoặc thử lại sau. ('+e.message+')':e.message);
+        for(let s=BUSY_WAIT;s>0;s--){
+          if(!dubJobs.includes(job)) throw new Error('Đã hủy');
+          job.status='PENDING';
+          job.msg=`DreamFace đang bận (tài khoản miễn phí phải xếp hàng) — tự gửi lại sau ${s}s · lần ${tryN}/${BUSY_MAX}`;
+          if(s%5===0||s===BUSY_WAIT) updateJobRow(job);
+          await new Promise(res=>setTimeout(res,1000));
+        }
+        job.msg='Đang gửi lại yêu cầu tạo video…'; updateJobRow(job);
+      }
+    }
+    if(!r||!r.taskId) throw new Error('Không nhận được mã tác vụ (taskId)');
+    job.taskId=r.taskId; job.status='PENDING'; job.msg='Đang xếp hàng…';
     await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job);
     pollJob(job);
   }catch(e){
@@ -1736,34 +2038,42 @@ async function createDubJob(v,a,loop){
 }
 async function pollJob(job){
   if(!job.taskId||dubPolling.has(job)) return; dubPolling.add(job);
+  let errCount=0;
   while(dubJobs.includes(job)){
+    await new Promise(r=>setTimeout(r,6000));
+    if(!dubJobs.includes(job)) break;
     try{
-      const r=await dsFetch('/api/v1/tasks/'+encodeURIComponent(job.taskId),{method:'GET'});
-      const o=r.output||{};
-      job.status=o.task_status||job.status;
-      if(job.status==='SUCCEEDED'){
-        job.resultUrl=o.video_url; job.finished=Date.now(); job.msg=''; job.usage=r.usage||null;
+      const d=await dfCall('/api/getAsyncResult',{taskId:job.taskId});
+      const t=d.task||{}; const st=t.status; errCount=0;
+      if(st===3){
+        const vid=(d.videos||[])[0];
+        if(!vid||!vid.videoUrl){ job.status='FAILED'; job.msg='Tác vụ xong nhưng không có video trả về'; await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); break; }
+        job.resultUrl=vid.videoUrl; job.finished=Date.now(); job.status='SUCCEEDED';
         job.msg='Đang lưu video về máy…'; updateJobRow(job);
         await saveResultBlob(job); job.msg='';
         await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job);
         showDubMsg('Video lồng tiếng đã xong: '+job.audioName,true);
+        fbPushVideo(job);
         break;
       }
-      if(['FAILED','CANCELED','UNKNOWN'].includes(job.status)){
-        job.status='FAILED'; job.msg=(o.message||o.code||'Tạo video thất bại'); await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); break;
+      if(st===4){
+        job.status='FAILED'; job.msg='DreamFace báo lỗi'+(t.errorCode?' ['+t.errorCode+']':'')+': '+(t.reason||'tạo video thất bại')+' (taskId '+job.taskId+')';
+        await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); break;
       }
-      job.msg=job.status==='RUNNING'?'AI đang dựng khẩu hình theo audio…':'Đang xếp hàng chờ xử lý…';
+      job.status=st===0?'PENDING':'RUNNING';
+      job.msg=st===0?'Đang xếp hàng chờ xử lý…':'AI đang dựng khẩu hình theo audio…';
       await dubSave(DUB_ST.dub_jobs,job);
-    }catch(e){ job.msg='Lỗi kiểm tra trạng thái ('+e.message+') — sẽ thử lại'; }
+    }catch(e){
+      errCount++; job.msg='Lỗi kiểm tra trạng thái ('+e.message+') — sẽ thử lại';
+      if(/401|API key/.test(e.message)&&errCount>=3){ job.status='FAILED'; await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); break; }
+    }
     updateJobRow(job);
-    await new Promise(r=>setTimeout(r,8000));
   }
   dubPolling.delete(job);
 }
-/* Tải video kết quả về IndexedDB (link của DashScope chỉ sống 24 giờ) */
 async function saveResultBlob(job){
   if(!job.resultUrl) return false;
-  const tries=[job.resultUrl.replace(/^http:/,'https:')];
+  const tries=[job.resultUrl];
   if(dubProxy) tries.push(dubProxy+'/fetch?url='+encodeURIComponent(job.resultUrl));
   for(const u of tries){
     try{ const r=await fetch(u); if(!r.ok) continue; const b=await r.blob(); if(b.size<1000) continue;
@@ -1782,11 +2092,9 @@ function jobHTML(j){
   let body='', acts='';
   if(j.status==='SUCCEEDED'){
     const src=j.blobUrl||j.resultUrl;
-    const expired=!j.blobUrl&&j.finished&&Date.now()-j.finished>24*3600e3;
-    body=expired?'<div class="job-msg fail">Link video trên máy chủ đã hết hạn (24 giờ) và chưa được lưu về máy.</div>'
-      :`<video controls playsinline preload="metadata" src="${esc(src)}"></video>
-        ${j.blobUrl?'':'<div class="job-msg" style="margin-top:6px">⚠ Video chưa lưu được về máy — link máy chủ chỉ giữ 24 giờ, hãy tải về sớm.</div>'}`;
-    if(!expired) acts+=`<button class="btn-mini dl" data-ja="dl">⬇ Tải về MP4</button>`;
+    body=`<video controls playsinline preload="metadata" src="${esc(src)}"></video>
+      ${j.blobUrl?'':'<div class="job-msg" style="margin-top:6px">⚠ Video chưa lưu được về máy — hãy bấm Tải về sớm.</div>'}`;
+    acts+=`<button class="btn-mini dl" data-ja="dl">⬇ Tải về MP4</button>`;
   }else if(run){
     body=`<div class="job-msg"><span class="spinner" style="width:13px;height:13px"></span>${esc(j.msg||'Đang xử lý…')}</div>`;
   }else{
@@ -1794,11 +2102,12 @@ function jobHTML(j){
     acts+=`<button class="btn-mini conv" data-ja="retry">⟳ Thử lại</button>`;
   }
   acts+=`<button class="btn-mini del" data-ja="del">✕ Xóa</button>`;
+  const ml=j.model&&DF_MODELS[j.model]?DF_MODELS[j.model].label:'';
   return `<div class="job-card" data-jid="${j.id}">
     <div class="job-head">
       <div class="meta">
         <div class="name">🎬 ${esc(j.videoName)} + 🎵 ${esc(j.audioName)}</div>
-        <div class="sub">${tstr}${j.audioDur?' · audio '+fmt(j.audioDur):''}${j.loop?' · lặp video':''}${j.usage&&j.usage.size?' · '+esc(j.usage.size):''}</div>
+        <div class="sub">${tstr}${j.audioDur?' · audio '+fmt(j.audioDur):''}${ml?' · '+ml:''}${j.enhance?' · làm nét':''}${j.fbKey?' · ☁️ đã lưu Firebase':''}</div>
       </div>${st}
     </div>
     <div class="job-body">${body}</div>
@@ -1811,12 +2120,11 @@ function renderJobs(){
   if(!dubJobs.length){ jobList.innerHTML='<div class="empty">Chưa có video nào. Chọn video + audio rồi bấm <b>Tạo video lồng tiếng</b>.</div>'; return; }
   jobList.innerHTML=dubJobs.map(jobHTML).join('');
 }
-/* chỉ vẽ lại 1 dòng để không làm dừng các video khác đang phát */
 function updateJobRow(job){
   const el=jobList.querySelector(`[data-jid="${job.id}"]`);
   if(!el){ renderJobs(); return; }
   const v=el.querySelector('video');
-  if(v&&job.status==='SUCCEEDED'&&!v.paused) return; // đang xem thì không vẽ lại
+  if(v&&job.status==='SUCCEEDED'&&!v.paused) return;
   el.outerHTML=jobHTML(job);
 }
 jobList.onclick=async e=>{
@@ -1825,16 +2133,16 @@ jobList.onclick=async e=>{
   const a=b.dataset.ja;
   if(a==='dl'){
     if(!job.blobUrl){ b.disabled=true; b.textContent='Đang tải…'; await saveResultBlob(job); if(job.blobUrl) await dubSave(DUB_ST.dub_jobs,job); }
-    if(job.blobUrl){
-      const l=document.createElement('a'); l.href=job.blobUrl; l.download=`long_tieng_${safeName(job.audioName.replace(/\.\w+$/,''))}_${stampStr()}.mp4`; l.click();
-    }else window.open(job.resultUrl,'_blank');
+    if(job.blobUrl){ const l=document.createElement('a'); l.href=job.blobUrl; l.download=`long_tieng_${safeName(job.audioName.replace(/\.\w+$/,''))}_${stampStr()}.mp4`; l.click(); }
+    else window.open(job.resultUrl,'_blank');
     updateJobRow(job);
   }
   if(a==='retry'){
     const v=dubVideos.find(x=>x.id===job.videoId), au=dubAudios.find(x=>x.id===job.audioId);
     if(!v||!au){ showDubMsg('Video hoặc audio gốc của lần tạo này đã bị xóa.'); return; }
+    const kp=dubKeyProblem(dubKey); if(kp){ showDubMsg(kp); return; }
     dubJobs=dubJobs.filter(x=>x!==job); if(db&&job.id!=null) idbDel(DUB_ST.dub_jobs,job.id).catch(()=>{});
-    createDubJob(v,au,job.loop);
+    createDubJob(v,au,job.enhance!==false,dubModel);
   }
   if(a==='del'){
     const run=['UPLOADING','PENDING','RUNNING'].includes(job.status);
@@ -1850,7 +2158,7 @@ $('btnJobClear').onclick=()=>{
   dubJobs=[]; renderJobs();
 };
 
-/* --- Khôi phục từ IndexedDB khi mở lại trang --- */
+/* --- Khôi phục khi mở lại trang --- */
 async function dubRestore(){
   if(!db){ renderDubVideos(); renderDubAudios(); renderJobs(); return; }
   try{
@@ -1860,13 +2168,397 @@ async function dubRestore(){
     if(!dubVideos.some(v=>v.id===dubSelVideo)) dubSelVideo=dubVideos[0]?dubVideos[0].id:null;
     if(!dubAudios.some(a=>a.id===dubSelAudio)) dubSelAudio=dubAudios[0]?dubAudios[0].id:null;
     for(const j of dubJobs){
-      if(j.status==='UPLOADING'||(['PENDING','RUNNING'].includes(j.status)&&!j.taskId)){ j.status='FAILED'; j.msg='Bị gián đoạn khi tải lên (trang bị đóng) — bấm Thử lại.'; dubSave(DUB_ST.dub_jobs,j); }
+      // job cũ của Alibaba (không có model) hoặc bị gián đoạn khi đang upload → đánh dấu lỗi
+      if(!j.model&&['PENDING','RUNNING','UPLOADING'].includes(j.status)){ j.status='FAILED'; j.msg='Job của bản cũ (Alibaba) — bấm Thử lại để tạo bằng DreamFace.'; dubSave(DUB_ST.dub_jobs,j); }
+      else if(j.status==='UPLOADING'||(['PENDING','RUNNING'].includes(j.status)&&!j.taskId)){ j.status='FAILED'; j.msg='Bị gián đoạn khi tải lên (trang bị đóng) — bấm Thử lại.'; dubSave(DUB_ST.dub_jobs,j); }
     }
   }catch(e){ console.warn('Khôi phục dữ liệu lồng tiếng lỗi:',e); }
   renderDubVideos(); renderDubAudios(); renderJobs();
-  dubJobs.filter(j=>['PENDING','RUNNING'].includes(j.status)&&j.taskId).forEach(pollJob);
+  dubJobs.filter(j=>j.model&&['PENDING','RUNNING'].includes(j.status)&&j.taskId).forEach(pollJob);
 }
 restoreP.then(dubRestore);
+
+/* ---------- Video lồng tiếng lên Firebase (chỉ link + thông tin, mọi máy xem được) ---------- */
+const FB_VID_PATH='phong_thau/longtieng_videos';
+const fbDeviceInput=$('fbDeviceInput');
+let deviceName=localStorage.getItem('device_name')||('Máy '+Math.random().toString(36).slice(2,6).toUpperCase());
+localStorage.setItem('device_name',deviceName); fbDeviceInput.value=deviceName;
+fbDeviceInput.addEventListener('change',()=>{ deviceName=fbDeviceInput.value.trim()||deviceName; fbDeviceInput.value=deviceName; localStorage.setItem('device_name',deviceName); });
+let cloudVids={}, cloudStream=null;
+function fbUrlFor(sub){ return fbUrl.replace(/\/+$/,'')+'/'+sub+'.json'+(fbAuth?'?auth='+encodeURIComponent(fbAuth):''); }
+async function fbPushVideo(job){
+  if(!fbUrl||!job.resultUrl||job.fbKey) return false;
+  const key='v'+job.created+'_'+Math.random().toString(36).slice(2,6);
+  const rec={videoName:job.videoName,audioName:job.audioName,audioDur:job.audioDur||0,model:job.model||'',enhance:!!job.enhance,
+             resultUrl:job.resultUrl,created:job.created,finished:job.finished||Date.now(),device:deviceName};
+  try{
+    const r=await fetch(fbUrlFor(FB_VID_PATH+'/'+key),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    job.fbKey=key; await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); return true;
+  }catch(e){ console.warn('Đẩy video lên Firebase lỗi:',e); showDubMsg('Chưa ghi được video lên Firebase: '+e.message); return false; }
+}
+async function syncPendingVideos(manual){
+  if(!fbUrl){ if(manual) showDubMsg('Chưa nhập Firebase URL trong ⚙️ Cài đặt.'); return; }
+  const list=dubJobs.filter(j=>j.status==='SUCCEEDED'&&j.resultUrl&&!j.fbKey);
+  let n=0; for(const j of list) if(await fbPushVideo(j)) n++;
+  if(manual) showDubMsg(n?`Đã đẩy ${n} video lên Firebase.`:'Không có video nào cần đẩy thêm.',true);
+}
+$('btnCloudSync').onclick=()=>syncPendingVideos(true);
+function cloudListen(){
+  if(cloudStream){ cloudStream.close(); cloudStream=null; }
+  if(!fbUrl||!window.EventSource) return;
+  cloudStream=new EventSource(fbUrlFor(FB_VID_PATH));
+  const onEv=(ev,isPatch)=>{ try{
+    const m=JSON.parse(ev.data); if(!m) return;
+    const parts=m.path.split('/').filter(Boolean);
+    if(!parts.length){ if(isPatch) Object.assign(cloudVids,m.data||{}); else cloudVids=m.data||{}; }
+    else if(parts.length===1){ if(m.data===null) delete cloudVids[parts[0]]; else cloudVids[parts[0]]=isPatch?{...(cloudVids[parts[0]]||{}),...m.data}:m.data; }
+    else{ const k=parts[0]; cloudVids[k]=cloudVids[k]||{}; cloudVids[k][parts[1]]=m.data; }
+    Object.keys(cloudVids).forEach(k=>{ if(!cloudVids[k]) delete cloudVids[k]; });
+    renderCloud();
+  }catch(_){} };
+  cloudStream.addEventListener('put',e=>onEv(e,false)); cloudStream.addEventListener('patch',e=>onEv(e,true));
+  cloudStream.onerror=()=>{ if(!Object.keys(cloudVids).length) $('cloudList').innerHTML='<div class="empty">Không đọc được danh sách video trên Firebase (kiểm tra rules / mã bảo mật).</div>'; };
+}
+function renderCloud(){
+  const el=$('cloudList'), keys=Object.keys(cloudVids).sort((a,b)=>(cloudVids[b].finished||0)-(cloudVids[a].finished||0));
+  $('cloudCount').textContent=keys.length?`(${keys.length})`:'';
+  if(!keys.length){ el.innerHTML='<div class="empty">Chưa có video nào trên Firebase.</div>'; return; }
+  const playing=[...el.querySelectorAll('video')].some(v=>!v.paused); if(playing) return; // đang xem thì không vẽ lại
+  el.innerHTML=keys.map(k=>{ const c=cloudVids[k], t=new Date(c.finished||c.created||0);
+    const tstr=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0')+' '+t.getDate()+'/'+(t.getMonth()+1);
+    const mine=c.device===deviceName;
+    return `<div class="job-card" data-ck="${esc(k)}">
+      <div class="job-head"><div class="meta">
+        <div class="name">🎬 ${esc(c.videoName)} + 🎵 ${esc(c.audioName)}</div>
+        <div class="sub">${tstr} · ${esc(c.device||'?')}${mine?' (máy này)':''}${c.model&&DF_MODELS[c.model]?' · '+DF_MODELS[c.model].label:''}</div>
+      </div><span class="st ok">☁️ Firebase</span></div>
+      <div class="job-body"><video controls playsinline preload="none" src="${esc(c.resultUrl)}"></video></div>
+      <div class="job-acts">
+        <button class="btn-mini dl" data-ca="dl">⬇ Tải về máy</button>
+        <button class="btn-mini" data-ca="copy">🔗 Sao chép link</button>
+        <button class="btn-mini del" data-ca="del">✕ Xóa khỏi Firebase</button>
+      </div></div>`; }).join('');
+}
+$('cloudList').onclick=async e=>{
+  const b=e.target.closest('[data-ca]'); if(!b) return;
+  const k=b.closest('[data-ck]').dataset.ck, c=cloudVids[k]; if(!c) return;
+  if(b.dataset.ca==='dl'){
+    b.disabled=true; b.textContent='Đang tải…';
+    const tmp={resultUrl:c.resultUrl}; await saveResultBlob(tmp);
+    if(tmp.blobUrl){ const l=document.createElement('a'); l.href=tmp.blobUrl; l.download=`long_tieng_${safeName((c.audioName||'video').replace(/\.\w+$/,''))}_${stampStr()}.mp4`; l.click(); }
+    else window.open(c.resultUrl,'_blank');
+    b.disabled=false; b.textContent='⬇ Tải về máy';
+  }
+  if(b.dataset.ca==='copy'){ try{ await navigator.clipboard.writeText(c.resultUrl); showDubMsg('Đã sao chép link video.',true); }catch(_){ prompt('Link video:',c.resultUrl); } }
+  if(b.dataset.ca==='del'){
+    if(!confirm('Xóa video này khỏi Firebase? (mọi máy sẽ không thấy nữa)')) return;
+    try{ const r=await fetch(fbUrlFor(FB_VID_PATH+'/'+k),{method:'DELETE'}); if(!r.ok) throw new Error('HTTP '+r.status);
+      delete cloudVids[k]; renderCloud();
+      const j=dubJobs.find(x=>x.fbKey===k); if(j){ delete j.fbKey; dubSave(DUB_ST.dub_jobs,j); updateJobRow(j); }
+    }catch(err){ showDubMsg('Xóa trên Firebase lỗi: '+err.message); }
+  }
+};
+
+/* =====================================================================
+   TAB VIDEO AI — Kie · Grok Imagine image-to-video (480p → upscale 720p)
+   ===================================================================== */
+const KIE_API='https://api.kie.ai', KIE_UPLOAD='https://kieai.redpandaai.co';
+const KIE_KEY_DEFAULT='ff99580df84bc9b1f732ef30f7cec3af'; // key Kie nội bộ nhúng sẵn
+const G_ST={img:'grok_images',job:'grok_jobs'};
+let kieKey=localStorage.getItem('kie_api_key')||KIE_KEY_DEFAULT;
+let kieViaProxy=localStorage.getItem('kie_via_proxy')==='1';
+let gImages=[], gJobs=[], gSelImg=+localStorage.getItem('g_sel_img')||null;
+const gPolling=new Set();
+function gMsg(m,ok){const el=$('grokMsg');el.textContent=m;el.style.color=ok?'var(--green)':'var(--red)';el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),ok?3500:9000);}
+function kieConn(kind,msg){const el=$('kieConnStatus');el.className='conn-status show '+kind;el.textContent=msg;}
+const kieKeyInput=$('kieKeyInput'); kieKeyInput.value=kieKey;
+if(!kieKey) $('grokSet').open=true;
+$('kieKeyToggle').onclick=()=>{kieKeyInput.type=kieKeyInput.type==='password'?'text':'password';};
+
+/* --- Gọi Kie: thử trực tiếp, bị CORS thì qua Proxy (dùng chung Proxy của tab Lồng tiếng) --- */
+async function kieFetch(url,opts){
+  const viaProxy=async()=>{
+    if(!dubProxy) throw new Error('Trình duyệt chặn gọi Kie (CORS) và chưa có Proxy URL ở tab Lồng tiếng.');
+    const u=new URL(url);
+    const headers=Object.assign({},opts.headers||{},{'X-Target-Host':u.host});
+    try{ return await fetch(dubProxy+u.pathname+u.search,{...opts,headers}); }
+    catch(e){ throw new Error('Không kết nối được Proxy — dán lại mã Worker mới (tab Lồng tiếng → Cài đặt) rồi Deploy.'); }
+  };
+  if(kieViaProxy&&dubProxy) return viaProxy();
+  try{ return await fetch(url,opts); }
+  catch(e){ const r=await viaProxy(); kieViaProxy=true; localStorage.setItem('kie_via_proxy','1'); return r; }
+}
+async function kieJson(res){
+  let d=null; try{ d=await res.json(); }catch(_){}
+  if(res.status===400&&d&&/host not allowed/.test(d.message||'')) throw new Error('Worker đang chạy mã cũ — sao chép mã Worker mới ở tab Lồng tiếng → Cài đặt rồi Deploy lại.');
+  if(res.status===401||(d&&d.code===401)) throw new Error('Kie API key sai hoặc hết hạn (401).');
+  if(d&&d.code===402) throw new Error('Tài khoản Kie hết credit (402) — nạp thêm tại kie.ai.');
+  if(!res.ok&&!d) throw new Error('HTTP '+res.status);
+  if(!d) throw new Error('Phản hồi không hợp lệ từ Kie');
+  if(d.code!==200) throw new Error('['+d.code+'] '+(d.msg||d.message||'Lỗi Kie'));
+  return d.data;
+}
+function needKey(){ if(!kieKey){ $('grokSet').open=true; $('grokSet').scrollIntoView({behavior:'smooth'}); throw new Error('Chưa nhập Kie API key — dán key trong ⚙️ Cài đặt Kie API.'); } }
+async function kiePost(path,body){ needKey(); return kieJson(await kieFetch(KIE_API+path,{method:'POST',headers:{'Authorization':'Bearer '+kieKey,'Content-Type':'application/json'},body:JSON.stringify(body)})); }
+async function kieGet(path){ needKey(); return kieJson(await kieFetch(KIE_API+path,{method:'GET',headers:{'Authorization':'Bearer '+kieKey}})); }
+async function kieUpload(blob,name){
+  needKey();
+  const fd=new FormData(); fd.append('file',blob,safeName(name)); fd.append('uploadPath','phongthau/images'); fd.append('fileName',Date.now()+'_'+safeName(name));
+  const d=await kieJson(await kieFetch(KIE_UPLOAD+'/api/file-stream-upload',{method:'POST',headers:{'Authorization':'Bearer '+kieKey},body:fd}));
+  if(!d||!d.downloadUrl) throw new Error('Upload ảnh lên Kie không trả về link');
+  return d.downloadUrl;
+}
+
+/* --- Cài đặt Kie --- */
+function readKie(){ kieKey=kieKeyInput.value.trim(); localStorage.setItem('kie_api_key',kieKey); return !!kieKey; }
+$('kieSaveBtn').onclick=async()=>{
+  readKie(); kieConn('wait','Đã lưu key Kie trên máy.');
+  try{ if(readFbInputs()&&fbUrl&&await fbSave()) kieConn('ok','Đã lưu key Kie trên máy và lên Firebase.'); }catch(e){}
+};
+$('kieTestBtn').onclick=async()=>{
+  if(!readKie()){ kieConn('bad','Chưa nhập Kie API key.'); return; }
+  kieConn('wait','Đang kiểm tra key Kie…');
+  try{ const c=await kieGet('/api/v1/chat/credit'); kieConn('ok','✓ Key Kie hợp lệ'+(c!=null?' · Credit còn lại: '+c:'')+(kieViaProxy?' (qua Proxy)':' (gọi trực tiếp)')+'.'); }
+  catch(e){ kieConn('bad','✕ '+e.message); }
+};
+
+/* --- Bước 1: Ảnh --- */
+const giDrop=$('giDrop'), giInput=$('giInput'), giGrid=$('giGrid');
+giDrop.onclick=()=>giInput.click();
+giInput.onchange=()=>{ addGImages(giInput.files); giInput.value=''; };
+['dragenter','dragover'].forEach(ev=>giDrop.addEventListener(ev,e=>{e.preventDefault();giDrop.classList.add('dragover');}));
+['dragleave','drop'].forEach(ev=>giDrop.addEventListener(ev,e=>{e.preventDefault();giDrop.classList.remove('dragover');}));
+giDrop.addEventListener('drop',e=>{ if(e.dataTransfer&&e.dataTransfer.files) addGImages(e.dataTransfer.files); });
+async function addGImages(files){
+  const errs=[];
+  for(const f of [...files]){
+    if(!/^image\/(jpeg|png|webp)$/i.test(f.type)&&!/\.(jpe?g|png|webp)$/i.test(f.name)){ errs.push(f.name+': chỉ hỗ trợ JPG/PNG/WEBP'); continue; }
+    if(f.size>10*1048576){ errs.push(f.name+': lớn hơn 10MB'); continue; }
+    const blob=new Blob([await f.arrayBuffer()],{type:f.type||'image/jpeg'});
+    const im={blob,name:f.name,size:f.size,created:Date.now()};
+    await dubSave(G_ST.img,im); im.url=URL.createObjectURL(blob);
+    gImages.unshift(im); gSelImg=im.id; localStorage.setItem('g_sel_img',im.id);
+  }
+  renderGImages(); if(errs.length) gMsg(errs.join(' · '));
+}
+function renderGImages(){
+  if(!gImages.length){ giGrid.innerHTML='<div class="empty" style="grid-column:1/-1">Chưa có ảnh. Upload ảnh chân dung rõ mặt.</div>'; updGBtn(); return; }
+  giGrid.innerHTML=gImages.map(im=>`
+    <div class="dv-card${gSelImg===im.id?' active':''}" data-gid="${im.id}" title="${esc(im.name)} · ${mb(im.size)}">
+      <img src="${im.url}" alt="" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block">
+      ${gSelImg===im.id?'<span class="dv-check">✓</span>':''}
+      <button class="dv-del" data-gdel="${im.id}" title="Xóa ảnh">✕</button>
+      <div class="dv-name">${esc(im.name)}</div>
+    </div>`).join('');
+  updGBtn();
+}
+giGrid.onclick=e=>{
+  const del=e.target.closest('[data-gdel]');
+  if(del){ e.stopPropagation(); const id=+del.dataset.gdel, im=gImages.find(x=>x.id===id); if(!im) return;
+    if(!confirm('Xóa ảnh "'+im.name+'"?')) return;
+    URL.revokeObjectURL(im.url); gImages=gImages.filter(x=>x!==im); if(db) idbDel(G_ST.img,id).catch(()=>{});
+    if(gSelImg===id){ gSelImg=null; localStorage.removeItem('g_sel_img'); } renderGImages(); return; }
+  const c=e.target.closest('[data-gid]'); if(!c) return;
+  gSelImg=+c.dataset.gid; localStorage.setItem('g_sel_img',gSelImg); renderGImages();
+};
+function updGBtn(){ $('btnGrokCreate').disabled=!(gImages.find(x=>x.id===gSelImg)&&$('gPrompt').value.trim()); }
+$('gPrompt').addEventListener('input',()=>{ updGBtn(); try{localStorage.setItem('g_prompt',$('gPrompt').value);}catch(_){} });
+$('gPrompt').value=localStorage.getItem('g_prompt')||'';
+['gMode','gDuration','gAspect'].forEach(id=>{ const el=$(id), v=localStorage.getItem('g_'+id); if(v) el.value=v; el.onchange=()=>localStorage.setItem('g_'+id,el.value); });
+['gAutoUp','gAutoDub'].forEach(id=>{ const el=$(id), v=localStorage.getItem('g_'+id); if(v!=null) el.checked=v==='1'; el.onchange=()=>localStorage.setItem('g_'+id,el.checked?'1':'0'); });
+
+/* --- Tạo video + nâng cấp 720p --- */
+$('btnGrokCreate').onclick=()=>{
+  const im=gImages.find(x=>x.id===gSelImg), prompt=$('gPrompt').value.trim();
+  if(!im||!prompt){ gMsg('Chọn ảnh và nhập mô tả trước.'); return; }
+  if(!kieKey){ gMsg('Chưa nhập Kie API key.'); $('grokSet').open=true; return; }
+  if($('gAutoDub').checked&&!dubAudios.find(a=>a.id===dubSelAudio)) gMsg('Lưu ý: tab Lồng tiếng chưa chọn audio — video sẽ chỉ được chèn qua, chưa tạo lồng tiếng.');
+  createGJob(im,{prompt,mode:$('gMode').value,duration:$('gDuration').value,aspect:$('gAspect').value,autoUp:$('gAutoUp').checked,autoDub:$('gAutoDub').checked});
+};
+async function createGJob(im,o){
+  const job={imgId:im.id,imgName:im.name,...o,status:'UPLOADING',msg:'Đang tải ảnh lên Kie…',created:Date.now()};
+  await dubSave(G_ST.job,job); gJobs.unshift(job); renderGJobs();
+  gMsg('Đã gửi yêu cầu — video sẽ hiện trong danh sách bên dưới.',true);
+  try{
+    if(!(im.kieUrl&&im.kieExp>Date.now())){ im.kieUrl=await kieUpload(im.blob,im.name); im.kieExp=Date.now()+20*3600e3; await dubSave(G_ST.img,im); }
+    job.msg='Đang gửi yêu cầu tạo video 480p…'; updGRow(job);
+    const r=await kiePost('/api/v1/jobs/createTask',{model:'grok-imagine/image-to-video',input:{image_urls:[im.kieUrl],prompt:o.prompt,mode:o.mode,duration:String(o.duration),resolution:'480p',aspect_ratio:o.aspect}});
+    if(!r||!r.taskId) throw new Error('Kie không trả về taskId');
+    job.taskId=r.taskId; job.status='GEN'; job.msg='Đang xếp hàng…'; await dubSave(G_ST.job,job); updGRow(job);
+    pollG(job,'gen');
+  }catch(e){ job.status='FAILED'; job.msg=e.message; await dubSave(G_ST.job,job); updGRow(job); }
+}
+async function startUpscale(job){
+  if(!job.taskId){ gMsg('Video này chưa có mã tác vụ gốc nên không nâng cấp được.'); return; }
+  try{
+    job.upStatus='RUN'; job.upMsg='Đang gửi yêu cầu nâng cấp 720p…'; updGRow(job);
+    const r=await kiePost('/api/v1/jobs/createTask',{model:'grok-imagine/upscale',input:{task_id:job.taskId}});
+    if(!r||!r.taskId) throw new Error('Kie không trả về taskId nâng cấp');
+    job.upTaskId=r.taskId; job.upMsg='Đang nâng cấp lên 720p…'; await dubSave(G_ST.job,job); updGRow(job);
+    pollG(job,'up');
+  }catch(e){ job.upStatus='FAIL'; job.upMsg='Nâng cấp lỗi: '+e.message; await dubSave(G_ST.job,job); updGRow(job); afterGDone(job); }
+}
+async function pollG(job,kind){
+  const key=job.created+kind; if(gPolling.has(key)) return; gPolling.add(key);
+  const tid=kind==='gen'?job.taskId:job.upTaskId;
+  const stLbl={waiting:'Đang chờ…',queuing:'Đang xếp hàng…',generating:'Grok đang tạo video…'};
+  while(gJobs.includes(job)){
+    await new Promise(r=>setTimeout(r,6000)); if(!gJobs.includes(job)) break;
+    try{
+      const d=await kieGet('/api/v1/jobs/recordInfo?taskId='+encodeURIComponent(tid));
+      const st=d.state;
+      if(st==='success'){
+        let urls=[]; try{ urls=(JSON.parse(d.resultJson||'{}').resultUrls)||[]; }catch(_){}
+        if(!urls[0]) throw new Error('Kie báo xong nhưng không có link video');
+        const blob=await gFetchBlob(urls[0]);
+        if(kind==='gen'){ job.url480=urls[0]; job.blob480=blob; job.status='DONE'; job.msg=''; }
+        else{ job.url720=urls[0]; job.blob720=blob; job.upStatus='DONE'; job.upMsg=''; }
+        refreshGBlobUrls(job); await dubSave(G_ST.job,job); updGRow(job);
+        if(kind==='gen'){ gMsg('Video 480p đã xong'+(job.autoUp?' — đang nâng cấp 720p…':''),true); if(job.autoUp) startUpscale(job); else afterGDone(job); }
+        else{ gMsg('Đã nâng cấp 720p xong.',true); afterGDone(job); }
+        break;
+      }
+      if(st==='fail'){
+        const m=(d.failMsg||'thất bại')+(d.failCode?' ['+d.failCode+']':'');
+        if(kind==='gen'){ job.status='FAILED'; job.msg='Grok báo lỗi: '+m; }
+        else{ job.upStatus='FAIL'; job.upMsg='Nâng cấp lỗi: '+m; }
+        await dubSave(G_ST.job,job); updGRow(job); if(kind==='up') afterGDone(job); break;
+      }
+      const pr=d.progress!=null&&d.progress!==''?' '+Math.round(+d.progress*(+d.progress<=1?100:1))+'%':'';
+      if(kind==='gen') job.msg=(stLbl[st]||'Đang xử lý…')+pr; else job.upMsg='Đang nâng cấp 720p…'+pr;
+    }catch(e){ if(kind==='gen') job.msg='Lỗi kiểm tra ('+e.message+') — thử lại'; else job.upMsg='Lỗi kiểm tra nâng cấp ('+e.message+') — thử lại'; }
+    updGRow(job);
+  }
+  gPolling.delete(key);
+}
+async function gFetchBlob(url){
+  const tries=[url]; if(dubProxy) tries.push(dubProxy+'/fetch?url='+encodeURIComponent(url));
+  for(const u of tries){ try{ const r=await fetch(u); if(!r.ok) continue; const b=await r.blob(); if(b.size>1000) return new Blob([b],{type:'video/mp4'}); }catch(_){} }
+  return null; // vẫn xem được qua link, chỉ chưa lưu về máy
+}
+function refreshGBlobUrls(j){
+  if(j.blob480&&!j.u480){ j.u480=URL.createObjectURL(j.blob480); }
+  if(j.blob720&&!j.u720){ j.u720=URL.createObjectURL(j.blob720); }
+}
+const gBest=j=>({blob:j.blob720||j.blob480,url:j.u720||j.url720||j.u480||j.url480,res:(j.blob720||j.url720)?'720p':'480p'});
+
+/* --- Chèn qua Lồng tiếng (và tạo luôn) --- */
+async function addDubVideoBlob(blob,name){
+  const m=await getMediaMeta(blob,'video');
+  if(!m||!isFinite(m.dur)) throw new Error('Không đọc được video');
+  const ex=dubVideos.find(v=>v.name===name&&v.size===blob.size);
+  if(ex){ dubSelVideo=ex.id; localStorage.setItem('dub_sel_video',ex.id); renderDubVideos(); return ex; }
+  const v={blob,name,size:blob.size,dur:m.dur,w:m.w,h:m.h,created:Date.now()};
+  await dubSave(DUB_ST.dub_videos,v); v.url=URL.createObjectURL(blob);
+  dubVideos.unshift(v); dubSelVideo=v.id; localStorage.setItem('dub_sel_video',v.id); renderDubVideos();
+  return v;
+}
+async function gInsertToDub(job,andCreate){
+  let {blob,res}=gBest(job);
+  if(!blob){ const u=job.url720||job.url480; blob=await gFetchBlob(u); if(blob){ if(job.url720) job.blob720=blob; else job.blob480=blob; refreshGBlobUrls(job); await dubSave(G_ST.job,job); } }
+  if(!blob){ gMsg('Chưa tải được video về máy để chèn (link bị chặn) — bấm Tải về rồi upload ở tab Lồng tiếng.'); return; }
+  try{
+    const name=`grok_${safeName(job.imgName.replace(/\.\w+$/,''))}_${res}_${job.created}.mp4`;
+    const v=await addDubVideoBlob(blob,name);
+    job.inserted=true; await dubSave(G_ST.job,job); updGRow(job);
+    setMode('dub'); window.scrollTo({top:0,behavior:'smooth'});
+    const a=dubAudios.find(x=>x.id===dubSelAudio);
+    if(andCreate){
+      if(!a){ showDubMsg('Đã chèn video AI. Chọn hoặc chèn audio rồi bấm Tạo video lồng tiếng.',true); return; }
+      createDubJob(v,a,$('dubEnhance').checked,dubModel);
+    }else showDubMsg('Đã chèn video AI ('+res+') vào tab Lồng tiếng.',true);
+  }catch(e){ gMsg('Chèn lỗi: '+e.message); }
+}
+function afterGDone(job){ if(job.autoDub&&!job.inserted&&(job.blob480||job.blob720||job.url480)) gInsertToDub(job,true); }
+
+/* --- Danh sách video AI --- */
+const gJobList=$('gJobList');
+function gJobHTML(j){
+  const run=['UPLOADING','GEN'].includes(j.status), up=j.upStatus;
+  const st=run?'<span class="st run">⏳ Đang tạo</span>':j.status==='DONE'?(up==='RUN'?'<span class="st run">⏫ Nâng 720p</span>':'<span class="st ok">✓ '+(up==='DONE'?'720p':'480p')+'</span>'):'<span class="st fail">✕ Lỗi</span>';
+  const t=new Date(j.created), tstr=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0')+' '+t.getDate()+'/'+(t.getMonth()+1);
+  let body='', acts='';
+  if(j.status==='DONE'){
+    const b=gBest(j);
+    body=`<video controls playsinline preload="metadata" src="${esc(b.url)}"></video>`;
+    if(up==='RUN') body+=`<div class="job-msg" style="margin-top:6px"><span class="spinner" style="width:13px;height:13px"></span>${esc(j.upMsg||'Đang nâng cấp 720p…')}</div>`;
+    if(up==='FAIL') body+=`<div class="job-msg fail" style="margin-top:6px">${esc(j.upMsg)}</div>`;
+    if(!(j.blob720||j.blob480)) body+='<div class="job-msg" style="margin-top:6px">⚠ Video chưa lưu về máy — link Kie chỉ giữ trong thời gian ngắn, hãy tải về hoặc chèn sớm.</div>';
+    acts+=`<button class="btn-mini ins" data-ga="ins">🎬 Chèn qua Lồng tiếng</button>`;
+    acts+=`<button class="btn-mini conv" data-ga="insgo">⚡ Chèn &amp; lồng tiếng ngay</button>`;
+    if(up!=='DONE'&&up!=='RUN') acts+=`<button class="btn-mini" data-ga="up">⏫ Nâng cấp 720p</button>`;
+    acts+=`<button class="btn-mini dl" data-ga="dl">⬇ Tải ${b.res}</button>`;
+  }else if(run){
+    body=`<div class="job-msg"><span class="spinner" style="width:13px;height:13px"></span>${esc(j.msg||'Đang xử lý…')}</div>`;
+  }else{
+    body=`<div class="job-msg fail">${esc(j.msg||'Lỗi không xác định')}</div>`;
+    acts+=`<button class="btn-mini conv" data-ga="retry">⟳ Thử lại</button>`;
+  }
+  acts+=`<button class="btn-mini del" data-ga="del">✕ Xóa</button>`;
+  return `<div class="job-card" data-gjid="${j.id}">
+    <div class="job-head"><div class="meta">
+      <div class="name">🖼️ ${esc(j.imgName)}${j.inserted?' <span class="src-badge murf">đã chèn</span>':''}</div>
+      <div class="sub">${tstr} · ${esc(j.duration)}s · ${esc(j.aspect)} · ${esc(j.mode)}${j.autoUp?' · auto 720p':''}</div>
+      <div class="g-prompt-view">${esc(j.prompt)}</div>
+    </div>${st}</div>
+    <div class="job-body">${body}</div>
+    <div class="job-acts">${acts}</div>
+  </div>`;
+}
+function renderGJobs(){
+  $('gJobCount').textContent=gJobs.length?`(${gJobs.length})`:'';
+  $('btnGJobClear').style.display=gJobs.length?'inline-flex':'none';
+  gJobList.innerHTML=gJobs.length?gJobs.map(gJobHTML).join(''):'<div class="empty">Chưa có video nào. Chọn ảnh, nhập mô tả rồi bấm <b>Tạo video AI</b>.</div>';
+}
+function updGRow(job){
+  const el=gJobList.querySelector(`[data-gjid="${job.id}"]`); if(!el){ renderGJobs(); return; }
+  const v=el.querySelector('video'); if(v&&!v.paused) return;
+  el.outerHTML=gJobHTML(job);
+}
+gJobList.onclick=async e=>{
+  const b=e.target.closest('[data-ga]'); if(!b) return;
+  const job=gJobs.find(x=>String(x.id)===b.closest('[data-gjid]').dataset.gjid); if(!job) return;
+  const a=b.dataset.ga;
+  if(a==='ins') gInsertToDub(job,false);
+  if(a==='insgo') gInsertToDub(job,true);
+  if(a==='up') startUpscale(job);
+  if(a==='dl'){
+    const bb=gBest(job);
+    if(bb.blob){ const l=document.createElement('a'); l.href=URL.createObjectURL(bb.blob); l.download=`grok_${safeName(job.imgName.replace(/\.\w+$/,''))}_${bb.res}_${stampStr()}.mp4`; l.click(); }
+    else window.open(bb.url,'_blank');
+  }
+  if(a==='retry'){
+    const im=gImages.find(x=>x.id===job.imgId); if(!im){ gMsg('Ảnh gốc đã bị xóa.'); return; }
+    gJobs=gJobs.filter(x=>x!==job); if(db&&job.id!=null) idbDel(G_ST.job,job.id).catch(()=>{});
+    createGJob(im,{prompt:job.prompt,mode:job.mode,duration:job.duration,aspect:job.aspect,autoUp:job.autoUp,autoDub:job.autoDub});
+  }
+  if(a==='del'){
+    if(!confirm('Xóa video AI này khỏi danh sách?')) return;
+    ['u480','u720'].forEach(k=>job[k]&&URL.revokeObjectURL(job[k]));
+    gJobs=gJobs.filter(x=>x!==job); if(db&&job.id!=null) idbDel(G_ST.job,job.id).catch(()=>{}); renderGJobs();
+  }
+};
+$('btnGJobClear').onclick=()=>{
+  if(!confirm('Xóa tất cả '+gJobs.length+' video AI?')) return;
+  gJobs.forEach(j=>{ if(db&&j.id!=null) idbDel(G_ST.job,j.id).catch(()=>{}); }); gJobs=[]; renderGJobs();
+};
+
+/* --- Khôi phục --- */
+async function grokRestore(){
+  if(db){ try{
+    gImages=(await idbAll(G_ST.img)).sort((a,b)=>b.id-a.id).map(im=>({...im,url:URL.createObjectURL(im.blob)}));
+    gJobs=(await idbAll(G_ST.job)).sort((a,b)=>b.id-a.id).map(j=>{ delete j.u480; delete j.u720; refreshGBlobUrls(j); return j; });
+    if(!gImages.some(x=>x.id===gSelImg)) gSelImg=gImages[0]?gImages[0].id:null;
+    for(const j of gJobs){
+      if(j.status==='UPLOADING'||(j.status==='GEN'&&!j.taskId)){ j.status='FAILED'; j.msg='Bị gián đoạn (trang bị đóng) — bấm Thử lại.'; dubSave(G_ST.job,j); }
+    }
+  }catch(e){ console.warn('Khôi phục Video AI lỗi:',e); } }
+  renderGImages(); renderGJobs();
+  gJobs.filter(j=>j.status==='GEN'&&j.taskId).forEach(j=>pollG(j,'gen'));
+  gJobs.filter(j=>j.upStatus==='RUN'&&j.upTaskId).forEach(j=>pollG(j,'up'));
+}
+restoreP.then(grokRestore);
 
 drawWave();
 </script>
