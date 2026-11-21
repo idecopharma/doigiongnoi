@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phòng Thâu — Cắt file 3 phút</title>
+<title>Phòng Thâu — Cắt file & Lồng tiếng video</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -290,6 +290,72 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
 }
 .gate-btn:active{transform:scale(.98)}
 .gate-err{color:var(--red);font-size:12.5px;margin-top:10px;min-height:16px}
+
+/* ===== Tab Lồng tiếng video (giống DreamFace Avatar) ===== */
+.dub-step{display:flex;align-items:center;gap:10px;margin:4px 0 12px}
+.dub-step .n{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--amber-deep),var(--amber));color:#241a05;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.dub-step h2{font-size:15.5px;font-weight:700}
+.dub-step .hint{font-size:12px;color:var(--muted);margin-left:auto;text-align:right}
+.dub-drop{border:2px dashed var(--line);border-radius:12px;padding:16px;text-align:center;cursor:pointer;color:var(--muted);font-size:13px;transition:border-color .2s,background .2s;margin-bottom:12px}
+.dub-drop:hover,.dub-drop.dragover{border-color:var(--amber);background:rgba(255,184,77,.05);color:var(--text)}
+.dub-drop b{color:var(--amber)}
+.dv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.dv-card{position:relative;border:2px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;background:#0a0f1a;transition:border-color .15s,transform .15s}
+.dv-card:hover{border-color:var(--blue)}
+.dv-card.active{border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,184,77,.18)}
+.dv-card video{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;pointer-events:none}
+.dv-card .dv-dur{position:absolute;left:6px;top:6px;background:rgba(0,0,0,.65);color:#fff;font-family:'JetBrains Mono',monospace;font-size:10.5px;border-radius:6px;padding:2px 6px}
+.dv-card .dv-check{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;background:var(--amber);color:#241a05;font-weight:800;display:flex;align-items:center;justify-content:center}
+.dv-card .dv-del{position:absolute;right:6px;top:6px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(0,0,0,.65);color:#fff;cursor:pointer;font-size:12px;line-height:24px}
+.dv-card .dv-del:hover{background:var(--red)}
+.dv-card .dv-name{font-size:11.5px;padding:6px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--panel2)}
+.da-item{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:border-color .15s}
+.da-item:hover{border-color:var(--muted)}
+.da-item.active{border-color:var(--amber);background:rgba(255,184,77,.07)}
+.da-item .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--muted);flex:0 0 auto;position:relative}
+.da-item.active .radio{border-color:var(--amber)}
+.da-item.active .radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--amber)}
+.da-item .meta{flex:1;min-width:140px}
+.da-item .meta .name{font-size:13.5px;font-weight:600;word-break:break-all}
+.da-item .meta .sub{font-size:11.5px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.src-badge{font-family:'Be Vietnam Pro',sans-serif;font-size:10.5px;font-weight:700;border-radius:6px;padding:2px 6px;margin-left:4px}
+.src-badge.upload{background:rgba(90,166,255,.15);color:var(--blue)}
+.src-badge.murf{background:rgba(77,214,160,.15);color:var(--green)}
+.src-badge.merged{background:rgba(255,184,77,.15);color:var(--amber)}
+.warn-badge{color:var(--amber);font-family:'Be Vietnam Pro',sans-serif;font-size:11px}
+.dub-summary{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+.dub-summary .pill{background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:12.5px;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dub-summary .pill b{color:var(--text)}
+.dub-opt{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:12.5px;margin-bottom:14px;cursor:pointer;user-select:none}
+.btn-dub{background:linear-gradient(135deg,#7c5cff,#5aa6ff);color:#fff;box-shadow:0 6px 22px rgba(90,166,255,.35);font-size:16px;padding:15px 32px}
+.dub-msg{font-size:13px;text-align:center;margin-top:10px;display:none}
+.dub-msg.show{display:block}
+.job-card{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px;animation:pop .25s ease}
+.job-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.job-head .meta{flex:1;min-width:160px}
+.job-head .meta .name{font-size:13.5px;font-weight:600;word-break:break-all}
+.job-head .meta .sub{font-size:11.5px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.st{font-size:11px;font-weight:700;border-radius:7px;padding:4px 8px;white-space:nowrap}
+.st.run{background:rgba(90,166,255,.15);color:var(--blue)}
+.st.ok{background:rgba(77,214,160,.15);color:var(--green)}
+.st.fail{background:rgba(255,93,93,.15);color:var(--red)}
+.job-body{margin-top:10px}
+.job-body video{width:100%;max-height:420px;border-radius:10px;background:#000;display:block}
+.job-msg{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.job-msg.fail{color:var(--red)}
+.job-acts{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+details.dub-set{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 18px;margin-bottom:16px}
+details.dub-set summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--muted)}
+details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
+.dub-set .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.dub-set .row label{font-size:12.5px;color:var(--muted);min-width:90px}
+.dub-set .row input,.dub-set .row select{flex:1;min-width:200px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-family:'JetBrains Mono',monospace;font-size:12.5px;outline:none}
+.dub-set .row select{font-family:inherit}
+.dub-set .note{font-size:12px;color:var(--muted);line-height:1.55}
+.dub-set .note b{color:var(--text)}
+.dub-set textarea{width:100%;height:260px;background:#0a0f1a;color:#cfe3ff;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:11.5px;margin-top:8px}
+.btn-mini.ins{color:#b79bff}
+.btn-mini.ins:hover{border-color:#b79bff}
 </style>
 </head>
 <body>
@@ -320,6 +386,10 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
     <button class="mode-tab" id="tabUpload">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
       Cắt file upload
+    </button>
+    <button class="mode-tab" id="tabDub">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="14" height="14" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>
+      Lồng tiếng video
     </button>
   </div>
 
@@ -385,7 +455,7 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
   </div>
 
   <!-- Segments -->
-  <div class="card">
+  <div class="card" id="segCard">
     <div class="seg-head">
       <h2>Các file đã cắt <span class="count" id="segCount"></span></h2>
       <div style="display:flex;gap:8px">
@@ -449,6 +519,107 @@ footer{text-align:center;color:#54617a;font-size:11.5px;margin-top:8px}
     </div>
     <div id="mergedBox" style="margin-top:12px"><div class="empty">Chưa có file nối nào.</div></div>
   </div>
+
+
+  <!-- ===== Tab: Lồng tiếng video ===== -->
+  <div id="dubWrap" style="display:none">
+    <details class="dub-set" id="dubSet">
+      <summary>⚙️ Cài đặt API lồng tiếng (DashScope · VideoRetalk)</summary>
+      <div class="row"><label>API key</label><input type="password" id="dubKeyInput" autocomplete="off"><button class="icon-btn" id="dubKeyToggle">👁</button></div>
+      <div class="row"><label>Khu vực</label>
+        <select id="dubRegion">
+          <option value="bj">Bắc Kinh — dashscope.aliyuncs.com (VideoRetalk)</option>
+          <option value="intl">Quốc tế — dashscope-intl.aliyuncs.com</option>
+        </select>
+      </div>
+      <div class="row"><label>Proxy URL</label><input type="text" id="dubProxyInput" placeholder="https://ten-worker.ten-ban.workers.dev (bắt buộc nếu bị CORS)"></div>
+      <div class="row" style="justify-content:flex-end">
+        <button class="btn-mini" id="dubShowWorker">📄 Xem mã Cloudflare Worker</button>
+        <button class="btn-mini dl" id="dubSaveSet">💾 Lưu cài đặt</button>
+      </div>
+      <div class="note">DashScope không cho trình duyệt gọi trực tiếp (CORS), nên cần một <b>Cloudflare Worker</b> làm proxy — giống cách widget Qwen đang dùng. Dán mã bên dưới vào Worker mới, Deploy, rồi điền link Worker vào ô Proxy URL. Model <b>videoretalk</b> chỉ chạy ở khu vực <b>Bắc Kinh</b>, nên API key phải là key của khu vực này.</div>
+      <div id="dubWorkerBox" style="display:none">
+        <textarea id="dubWorkerText" readonly></textarea>
+        <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn-mini" id="dubCopyWorker">📋 Sao chép mã</button></div>
+      </div>
+    </details>
+
+    <div class="card">
+      <div class="dub-step"><span class="n">1</span><h2>Chọn video nhân vật</h2><span class="hint">MP4/MOV · 2–120 giây · ≤300MB<br>mặt nhìn thẳng, rõ nét</span></div>
+      <div class="dub-drop" id="dvDrop">🎬 Kéo thả hoặc <b>bấm để upload video ngắn</b> — có thể chọn nhiều file</div>
+      <input type="file" id="dvInput" accept="video/mp4,video/quicktime,.mp4,.mov" multiple style="display:none">
+      <div class="dv-grid" id="dvGrid"></div>
+    </div>
+
+    <div class="card">
+      <div class="dub-step"><span class="n">2</span><h2>Chọn audio lồng tiếng</h2><span class="hint">MP3/WAV/AAC · tối đa 180 giây · ≤30MB<br>hoặc bấm <b style="color:#b79bff">Chèn</b> ở file đã đổi giọng</span></div>
+      <div class="dub-drop" id="daDrop">🎵 Kéo thả hoặc <b>bấm để upload MP3/WAV</b> (tối đa 3 phút)</div>
+      <input type="file" id="daInput" accept=".mp3,.wav,.aac,audio/mpeg,audio/wav,audio/x-wav,audio/aac" multiple style="display:none">
+      <div id="daList"></div>
+    </div>
+
+    <div class="card">
+      <div class="dub-step"><span class="n">3</span><h2>Tạo video lồng tiếng</h2></div>
+      <div class="dub-summary" id="dubSummary"></div>
+      <label class="dub-opt"><input type="checkbox" id="dubLoop" checked style="accent-color:var(--amber)"> Lặp video (tua ngược–xuôi) cho khớp độ dài audio</label>
+      <div class="controls">
+        <button class="btn btn-dub" id="btnDubCreate" disabled>✨ Tạo video lồng tiếng</button>
+      </div>
+      <div class="dub-msg" id="dubMsg"></div>
+    </div>
+
+    <div class="card">
+      <div class="seg-head">
+        <h2>Video đã tạo <span class="count" id="jobCount"></span></h2>
+        <button class="btn-mini del" id="btnJobClear" style="display:none">Xóa tất cả</button>
+      </div>
+      <div id="jobList"><div class="empty">Chưa có video nào. Chọn video + audio rồi bấm <b>Tạo video lồng tiếng</b>.</div></div>
+    </div>
+  </div>
+
+<script type="text/plain" id="workerSrc">// Cloudflare Worker — proxy cho PHÒNG THÂU · Lồng tiếng video (DashScope VideoRetalk)
+const API_HOSTS = ['dashscope.aliyuncs.com', 'dashscope-intl.aliyuncs.com'];
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+  'Access-Control-Allow-Headers': 'Authorization,Content-Type,X-DashScope-Async,X-DashScope-OssResourceResolve,X-Target-Host',
+  'Access-Control-Max-Age': '86400'
+};
+const okAli = h => /(^|\.)aliyuncs\.com$/.test(h);
+function j(o, s) { return new Response(JSON.stringify(o), { status: s, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
+
+export default {
+  async fetch(req) {
+    if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
+    const url = new URL(req.url);
+    try {
+      let resp;
+      if (url.pathname === '/oss-upload') {            // upload file lên kho tạm OSS
+        const host = new URL(url.searchParams.get('host'));
+        if (!okAli(host.hostname)) return j({ message: 'host not allowed' }, 400);
+        resp = await fetch(host.toString(), { method: 'POST', headers: { 'Content-Type': req.headers.get('Content-Type') }, body: req.body });
+      } else if (url.pathname === '/fetch') {          // tải video kết quả về
+        const t = new URL(url.searchParams.get('url'));
+        if (!okAli(t.hostname)) return j({ message: 'host not allowed' }, 400);
+        resp = await fetch(t.toString());
+      } else if (url.pathname.startsWith('/api/')) {   // gọi API DashScope
+        const host = req.headers.get('X-Target-Host') || 'dashscope.aliyuncs.com';
+        if (!API_HOSTS.includes(host)) return j({ message: 'host not allowed' }, 400);
+        const h = new Headers();
+        for (const k of ['Authorization', 'Content-Type', 'X-DashScope-Async', 'X-DashScope-OssResourceResolve']) {
+          const v = req.headers.get(k); if (v) h.set(k, v);
+        }
+        resp = await fetch('https://' + host + url.pathname + url.search, {
+          method: req.method, headers: h, body: req.method === 'GET' ? undefined : req.body
+        });
+      } else return j({ message: 'not found' }, 404);
+      const out = new Response(resp.body, resp);
+      for (const [k, v] of Object.entries(CORS)) out.headers.set(k, v);
+      return out;
+    } catch (e) { return j({ message: String(e) }, 502); }
+  }
+};
+</script>
 
   <footer>Định dạng WAV 16-bit · cắt chính xác 180 giây/file · file được lưu tự động trong trình duyệt (IndexedDB) — đóng trang mở lại vẫn còn</footer>
 </div>
@@ -530,11 +701,12 @@ const DB_NAME='phong_thau_db', STORE='segments', MERGED_STORE='merged';
 let db=null;
 function openDB(){
   return new Promise((res,rej)=>{
-    const rq=indexedDB.open(DB_NAME,2);
+    const rq=indexedDB.open(DB_NAME,3);
     rq.onupgradeneeded=e=>{
       const d=e.target.result;
       if(!d.objectStoreNames.contains(STORE)) d.createObjectStore(STORE,{keyPath:'id',autoIncrement:true});
       if(!d.objectStoreNames.contains(MERGED_STORE)) d.createObjectStore(MERGED_STORE,{keyPath:'id'});
+      ['dub_videos','dub_audios','dub_jobs'].forEach(n=>{ if(!d.objectStoreNames.contains(n)) d.createObjectStore(n,{keyPath:'id',autoIncrement:true}); });
     };
     rq.onsuccess=e=>{db=e.target.result;res(db)};
     rq.onerror=()=>rej(rq.error);
@@ -620,7 +792,7 @@ async function restoreAll(){
     if(navigator.storage&&navigator.storage.persist) navigator.storage.persist();
   }catch(e){ console.warn('IndexedDB:',e); }
 }
-restoreAll();
+const restoreP=restoreAll();
 
 /* ---------- Sóng âm ---------- */
 function resizeCanvas(){
@@ -811,6 +983,7 @@ function renderSegments(){
         <button class="btn-mini dl" data-a="dl" data-k="conv" data-i="${i}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg> Tải về
         </button>
+        <button class="btn-mini ins" data-a="ins" data-i="${i}" title="Chèn vào tab Lồng tiếng video">🎬 Chèn</button>
         <button class="btn-mini del" data-a="delconv" data-i="${i}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0l1 13h8l1-13"/></svg> Xóa bản đổi giọng
         </button>
@@ -875,6 +1048,9 @@ segList.onclick=e=>{
     if(db&&s.id!=null) dbPut({id:s.id,blob:s.blob,dur:s.dur,name:s.name,created:s.created}).catch(()=>{});
     renderSegments();
   }
+  if(a==='ins'){
+    dubInsertAudio(s.convertedBlob, s.convertedName, 'murf');
+  }
   if(a==='conv'){
     s.convertError=false;
     convertSegment(s);
@@ -896,14 +1072,20 @@ btnDlAll.onclick=()=>{
 const tabRec=$('tabRec'), tabUpload=$('tabUpload'),
       micCard=$('micCard'), recCard=$('recCard'), uploadCard=$('uploadCard');
 function setMode(mode){
-  const rec=mode==='rec';
-  tabRec.classList.toggle('active',rec);
-  tabUpload.classList.toggle('active',!rec);
-  micCard.style.display=rec?'':'none';
-  recCard.style.display=rec?'':'none';
-  uploadCard.style.display=rec?'none':'';
+  tabRec.classList.toggle('active',mode==='rec');
+  tabUpload.classList.toggle('active',mode==='upload');
+  $('tabDub').classList.toggle('active',mode==='dub');
+  micCard.style.display=recCard.style.display=mode==='rec'?'':'none';
+  uploadCard.style.display=mode==='upload'?'':'none';
+  const dub=mode==='dub';
+  $('dubWrap').style.display=dub?'':'none';
+  $('segCard').style.display=$('murfCard').style.display=$('mergeCard').style.display=dub?'none':'';
 }
 tabRec.onclick=()=>setMode('rec');
+$('tabDub').onclick=()=>{
+  if(isRecording){ showErr('Đang thâu âm — hãy dừng thâu trước khi chuyển sang lồng tiếng video.'); return; }
+  setMode('dub');
+};
 tabUpload.onclick=()=>{
   if(isRecording){ showErr('Đang thâu âm — hãy dừng thâu trước khi chuyển sang chế độ cắt file.'); return; }
   setMode('upload');
@@ -1243,6 +1425,7 @@ function renderMerged(){
         <button class="btn-mini dl" id="btnDlMerged">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg> Tải về
         </button>
+        <button class="btn-mini ins" id="btnInsMerged" title="Chèn vào tab Lồng tiếng video">🎬 Chèn</button>
         <button class="btn-mini del" id="btnDelMerged">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0l1 13h8l1-13"/></svg> Xóa file nối
         </button>
@@ -1257,6 +1440,7 @@ function renderMerged(){
     playingAudio.play();
     renderSegments(); renderMerged();
   };
+  $('btnInsMerged').onclick=()=>dubInsertAudio(mergedFile.blob, mergedFile.name, 'merged');
   $('btnDlMerged').onclick=()=>{
     const l=document.createElement('a'); l.href=mergedFile.url; l.download=mergedFile.name; l.click();
   };
@@ -1269,6 +1453,420 @@ function renderMerged(){
     renderMerged();
   };
 }
+
+
+/* =====================================================================
+   TAB LỒNG TIẾNG VIDEO — khẩu hình khớp audio (DashScope · VideoRetalk)
+   ===================================================================== */
+const DUB_KEY_DEFAULT='sk-1182b5bd89a847018aa60edff2f59cb1'; // key nội bộ nhúng sẵn
+const DUB_MAX_AUDIO=180, DUB_API_AUDIO_WARN=120, DUB_VIDEO_MIN=2, DUB_VIDEO_MAX=120;
+const DUB_HOSTS={bj:'dashscope.aliyuncs.com',intl:'dashscope-intl.aliyuncs.com'};
+const DUB_ST={dub_videos:'dub_videos',dub_audios:'dub_audios',dub_jobs:'dub_jobs'};
+let dubKey=localStorage.getItem('dub_api_key')||DUB_KEY_DEFAULT;
+let dubRegion=localStorage.getItem('dub_region')||'bj';
+let dubProxy=localStorage.getItem('dub_proxy')||'';
+let dubVideos=[], dubAudios=[], dubJobs=[];
+let dubSelVideo=+localStorage.getItem('dub_sel_video')||null, dubSelAudio=+localStorage.getItem('dub_sel_audio')||null;
+let dubPlay=null; // {id, audio}
+const dubPolling=new Set();
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const mb=b=>(b/1048576).toFixed(1)+' MB';
+function stampStr(){const d=new Date();return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+String(d.getSeconds()).padStart(2,'0');}
+function safeName(n){return (n||'file').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').replace(/[^A-Za-z0-9._-]+/g,'_').slice(-80)||'file';}
+
+/* --- IndexedDB chung cho các store lồng tiếng --- */
+function idbAll(store){return new Promise((res,rej)=>{const rq=db.transaction(store,'readonly').objectStore(store).getAll();rq.onsuccess=()=>res(rq.result||[]);rq.onerror=()=>rej(rq.error);});}
+function idbPut(store,rec){return new Promise((res,rej)=>{const r={...rec};delete r.url;delete r.blobUrl;if(r.id==null)delete r.id;const rq=db.transaction(store,'readwrite').objectStore(store).put(r);rq.onsuccess=()=>res(rq.result);rq.onerror=()=>rej(rq.error);});}
+function idbDel(store,id){return new Promise((res,rej)=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).delete(id);tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});}
+async function dubSave(store,rec){ if(!db) return; try{ const id=await idbPut(store,rec); if(rec.id==null) rec.id=id; }catch(e){ console.warn('Lưu IndexedDB lỗi:',e); showDubMsg('Không lưu được vào bộ nhớ trình duyệt (có thể đầy dung lượng): '+e.message); } }
+
+function showDubMsg(m,ok){const el=$('dubMsg');el.textContent=m;el.style.color=ok?'var(--green)':'var(--red)';el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),ok?3000:8000);}
+
+/* --- Đọc thời lượng / kích thước media --- */
+function getMediaMeta(blob,kind){
+  return new Promise(res=>{
+    const el=document.createElement(kind), u=URL.createObjectURL(blob);
+    let done=false; const fin=v=>{ if(done)return; done=true; URL.revokeObjectURL(u); res(v); };
+    el.preload='metadata'; el.muted=true;
+    el.onloadedmetadata=()=>{
+      const out=()=>fin({dur:el.duration,w:el.videoWidth||0,h:el.videoHeight||0});
+      if(el.duration===Infinity||isNaN(el.duration)){ el.ontimeupdate=()=>{el.ontimeupdate=null;out();}; el.currentTime=1e7; return; }
+      out();
+    };
+    el.onerror=()=>fin(null);
+    setTimeout(()=>fin(null),15000);
+    el.src=u;
+  });
+}
+async function getAudioDur(blob){
+  const m=await getMediaMeta(blob,'audio');
+  if(m&&isFinite(m.dur)&&m.dur>0) return m.dur;
+  try{ const c=new (window.AudioContext||window.webkitAudioContext)(); const b=await c.decodeAudioData(await blob.arrayBuffer()); c.close(); return b.duration; }catch(e){ return null; }
+}
+
+/* --- Cài đặt --- */
+const dubKeyInput=$('dubKeyInput'), dubRegionSel=$('dubRegion'), dubProxyInput=$('dubProxyInput');
+dubKeyInput.value=dubKey; dubRegionSel.value=dubRegion; dubProxyInput.value=dubProxy;
+$('dubWorkerText').value=$('workerSrc').textContent.trim();
+if(!dubProxy) $('dubSet').open=true;
+$('dubKeyToggle').onclick=()=>{dubKeyInput.type=dubKeyInput.type==='password'?'text':'password';};
+$('dubShowWorker').onclick=()=>{const b=$('dubWorkerBox');b.style.display=b.style.display==='none'?'':'none';};
+$('dubCopyWorker').onclick=async()=>{try{await navigator.clipboard.writeText($('dubWorkerText').value);showDubMsg('Đã sao chép mã Worker.',true);}catch(e){$('dubWorkerText').select();document.execCommand('copy');showDubMsg('Đã sao chép mã Worker.',true);}};
+$('dubSaveSet').onclick=()=>{
+  dubKey=dubKeyInput.value.trim()||DUB_KEY_DEFAULT; dubRegion=dubRegionSel.value; dubProxy=dubProxyInput.value.trim().replace(/\/+$/,'');
+  localStorage.setItem('dub_api_key',dubKey); localStorage.setItem('dub_region',dubRegion); localStorage.setItem('dub_proxy',dubProxy);
+  showDubMsg('Đã lưu cài đặt lồng tiếng.',true);
+};
+
+/* --- Gọi API DashScope (qua proxy nếu có) --- */
+function dsBase(){ return dubProxy ? dubProxy : 'https://'+DUB_HOSTS[dubRegion]; }
+async function dsFetch(path,opts={}){
+  const headers=Object.assign({'Authorization':'Bearer '+dubKey},opts.headers||{});
+  if(dubProxy) headers['X-Target-Host']=DUB_HOSTS[dubRegion];
+  let res;
+  try{ res=await fetch(dsBase()+path,{...opts,headers}); }
+  catch(e){ throw new Error(dubProxy?'Không kết nối được Proxy ('+e.message+')':'Trình duyệt chặn gọi trực tiếp DashScope (CORS) — hãy tạo Cloudflare Worker và điền Proxy URL trong ⚙️ Cài đặt.'); }
+  let data=null; try{ data=await res.json(); }catch(_){}
+  if(!res.ok||(data&&data.code&&!data.output&&!data.data)){
+    throw new Error(((data&&(data.message||data.code))||'HTTP '+res.status)+(res.status===401?' — API key sai hoặc không thuộc khu vực đã chọn':''));
+  }
+  return data;
+}
+async function ossUpload(blob,fileName){
+  const pol=await dsFetch('/api/v1/uploads?action=getPolicy&model=videoretalk',{method:'GET'});
+  const d=pol.data; if(!d) throw new Error('Không lấy được quyền upload kho tạm');
+  const key=`${d.upload_dir}/${Date.now()}_${safeName(fileName)}`;
+  const fd=new FormData();
+  fd.append('OSSAccessKeyId',d.oss_access_key_id);
+  fd.append('Signature',d.signature);
+  fd.append('policy',d.policy);
+  fd.append('x-oss-object-acl',d.x_oss_object_acl);
+  fd.append('x-oss-forbid-overwrite',d.x_oss_forbid_overwrite);
+  fd.append('key',key);
+  fd.append('success_action_status','200');
+  fd.append('file',blob,safeName(fileName));
+  const url=dubProxy? dubProxy+'/oss-upload?host='+encodeURIComponent(d.upload_host) : d.upload_host;
+  let res; try{ res=await fetch(url,{method:'POST',body:fd}); }catch(e){ throw new Error('Upload lên kho tạm thất bại (CORS/mạng): '+e.message); }
+  if(!res.ok) throw new Error('Upload lên kho tạm lỗi HTTP '+res.status);
+  return 'oss://'+key;
+}
+async function ensureOss(rec,store){
+  if(rec.ossUrl&&rec.ossExp>Date.now()+3600e3&&rec.ossRegion===dubRegion) return rec.ossUrl; // link tạm còn hạn → dùng lại
+  const u=await ossUpload(rec.blob,rec.name);
+  rec.ossUrl=u; rec.ossExp=Date.now()+47*3600e3; rec.ossRegion=dubRegion;
+  await dubSave(store,rec);
+  return u;
+}
+
+/* --- Bước 1: Video --- */
+const dvDrop=$('dvDrop'), dvInput=$('dvInput'), dvGrid=$('dvGrid');
+dvDrop.onclick=()=>dvInput.click();
+dvInput.onchange=()=>{ addDubVideos(dvInput.files); dvInput.value=''; };
+async function addDubVideos(files){
+  const errs=[];
+  for(const f of [...files]){
+    if(!/\.(mp4|mov)$/i.test(f.name)&&!/^video\/(mp4|quicktime)$/i.test(f.type)){ errs.push(f.name+': chỉ hỗ trợ MP4/MOV'); continue; }
+    if(f.size>300*1048576){ errs.push(f.name+': lớn hơn 300MB'); continue; }
+    const m=await getMediaMeta(f,'video');
+    if(!m||!isFinite(m.dur)){ errs.push(f.name+': không đọc được video'); continue; }
+    if(m.dur<=DUB_VIDEO_MIN||m.dur>=DUB_VIDEO_MAX){ errs.push(`${f.name}: dài ${fmt(m.dur)} — cần 2–120 giây`); continue; }
+    const blob=new Blob([await f.arrayBuffer()],{type:f.type||'video/mp4'});
+    const v={blob,name:f.name,size:f.size,dur:m.dur,w:m.w,h:m.h,created:Date.now()};
+    await dubSave(DUB_ST.dub_videos,v);
+    v.url=URL.createObjectURL(blob);
+    dubVideos.unshift(v);
+    dubSelVideo=v.id; localStorage.setItem('dub_sel_video',v.id);
+    const minE=Math.min(m.w,m.h), maxE=Math.max(m.w,m.h);
+    if(minE&&(minE<640||maxE>2048)) errs.push(`${f.name}: độ phân giải ${m.w}×${m.h} — khuyến nghị cạnh 640–2048px, có thể bị từ chối`);
+  }
+  renderDubVideos();
+  if(errs.length) showDubMsg(errs.join(' · '));
+}
+function renderDubVideos(){
+  if(!dubVideos.length){ dvGrid.innerHTML='<div class="empty" style="grid-column:1/-1">Chưa có video. Upload video ngắn có khuôn mặt nhìn thẳng camera.</div>'; renderDubSummary(); return; }
+  dvGrid.innerHTML=dubVideos.map(v=>`
+    <div class="dv-card${dubSelVideo===v.id?' active':''}" data-vid="${v.id}" title="${esc(v.name)} · ${v.w}×${v.h} · ${mb(v.size)}">
+      <video src="${v.url}#t=0.1" muted preload="metadata" playsinline loop></video>
+      <span class="dv-dur">${fmt(v.dur)}</span>
+      ${dubSelVideo===v.id?'<span class="dv-check">✓</span>':''}
+      <button class="dv-del" data-del="${v.id}" title="Xóa video">✕</button>
+      <div class="dv-name">${esc(v.name)}</div>
+    </div>`).join('');
+  renderDubSummary();
+}
+dvGrid.onclick=async e=>{
+  const del=e.target.closest('[data-del]');
+  if(del){
+    e.stopPropagation();
+    const id=+del.dataset.del, v=dubVideos.find(x=>x.id===id); if(!v) return;
+    if(!confirm('Xóa video "'+v.name+'"?')) return;
+    URL.revokeObjectURL(v.url); dubVideos=dubVideos.filter(x=>x!==v);
+    if(db) idbDel(DUB_ST.dub_videos,id).catch(()=>{});
+    if(dubSelVideo===id){ dubSelVideo=null; localStorage.removeItem('dub_sel_video'); }
+    renderDubVideos(); return;
+  }
+  const c=e.target.closest('.dv-card'); if(!c) return;
+  dubSelVideo=+c.dataset.vid; localStorage.setItem('dub_sel_video',dubSelVideo); renderDubVideos();
+};
+dvGrid.addEventListener('mouseover',e=>{const c=e.target.closest('.dv-card');if(c){const v=c.querySelector('video');if(v&&v.paused)v.play().catch(()=>{});}});
+dvGrid.addEventListener('mouseout',e=>{const c=e.target.closest('.dv-card');if(c&&!c.contains(e.relatedTarget)){const v=c.querySelector('video');if(v)v.pause();}});
+
+/* --- Bước 2: Audio --- */
+const daDrop=$('daDrop'), daInput=$('daInput'), daList=$('daList');
+daDrop.onclick=()=>daInput.click();
+daInput.onchange=()=>{ addDubAudioFiles(daInput.files); daInput.value=''; };
+[[dvDrop,addDubVideos],[daDrop,addDubAudioFiles]].forEach(([el,fn])=>{
+  ['dragenter','dragover'].forEach(ev=>el.addEventListener(ev,e=>{e.preventDefault();el.classList.add('dragover');}));
+  ['dragleave','drop'].forEach(ev=>el.addEventListener(ev,e=>{e.preventDefault();el.classList.remove('dragover');}));
+  el.addEventListener('drop',e=>{ if(e.dataTransfer&&e.dataTransfer.files) fn(e.dataTransfer.files); });
+});
+async function addDubAudioFiles(files){
+  const errs=[];
+  for(const f of [...files]){
+    if(!/\.(mp3|wav|aac)$/i.test(f.name)&&!/^audio\/(mpeg|mp3|wav|x-wav|wave|aac)$/i.test(f.type)){ errs.push(f.name+': chỉ hỗ trợ MP3/WAV/AAC'); continue; }
+    const r=await addDubAudio(new Blob([await f.arrayBuffer()],{type:f.type||'audio/mpeg'}),f.name,'upload');
+    if(r!==true) errs.push(r);
+  }
+  if(errs.length) showDubMsg(errs.join(' · '));
+}
+/* trả về true nếu thêm thành công, ngược lại trả về chuỗi lỗi */
+async function addDubAudio(blob,name,source){
+  if(blob.size>30*1048576) return name+': lớn hơn 30MB';
+  const dur=await getAudioDur(blob);
+  if(!dur) return name+': không đọc được audio';
+  if(dur>DUB_MAX_AUDIO+0.5) return `${name}: dài ${fmt(dur)} — tối đa 3 phút (180 giây)`;
+  if(dur<=DUB_VIDEO_MIN) return name+': quá ngắn (cần trên 2 giây)';
+  const a={blob,name,size:blob.size,dur,source,created:Date.now()};
+  await dubSave(DUB_ST.dub_audios,a);
+  a.url=URL.createObjectURL(blob);
+  dubAudios.unshift(a);
+  dubSelAudio=a.id; localStorage.setItem('dub_sel_audio',a.id);
+  renderDubAudios();
+  return true;
+}
+/* Nút "Chèn" từ file đã đổi giọng → tự chuyển sang tab lồng tiếng */
+async function dubInsertAudio(blob,name,source){
+  if(!blob){ showErr('Không có audio để chèn.'); return; }
+  const ex=dubAudios.find(a=>a.name===name&&a.size===blob.size);
+  setMode('dub');
+  if(ex){ dubSelAudio=ex.id; localStorage.setItem('dub_sel_audio',ex.id); renderDubAudios(); showDubMsg('Audio này đã có — đã chọn sẵn.',true); }
+  else{
+    const r=await addDubAudio(blob,name,source);
+    if(r===true) showDubMsg('Đã chèn "'+name+'" vào phần audio lồng tiếng.',true); else showDubMsg(r);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function stopDubPlay(){ if(dubPlay){ dubPlay.audio.pause(); dubPlay=null; renderDubAudios(); } }
+function renderDubAudios(){
+  if(!dubAudios.length){ daList.innerHTML='<div class="empty">Chưa có audio. Upload MP3/WAV hoặc bấm <b>Chèn</b> ở danh sách file đã đổi giọng.</div>'; renderDubSummary(); return; }
+  const srcLbl={upload:'Upload',murf:'Đổi giọng',merged:'File nối'};
+  daList.innerHTML=dubAudios.map(a=>{
+    const playing=dubPlay&&dubPlay.id===a.id;
+    return `<div class="da-item${dubSelAudio===a.id?' active':''}" data-aid="${a.id}">
+      <span class="radio"></span>
+      <div class="meta">
+        <div class="name">${esc(a.name)}</div>
+        <div class="sub">${fmt(a.dur)} · ${mb(a.size)}<span class="src-badge ${a.source}">${srcLbl[a.source]||'Audio'}</span>
+          ${a.dur>=DUB_API_AUDIO_WARN?'<span class="warn-badge"> · ⚠ trên 2 phút</span>':''}</div>
+      </div>
+      <div class="acts" style="display:flex;gap:7px">
+        <button class="btn-mini play" data-ap="${a.id}">${playing?'⏸ Dừng':'▶ Nghe'}</button>
+        <button class="btn-mini del" data-ad="${a.id}">✕ Xóa</button>
+      </div>
+    </div>`;}).join('');
+  renderDubSummary();
+}
+daList.onclick=e=>{
+  const p=e.target.closest('[data-ap]'), d=e.target.closest('[data-ad]');
+  if(p){
+    const id=+p.dataset.ap, a=dubAudios.find(x=>x.id===id); if(!a) return;
+    const was=dubPlay&&dubPlay.id===id; stopDubPlay(); if(was) return;
+    stopPlaying();
+    const au=new Audio(a.url); au.onended=stopDubPlay; au.play(); dubPlay={id,audio:au}; renderDubAudios(); return;
+  }
+  if(d){
+    const id=+d.dataset.ad, a=dubAudios.find(x=>x.id===id); if(!a) return;
+    if(!confirm('Xóa audio "'+a.name+'"?')) return;
+    if(dubPlay&&dubPlay.id===id) stopDubPlay();
+    URL.revokeObjectURL(a.url); dubAudios=dubAudios.filter(x=>x!==a);
+    if(db) idbDel(DUB_ST.dub_audios,id).catch(()=>{});
+    if(dubSelAudio===id){ dubSelAudio=null; localStorage.removeItem('dub_sel_audio'); }
+    renderDubAudios(); return;
+  }
+  const it=e.target.closest('.da-item'); if(!it) return;
+  dubSelAudio=+it.dataset.aid; localStorage.setItem('dub_sel_audio',dubSelAudio); renderDubAudios();
+};
+
+/* --- Bước 3: Tạo --- */
+function renderDubSummary(){
+  const v=dubVideos.find(x=>x.id===dubSelVideo), a=dubAudios.find(x=>x.id===dubSelAudio);
+  $('dubSummary').innerHTML=`<span class="pill">🎬 ${v?'<b>'+esc(v.name)+'</b> · '+fmt(v.dur):'Chưa chọn video'}</span>
+    <span class="pill">🎵 ${a?'<b>'+esc(a.name)+'</b> · '+fmt(a.dur):'Chưa chọn audio'}</span>`;
+  $('btnDubCreate').disabled=!(v&&a);
+}
+$('btnDubCreate').onclick=()=>{
+  const v=dubVideos.find(x=>x.id===dubSelVideo), a=dubAudios.find(x=>x.id===dubSelAudio);
+  if(!v||!a){ showDubMsg('Vui lòng chọn 1 video và 1 audio.'); return; }
+  if(a.dur>=DUB_API_AUDIO_WARN&&!confirm(`Audio dài ${fmt(a.dur)}. Model VideoRetalk ghi giới hạn audio dưới 2 phút nên có thể bị từ chối. Vẫn gửi thử?`)) return;
+  createDubJob(v,a,$('dubLoop').checked);
+};
+async function createDubJob(v,a,loop){
+  const job={videoId:v.id,audioId:a.id,videoName:v.name,audioName:a.name,audioDur:a.dur,loop,
+             status:'UPLOADING',msg:'Đang tải video lên kho tạm…',created:Date.now()};
+  await dubSave(DUB_ST.dub_jobs,job);
+  dubJobs.unshift(job); renderJobs();
+  showDubMsg('Đã gửi yêu cầu — video sẽ xuất hiện trong danh sách bên dưới.',true);
+  try{
+    const vurl=await ensureOss(v,DUB_ST.dub_videos);
+    job.msg='Đang tải audio lên kho tạm…'; updateJobRow(job);
+    const aurl=await ensureOss(a,DUB_ST.dub_audios);
+    job.msg='Đang gửi yêu cầu tạo video…'; updateJobRow(job);
+    const r=await dsFetch('/api/v1/services/aigc/image2video/video-synthesis',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-DashScope-Async':'enable','X-DashScope-OssResourceResolve':'enable'},
+      body:JSON.stringify({model:'videoretalk',input:{video_url:vurl,audio_url:aurl},parameters:{video_extension:!!loop}})
+    });
+    if(!r||!r.output||!r.output.task_id) throw new Error('Không nhận được mã tác vụ');
+    job.taskId=r.output.task_id; job.status='PENDING'; job.msg='Đang xếp hàng…';
+    await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job);
+    pollJob(job);
+  }catch(e){
+    job.status='FAILED'; job.msg=e.message; await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job);
+  }
+}
+async function pollJob(job){
+  if(!job.taskId||dubPolling.has(job)) return; dubPolling.add(job);
+  while(dubJobs.includes(job)){
+    try{
+      const r=await dsFetch('/api/v1/tasks/'+encodeURIComponent(job.taskId),{method:'GET'});
+      const o=r.output||{};
+      job.status=o.task_status||job.status;
+      if(job.status==='SUCCEEDED'){
+        job.resultUrl=o.video_url; job.finished=Date.now(); job.msg=''; job.usage=r.usage||null;
+        job.msg='Đang lưu video về máy…'; updateJobRow(job);
+        await saveResultBlob(job); job.msg='';
+        await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job);
+        showDubMsg('Video lồng tiếng đã xong: '+job.audioName,true);
+        break;
+      }
+      if(['FAILED','CANCELED','UNKNOWN'].includes(job.status)){
+        job.status='FAILED'; job.msg=(o.message||o.code||'Tạo video thất bại'); await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); break;
+      }
+      job.msg=job.status==='RUNNING'?'AI đang dựng khẩu hình theo audio…':'Đang xếp hàng chờ xử lý…';
+      await dubSave(DUB_ST.dub_jobs,job);
+    }catch(e){ job.msg='Lỗi kiểm tra trạng thái ('+e.message+') — sẽ thử lại'; }
+    updateJobRow(job);
+    await new Promise(r=>setTimeout(r,8000));
+  }
+  dubPolling.delete(job);
+}
+/* Tải video kết quả về IndexedDB (link của DashScope chỉ sống 24 giờ) */
+async function saveResultBlob(job){
+  if(!job.resultUrl) return false;
+  const tries=[job.resultUrl.replace(/^http:/,'https:')];
+  if(dubProxy) tries.push(dubProxy+'/fetch?url='+encodeURIComponent(job.resultUrl));
+  for(const u of tries){
+    try{ const r=await fetch(u); if(!r.ok) continue; const b=await r.blob(); if(b.size<1000) continue;
+      job.resultBlob=new Blob([b],{type:'video/mp4'}); if(job.blobUrl) URL.revokeObjectURL(job.blobUrl); job.blobUrl=URL.createObjectURL(job.resultBlob); return true; }catch(e){}
+  }
+  return false;
+}
+
+/* --- Danh sách video đã tạo --- */
+const jobList=$('jobList');
+function jobHTML(j){
+  const run=['UPLOADING','PENDING','RUNNING'].includes(j.status);
+  const st=run?'<span class="st run">⏳ Đang tạo</span>':j.status==='SUCCEEDED'?'<span class="st ok">✓ Hoàn tất</span>':'<span class="st fail">✕ Lỗi</span>';
+  const t=new Date(j.created);
+  const tstr=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0')+' '+t.getDate()+'/'+(t.getMonth()+1);
+  let body='', acts='';
+  if(j.status==='SUCCEEDED'){
+    const src=j.blobUrl||j.resultUrl;
+    const expired=!j.blobUrl&&j.finished&&Date.now()-j.finished>24*3600e3;
+    body=expired?'<div class="job-msg fail">Link video trên máy chủ đã hết hạn (24 giờ) và chưa được lưu về máy.</div>'
+      :`<video controls playsinline preload="metadata" src="${esc(src)}"></video>
+        ${j.blobUrl?'':'<div class="job-msg" style="margin-top:6px">⚠ Video chưa lưu được về máy — link máy chủ chỉ giữ 24 giờ, hãy tải về sớm.</div>'}`;
+    if(!expired) acts+=`<button class="btn-mini dl" data-ja="dl">⬇ Tải về MP4</button>`;
+  }else if(run){
+    body=`<div class="job-msg"><span class="spinner" style="width:13px;height:13px"></span>${esc(j.msg||'Đang xử lý…')}</div>`;
+  }else{
+    body=`<div class="job-msg fail">${esc(j.msg||'Lỗi không xác định')}</div>`;
+    acts+=`<button class="btn-mini conv" data-ja="retry">⟳ Thử lại</button>`;
+  }
+  acts+=`<button class="btn-mini del" data-ja="del">✕ Xóa</button>`;
+  return `<div class="job-card" data-jid="${j.id}">
+    <div class="job-head">
+      <div class="meta">
+        <div class="name">🎬 ${esc(j.videoName)} + 🎵 ${esc(j.audioName)}</div>
+        <div class="sub">${tstr}${j.audioDur?' · audio '+fmt(j.audioDur):''}${j.loop?' · lặp video':''}${j.usage&&j.usage.size?' · '+esc(j.usage.size):''}</div>
+      </div>${st}
+    </div>
+    <div class="job-body">${body}</div>
+    <div class="job-acts">${acts}</div>
+  </div>`;
+}
+function renderJobs(){
+  $('jobCount').textContent=dubJobs.length?`(${dubJobs.length})`:'';
+  $('btnJobClear').style.display=dubJobs.length?'inline-flex':'none';
+  if(!dubJobs.length){ jobList.innerHTML='<div class="empty">Chưa có video nào. Chọn video + audio rồi bấm <b>Tạo video lồng tiếng</b>.</div>'; return; }
+  jobList.innerHTML=dubJobs.map(jobHTML).join('');
+}
+/* chỉ vẽ lại 1 dòng để không làm dừng các video khác đang phát */
+function updateJobRow(job){
+  const el=jobList.querySelector(`[data-jid="${job.id}"]`);
+  if(!el){ renderJobs(); return; }
+  const v=el.querySelector('video');
+  if(v&&job.status==='SUCCEEDED'&&!v.paused) return; // đang xem thì không vẽ lại
+  el.outerHTML=jobHTML(job);
+}
+jobList.onclick=async e=>{
+  const b=e.target.closest('[data-ja]'); if(!b) return;
+  const card=b.closest('[data-jid]'), job=dubJobs.find(x=>String(x.id)===card.dataset.jid); if(!job) return;
+  const a=b.dataset.ja;
+  if(a==='dl'){
+    if(!job.blobUrl){ b.disabled=true; b.textContent='Đang tải…'; await saveResultBlob(job); if(job.blobUrl) await dubSave(DUB_ST.dub_jobs,job); }
+    if(job.blobUrl){
+      const l=document.createElement('a'); l.href=job.blobUrl; l.download=`long_tieng_${safeName(job.audioName.replace(/\.\w+$/,''))}_${stampStr()}.mp4`; l.click();
+    }else window.open(job.resultUrl,'_blank');
+    updateJobRow(job);
+  }
+  if(a==='retry'){
+    const v=dubVideos.find(x=>x.id===job.videoId), au=dubAudios.find(x=>x.id===job.audioId);
+    if(!v||!au){ showDubMsg('Video hoặc audio gốc của lần tạo này đã bị xóa.'); return; }
+    dubJobs=dubJobs.filter(x=>x!==job); if(db&&job.id!=null) idbDel(DUB_ST.dub_jobs,job.id).catch(()=>{});
+    createDubJob(v,au,job.loop);
+  }
+  if(a==='del'){
+    const run=['UPLOADING','PENDING','RUNNING'].includes(job.status);
+    if(!confirm(run?'Video đang được tạo. Xóa khỏi danh sách? (máy chủ vẫn có thể tiếp tục xử lý)':'Xóa video này khỏi danh sách?')) return;
+    if(job.blobUrl) URL.revokeObjectURL(job.blobUrl);
+    dubJobs=dubJobs.filter(x=>x!==job); if(db&&job.id!=null) idbDel(DUB_ST.dub_jobs,job.id).catch(()=>{});
+    renderJobs();
+  }
+};
+$('btnJobClear').onclick=()=>{
+  if(!confirm('Xóa tất cả '+dubJobs.length+' video đã tạo?')) return;
+  dubJobs.forEach(j=>{ if(j.blobUrl) URL.revokeObjectURL(j.blobUrl); if(db&&j.id!=null) idbDel(DUB_ST.dub_jobs,j.id).catch(()=>{}); });
+  dubJobs=[]; renderJobs();
+};
+
+/* --- Khôi phục từ IndexedDB khi mở lại trang --- */
+async function dubRestore(){
+  if(!db){ renderDubVideos(); renderDubAudios(); renderJobs(); return; }
+  try{
+    dubVideos=(await idbAll(DUB_ST.dub_videos)).sort((a,b)=>b.id-a.id).map(v=>({...v,url:URL.createObjectURL(v.blob)}));
+    dubAudios=(await idbAll(DUB_ST.dub_audios)).sort((a,b)=>b.id-a.id).map(a=>({...a,url:URL.createObjectURL(a.blob)}));
+    dubJobs=(await idbAll(DUB_ST.dub_jobs)).sort((a,b)=>b.id-a.id).map(j=>{ if(j.resultBlob) j.blobUrl=URL.createObjectURL(j.resultBlob); return j; });
+    if(!dubVideos.some(v=>v.id===dubSelVideo)) dubSelVideo=dubVideos[0]?dubVideos[0].id:null;
+    if(!dubAudios.some(a=>a.id===dubSelAudio)) dubSelAudio=dubAudios[0]?dubAudios[0].id:null;
+    for(const j of dubJobs){
+      if(j.status==='UPLOADING'||(['PENDING','RUNNING'].includes(j.status)&&!j.taskId)){ j.status='FAILED'; j.msg='Bị gián đoạn khi tải lên (trang bị đóng) — bấm Thử lại.'; dubSave(DUB_ST.dub_jobs,j); }
+    }
+  }catch(e){ console.warn('Khôi phục dữ liệu lồng tiếng lỗi:',e); }
+  renderDubVideos(); renderDubAudios(); renderJobs();
+  dubJobs.filter(j=>['PENDING','RUNNING'].includes(j.status)&&j.taskId).forEach(pollJob);
+}
+restoreP.then(dubRestore);
 
 drawWave();
 </script>
