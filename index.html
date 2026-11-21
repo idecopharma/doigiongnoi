@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phòng Thâu Studio — Giọng nói · Video AI · Lồng tiếng</title>
+<title>Phòng Thâu Studio — Video Grok · Thâu âm</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -371,6 +371,12 @@ details.dub-set{background:var(--panel);border:1px solid var(--line);border-radi
 .proxy-chip.bad{background:rgba(220,61,61,.08);color:var(--red);cursor:pointer}
 .g-prompt{width:100%;min-height:96px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-family:inherit;font-size:14px;line-height:1.5;outline:none;resize:vertical}
 .g-prompt:focus{border-color:var(--amber)}
+.g-src{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.g-src-btn{border:2px solid var(--line);background:var(--panel2);border-radius:12px;padding:12px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .15s}
+.g-src-btn small{font-weight:500;font-size:11.5px;color:var(--muted)}
+.g-src-btn:hover{border-color:var(--muted)}
+.g-src-btn.active{border-color:var(--amber);background:#fff8eb;color:var(--amber-ink);box-shadow:0 0 0 3px rgba(245,165,36,.15)}
+.g-img-hint{font-size:12px;color:var(--muted);margin-bottom:8px;text-align:right}
 .g-tip{font-size:12px;color:var(--muted);margin:8px 0 12px;line-height:1.5}
 .g-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
 .g-opts label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);font-weight:600}
@@ -385,6 +391,27 @@ details.dub-set{background:var(--panel);border:1px solid var(--line);border-radi
 .studio-flow .arr{color:#b9c2d3}
 .mode-tabs{flex-wrap:wrap}
 .mode-tab{min-width:150px}
+.fl-steps{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:16px;font-size:13px;font-weight:600;color:var(--muted)}
+.fl-steps span{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:99px}
+.fl-steps b{width:22px;height:22px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:11.5px;color:var(--text)}
+.fl-steps span.done{color:var(--green)} .fl-steps span.done b{background:var(--green);color:#fff;border-color:var(--green)}
+.fl-steps span.on{background:#fff8eb;color:var(--amber-ink)} .fl-steps span.on b{background:var(--amber);color:#241a05;border-color:var(--amber)}
+.fl-steps i{font-style:normal;color:#b9c2d3}
+.fl-card.locked{opacity:.45;pointer-events:none;filter:grayscale(.4)}
+.fl-stage{position:relative;background:#000;border-radius:14px;overflow:hidden;display:flex;justify-content:center}
+.fl-stage video{max-width:100%;max-height:440px;display:block}
+.fl-count{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:96px;font-weight:800;color:#fff;background:rgba(0,0,0,.35);text-shadow:0 4px 20px rgba(0,0,0,.5)}
+.fl-count.show{display:flex}
+.fl-recbadge{position:absolute;top:10px;left:10px;background:var(--red);color:#fff;font-weight:700;font-size:12px;border-radius:99px;padding:5px 11px;display:none;animation:blink 1.2s infinite}
+.fl-recbadge.show{display:block}
+.fl-wave{width:100%;height:46px;border-radius:10px;margin-top:10px;background:#f1f4fa;display:block}
+.fl-take{margin-top:12px}
+.fl-exist{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+.fl-exist-title{font-size:13px;color:var(--text);margin-bottom:8px}
+.fl-exist-title span{color:var(--muted);font-size:12px}
+.fl-exist .seg-item{padding:9px 12px;margin-bottom:8px}
+#flMurfSlot .card{box-shadow:none;border:1px dashed var(--line);margin-bottom:0}
+#flMurfSlot #btnConvertAll,#flMurfSlot #convProgressWrap{display:none!important}
 details.dub-set summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--muted)}
 details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
 .dub-set .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
@@ -414,31 +441,22 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
 <div class="app">
   <header>
     <h1>PHÒNG THÂU<span class="dot">●</span>STUDIO</h1>
-    <p>Giọng nói → Video AI (Grok) → Lồng tiếng khẩu hình (DreamFace) — trọn quy trình trong một trang</p>
+    <p>Tạo video AI bằng Grok (480p → 720p miễn phí) · Thâu âm, cắt file 3 phút, đổi giọng Murf</p>
   </header>
-  <div class="studio-flow" id="studioFlow">
-    <span class="sf" data-go="rec"><b>1</b>Giọng nói · thâu &amp; đổi giọng</span><span class="arr">→</span>
-    <span class="sf" data-go="grok"><b>2</b>Video AI · Grok 480p→720p</span><span class="arr">→</span>
-    <span class="sf" data-go="dub"><b>3</b>Lồng tiếng · DreamFace</span>
-  </div>
 
   <!-- Chế độ -->
   <div class="mode-tabs">
-    <button class="mode-tab active" id="tabRec">
+    <button class="mode-tab" id="tabGrok">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+      Video AI
+    </button>
+    <button class="mode-tab" id="tabRec">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4"/></svg>
       Thâu âm
     </button>
     <button class="mode-tab" id="tabUpload">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
       Cắt file upload
-    </button>
-    <button class="mode-tab" id="tabGrok">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
-      Video AI
-    </button>
-    <button class="mode-tab" id="tabDub">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="14" height="14" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>
-      Lồng tiếng video
     </button>
   </div>
 
@@ -577,31 +595,39 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
       <div class="row"><label>Kie API key</label><input type="password" id="kieKeyInput" autocomplete="off" placeholder="Dán API key Kie.ai (kie.ai → API Key)"><button class="icon-btn" id="kieKeyToggle">👁</button></div>
       <div class="row" style="justify-content:flex-end">
         <button class="btn-mini" id="kieTestBtn">🔌 Kiểm tra key &amp; credit</button>
-        <button class="btn-mini dl" id="kieSaveBtn">💾 Lưu (kèm Firebase)</button>
+        <button class="btn-mini dl" id="kieSaveBtn">💾 Lưu key (kèm Firebase)</button>
       </div>
       <div class="conn-status" id="kieConnStatus"></div>
-      <div class="note">Key Kie được lưu trên máy và đồng bộ lên Firebase cùng cấu hình lồng tiếng (nếu đã nhập Firebase URL ở tab Lồng tiếng). Nếu trình duyệt chặn gọi Kie (CORS), app tự đi qua Proxy Worker của tab Lồng tiếng.</div>
+      <div class="note">Key Kie và key Murf được lưu trên máy và đồng bộ qua Firebase bên dưới để các máy khác dùng chung.</div>
+      <div id="fbSlot"></div>
     </details>
 
     <div class="card">
-      <div class="dub-step"><span class="n">1</span><h2>Chọn ảnh nhân vật</h2><span class="hint">JPG/PNG/WEBP · ≤10MB<br>ảnh rõ mặt, nhìn thẳng</span></div>
+      <div class="dub-step"><span class="n">1</span><h2>Nguồn tạo video</h2><span class="hint">Grok Imagine</span></div>
+      <div class="g-src">
+        <button class="g-src-btn" data-src="text">📝 Từ văn bản<small>chỉ cần mô tả, không cần ảnh</small></button>
+        <button class="g-src-btn" data-src="image">🖼️ Từ ảnh<small>giữ đúng nhân vật trong ảnh</small></button>
+      </div>
+      <div id="gImgBox">
+      <div class="g-img-hint">JPG/PNG/WEBP · ≤10MB · ảnh rõ mặt, nhìn thẳng</div>
       <div class="dub-drop" id="giDrop">🖼️ Kéo thả hoặc <b>bấm để upload ảnh</b> — có thể chọn nhiều ảnh</div>
       <input type="file" id="giInput" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" multiple style="display:none">
       <div class="dv-grid" id="giGrid"></div>
+      </div>
     </div>
 
     <div class="card">
-      <div class="dub-step"><span class="n">2</span><h2>Mô tả chuyển động</h2><span class="hint">Grok Imagine · image-to-video</span></div>
-      <textarea class="g-prompt" id="gPrompt" placeholder="Ví dụ: Người phụ nữ mỉm cười, nhìn thẳng camera và nói chuyện tự nhiên, đầu khẽ gật, ánh sáng studio mềm, máy quay tĩnh."></textarea>
-      <div class="g-tip">💡 Để lồng tiếng đẹp: mô tả nhân vật <b>nhìn thẳng camera, đang nói</b>, máy quay tĩnh. Grok luôn tạo kèm âm thanh — không sao, bước lồng tiếng sẽ thay bằng giọng của bạn.</div>
+      <div class="dub-step"><span class="n">2</span><h2 id="gStep2Title">Mô tả video</h2><span class="hint" id="gStep2Hint">Grok Imagine</span></div>
+      <textarea class="g-prompt" id="gPrompt" placeholder="Ví dụ: Một dược sĩ nữ Việt Nam khoảng 30 tuổi, mặc áo blouse trắng, đứng trong nhà thuốc sáng sủa, mỉm cười nhìn thẳng camera và nói chuyện tự nhiên, máy quay tĩnh, ánh sáng studio mềm."></textarea>
+      <div class="g-tip">💡 Mô tả rõ nhân vật, bối cảnh, hành động và góc máy. Lời thoại viết trong mô tả sẽ được Grok đọc thành tiếng (video luôn có âm thanh).</div>
       <div class="g-opts">
         <label>Chế độ<select id="gMode"><option value="normal">Normal</option><option value="fun">Fun</option><option value="spicy">Spicy</option></select></label>
         <label>Thời lượng<select id="gDuration"><option value="6">6 giây</option><option value="10">10 giây</option></select></label>
         <label>Khung hình<select id="gAspect"><option value="9:16">9:16 dọc</option><option value="16:9">16:9 ngang</option><option value="1:1">1:1 vuông</option><option value="2:3">2:3</option><option value="3:2">3:2</option></select></label>
         <label>Độ phân giải<select id="gRes" disabled><option value="480p">480p (tạo nhanh)</option></select></label>
       </div>
-      <label class="dub-opt"><input type="checkbox" id="gAutoUp" checked style="accent-color:var(--amber)"> Tự nâng cấp lên <b>&nbsp;720p&nbsp;</b> ngay khi tạo xong</label>
-      <label class="dub-opt"><input type="checkbox" id="gAutoDub" style="accent-color:var(--amber)"> Xong là tự <b>&nbsp;chèn qua Lồng tiếng &amp; tạo luôn&nbsp;</b> (dùng audio đang chọn ở tab Lồng tiếng)</label>
+      <label class="dub-opt"><input type="checkbox" id="gAutoUp" checked style="accent-color:var(--amber)"> Tự nâng lên <b>&nbsp;720p bằng phần mềm trên máy&nbsp;</b> (miễn phí, không tốn credit Kie)</label>
+      <input type="checkbox" id="gAutoDub" style="display:none">
       <div class="controls">
         <button class="btn btn-dub" id="btnGrokCreate" disabled>🎞️ Tạo video AI</button>
       </div>
@@ -617,15 +643,16 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
     </div>
   </div>
 
-  <!-- ===== Tab: Lồng tiếng video (DreamFace · DreamAPI LipSync) ===== -->
+  <!-- ===== Tab: Lồng tiếng video (Kie volcengine lip-sync / ghép trực tiếp) ===== -->
   <div id="dubWrap" style="display:none">
     <details class="dub-set" id="dubSet">
-      <summary>⚙️ Cài đặt API lồng tiếng (DreamFace · DreamAPI)</summary>
-      <div class="row"><label>API key</label><input type="password" id="dubKeyInput" autocomplete="off" placeholder="sk-… (key DreamAPI tại api.newportai.com)"><button class="icon-btn" id="dubKeyToggle">👁</button></div>
-      <div class="row"><label>Model</label>
+      <summary>⚙️ Cài đặt lồng tiếng (Kie AI khớp khẩu hình · ghép tiếng trực tiếp)</summary>
+      <div class="row" style="display:none"><label>API key</label><input type="password" id="dubKeyInput" autocomplete="off" placeholder="sk-… (key DreamAPI tại api.newportai.com)"><button class="icon-btn" id="dubKeyToggle">👁</button></div>
+      <div class="row"><label>Cách lồng</label>
         <select id="dubModel">
-          <option value="lipsync2">LipSync 2.0 — khẩu hình chính xác hơn (khuyên dùng)</option>
-          <option value="lipsync1">LipSync 1.0 — nhanh, rẻ hơn</option>
+          <option value="kie_lite">Khớp môi AI · Kie Lite (khuyên dùng, ~8 credit/giây)</option>
+          <option value="kie_basic">Khớp môi AI · Kie Basic (nhiều cảnh/nhiều người)</option>
+          <option value="local">Ghép tiếng trực tiếp trên máy (miễn phí, AI không sửa môi)</option>
         </select>
       </div>
       <div class="row"><label>Proxy URL</label><input type="text" id="dubProxyInput" placeholder="https://long-tieng.idecocorp2015.workers.dev (dùng khi trình duyệt bị chặn CORS)"></div>
@@ -638,16 +665,16 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
           <button class="btn-mini" id="fbLoadBtn">⬇ Tải cấu hình từ Firebase</button>
           <button class="btn-mini dl" id="fbSaveBtn">⬆ Lưu lên Firebase</button>
         </div>
-        <div class="note" style="margin-top:8px">Chỉ lưu <b>cấu hình</b>: key DreamFace, key Kie, key Murf, model và Proxy URL tại <code>phong_thau/longtieng_config</code>. Máy nào mở app cũng tự tải về và tự cập nhật ngay khi có máy khác đổi (realtime). Bấm <b>Lưu cài đặt</b> cũng tự đẩy lên Firebase. Video lồng tiếng làm xong được <b>ghi link lên Firebase</b> để mọi máy xem/tải; còn audio, ảnh, video gốc chỉ lưu trên máy này.</div>
+        <div class="note" style="margin-top:8px">Chỉ lưu <b>cấu hình</b>: key Kie và key Murf tại <code>phong_thau/longtieng_config</code>. Máy nào mở app cũng tự tải về và tự cập nhật ngay khi có máy khác đổi (realtime).  Video, ảnh, audio chỉ lưu trên máy này.</div>
       </div>
       <div class="row" style="justify-content:flex-end">
-        <button class="btn-mini" id="dubTestConn">🔌 Kiểm tra kết nối &amp; số credit</button>
+        <button class="btn-mini" id="dubTestConn">🔌 Kiểm tra Kie &amp; số credit</button>
         <button class="btn-mini dl" id="dubSaveSet">💾 Lưu cài đặt</button>
       </div>
       <div class="conn-status" id="dubConnStatus"></div>
       <div class="guide" id="dubGuide">
         <div class="guide-title">🔒 Proxy (Cloudflare Worker) dùng khi nào?</div>
-        <div class="note">App gọi thẳng <b>api.newportai.com</b> trước. Nếu trình duyệt chặn (lỗi CORS), app tự chuyển qua Worker của bạn. Worker cũ đang chạy mã cho Alibaba, nên cần <b>dán lại mã mới</b> bên dưới (mã mới hỗ trợ cả DreamAPI):</div>
+        <div class="note">App gọi thẳng <b>api.kie.ai</b> trước. Nếu trình duyệt chặn (lỗi CORS), app tự chuyển qua Worker của bạn. Nếu cần, <b>dán lại mã Worker mới</b> bên dưới (hỗ trợ Kie):</div>
         <ol class="guide-steps">
           <li>Vào <a href="https://dash.cloudflare.com/" target="_blank" rel="noopener">dash.cloudflare.com</a> → <b>Workers &amp; Pages</b> → bấm vào Worker <code>long-tieng</code> → <b>Edit code</b>.</li>
           <li>Bấm vào vùng mã → <b>Ctrl+A</b> → <b>Delete</b>.</li>
@@ -682,7 +709,11 @@ details.dub-set[open] summary{margin-bottom:12px;color:var(--text)}
       <div class="dub-step"><span class="n">3</span><h2>Tạo video lồng tiếng</h2></div>
       <div style="text-align:center"><span class="proxy-chip" id="proxyChip"></span></div>
       <div class="dub-summary" id="dubSummary"></div>
-      <label class="dub-opt"><input type="checkbox" id="dubEnhance" checked style="accent-color:var(--amber)"> Làm nét khuôn mặt (video enhance)</label>
+      <label class="dub-opt" style="display:none"><input type="checkbox" id="dubEnhance" checked></label>
+      <div class="g-src dub-eng">
+        <button class="g-src-btn" data-eng="kie_lite">🤖 Khớp môi AI (Kie)<small>môi khớp chính xác · ~8 credit/giây</small></button>
+        <button class="g-src-btn" data-eng="local">⚡ Ghép tiếng trực tiếp<small>miễn phí · dùng khi đã thâu theo video</small></button>
+      </div>
       <div class="controls">
         <button class="btn btn-dub" id="btnDubCreate" disabled>✨ Tạo video lồng tiếng</button>
       </div>
@@ -1100,7 +1131,7 @@ function renderSegments(){
     const playingConv=i===playingIdx&&playingKind==='conv';
     let convBlock='';
     if(s.converting){
-      convBlock=`<div class="conv-hint"><span class="spinner" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:6px"></span>Đang đổi giọng…</div>`;
+      convBlock=`<div class="conv-hint"><span class="spinner" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:6px"></span>${esc(s.convertMsg||'Đang đổi giọng…')}</div>`;
     }else if(s.convertedBlob){
       convBlock=`<div class="seg-conv">
         <span class="vbadge">🎙 ${s.convertedVoiceName||'Đã đổi giọng'}</span>
@@ -1113,13 +1144,12 @@ function renderSegments(){
         <button class="btn-mini dl" data-a="dl" data-k="conv" data-i="${i}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg> Tải về
         </button>
-        <button class="btn-mini ins" data-a="ins" data-i="${i}" title="Chèn vào tab Lồng tiếng video">🎬 Chèn</button>
         <button class="btn-mini del" data-a="delconv" data-i="${i}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0l1 13h8l1-13"/></svg> Xóa bản đổi giọng
         </button>
       </div>`;
     }else if(s.convertError){
-      convBlock=`<div class="conv-hint" style="color:var(--red)">Lỗi đổi giọng — <button class="btn-mini conv" data-a="conv" data-i="${i}" style="padding:3px 8px">Thử lại</button></div>`;
+      convBlock=`<div class="conv-hint" style="color:var(--red)">Lỗi đổi giọng: ${esc(s.convertErrMsg||'không rõ')} — <button class="btn-mini conv" data-a="conv" data-i="${i}" style="padding:3px 8px">Thử lại</button></div>`;
     }
     d.innerHTML=`
       <div class="idx">#${String(i+1).padStart(2,'0')}</div>
@@ -1179,7 +1209,8 @@ segList.onclick=e=>{
     renderSegments();
   }
   if(a==='ins'){
-    dubInsertAudio(s.convertedBlob, s.convertedName, 'murf');
+    if(typeof FL!=='undefined'&&FL.video){ setMode('flow'); setTimeout(()=>{ const k='s'+(s.id??i); const btn=document.querySelector('[data-fx="'+k+'"]'); if(btn) btn.click(); else flMsg('Chọn lại giọng trong danh sách ở bước 2.'); },400); }
+    else dubInsertAudio(s.convertedBlob, s.convertedName, 'murf');
   }
   if(a==='conv'){
     s.convertError=false;
@@ -1202,17 +1233,16 @@ btnDlAll.onclick=()=>{
 const tabRec=$('tabRec'), tabUpload=$('tabUpload'),
       micCard=$('micCard'), recCard=$('recCard'), uploadCard=$('uploadCard');
 function setMode(mode){
+  if(mode==='dub'||mode==='flow') mode='grok'; // đã bỏ phần lồng tiếng
   tabRec.classList.toggle('active',mode==='rec');
   tabUpload.classList.toggle('active',mode==='upload');
   $('tabGrok').classList.toggle('active',mode==='grok');
-  $('tabDub').classList.toggle('active',mode==='dub');
   micCard.style.display=recCard.style.display=mode==='rec'?'':'none';
   uploadCard.style.display=mode==='upload'?'':'none';
-  const studio=mode==='dub'||mode==='grok';
-  $('dubWrap').style.display=mode==='dub'?'':'none';
-  $('grokWrap').style.display=mode==='grok'?'':'none';
-  $('segCard').style.display=$('murfCard').style.display=$('mergeCard').style.display=studio?'none':'';
-  document.querySelectorAll('#studioFlow .sf').forEach(el=>el.classList.toggle('on',el.dataset.go===(mode==='upload'?'rec':mode)));
+  const studio=mode==='grok';
+  $('dubWrap').style.display='none';
+  $('grokWrap').style.display=studio?'':'none';
+  $('segCard').style.display=$('mergeCard').style.display=$('murfCard').style.display=studio?'none':'';
 }
 tabRec.onclick=()=>setMode('rec');
 $('tabGrok').onclick=()=>{
@@ -1220,11 +1250,7 @@ $('tabGrok').onclick=()=>{
   setMode('grok');
 };
 document.querySelectorAll('#studioFlow .sf').forEach(el=>el.onclick=()=>{ if(isRecording&&el.dataset.go!=='rec'){ showErr('Đang thâu âm — hãy dừng thâu trước.'); return; } setMode(el.dataset.go); window.scrollTo({top:0,behavior:'smooth'}); });
-document.querySelector('#studioFlow .sf[data-go="rec"]').classList.add('on');
-$('tabDub').onclick=()=>{
-  if(isRecording){ showErr('Đang thâu âm — hãy dừng thâu trước khi chuyển sang lồng tiếng video.'); return; }
-  setMode('dub');
-};
+
 tabUpload.onclick=()=>{
   if(isRecording){ showErr('Đang thâu âm — hãy dừng thâu trước khi chuyển sang chế độ cắt file.'); return; }
   setMode('upload');
@@ -1350,7 +1376,7 @@ async function fetchVoicesForModel(model){
     const res=await fetch(`${MURF_API}/speech/voices?model=${model}`,{headers:{'api-key':murfApiKey}});
     if(!res.ok) return [];
     const arr=await res.json();
-    return Array.isArray(arr)?arr:[];
+    return Array.isArray(arr)?arr.map(v=>({...v,_model:model})):[];
   }catch(e){ return []; }
 }
 btnLoadVoices.onclick=async()=>{
@@ -1359,7 +1385,7 @@ btnLoadVoices.onclick=async()=>{
   try{
     const [falcon,gen2]=await Promise.all([fetchVoicesForModel('FALCON'),fetchVoicesForModel('GEN2')]);
     const seen=new Set(), merged=[];
-    [...falcon,...gen2].forEach(v=>{ if(v&&v.voiceId&&!seen.has(v.voiceId)){seen.add(v.voiceId);merged.push(v);} });
+    [...gen2,...falcon].forEach(v=>{ if(v&&v.voiceId&&!seen.has(v.voiceId)){seen.add(v.voiceId);merged.push(v);} });
     if(!merged.length) throw new Error('Không tải được giọng nào — kiểm tra API key');
     voiceList=merged;
     voiceSearch.disabled=false;
@@ -1399,9 +1425,9 @@ function renderVoiceGrid(filter){
           const active=selectedVoice&&selectedVoice.voiceId===v.voiceId;
           const genderIcon=v.gender==='Male'?'♂':v.gender==='Female'?'♀':'⚧';
           const label=(v.displayName||v.voiceId)+' · '+k;
-          return `<div class="voice-card${active?' active':''}" data-vid="${v.voiceId}" data-label="${label.replace(/"/g,'&quot;')}">
+          return `<div class="voice-card${active?' active':''}" data-vid="${v.voiceId}" data-model="${v._model||''}" data-label="${label.replace(/"/g,'&quot;')}">
             <div class="vname">${genderIcon} ${v.displayName||v.voiceId}</div>
-            <div class="vsub">${v.description||''}</div>
+            <div class="vsub">${v.description||''}${v._model?' · '+v._model:''}</div>
           </div>`;
         }).join('')}
       </div>
@@ -1409,58 +1435,82 @@ function renderVoiceGrid(filter){
 }
 voiceGrid.onclick=e=>{
   const c=e.target.closest('.voice-card'); if(!c)return;
-  selectedVoice={voiceId:c.dataset.vid,label:c.dataset.label};
+  selectedVoice={voiceId:c.dataset.vid,label:c.dataset.label,model:c.dataset.model||''};
   localStorage.setItem('murf_selected_voice',JSON.stringify(selectedVoice));
   updateVoiceChip(); renderVoiceGrid(voiceSearch.value);
 };
 
+/* ---------- Đổi giọng Murf: chuẩn hoá audio + tự thử lại + báo lỗi rõ ---------- */
+const MURF_MAX_SEC=179.5;
+async function murfPrepAudio(blob){
+  // giảm dung lượng: mono 24kHz, cắt ≤179.5s (Murf từ chối file dài hơn 3 phút)
+  const ac=new (window.AudioContext||window.webkitAudioContext)();
+  let buf; try{ buf=await ac.decodeAudioData(await blob.arrayBuffer()); } finally{ ac.close(); }
+  const sr=24000, dur=Math.min(buf.duration,MURF_MAX_SEC);
+  const oc=new OfflineAudioContext(1,Math.ceil(dur*sr),sr);
+  const s=oc.createBufferSource(); s.buffer=buf; s.connect(oc.destination); s.start(0,0,dur);
+  const r=await oc.startRendering(); const d=r.getChannelData(0);
+  return {blob:encodeWAV([d],sr,d.length),dur,trimmed:buf.duration>MURF_MAX_SEC+0.05};
+}
+function murfErrText(status,j){
+  const m=j&&(j.errorMessage||j.message||j.error)||'';
+  if(status===402) return 'Tài khoản Murf hết lượt/hết hạn (402). '+m;
+  if(status===403||status===401) return 'API key Murf sai hoặc hết hạn ('+status+'). '+m;
+  if(status===400) return 'Murf từ chối yêu cầu (400): '+(m||'tham số hoặc file không hợp lệ')+(selectedVoice&&selectedVoice.model==='FALCON'?' — giọng Falcon có thể không hỗ trợ đổi giọng, hãy chọn giọng Gen2.':'');
+  if(status===413) return 'File quá lớn (413).';
+  return 'HTTP '+status+(m?': '+m:'');
+}
+async function murfConvertBlob(blob,name,onStatus){
+  if(!murfApiKey) throw new Error('Chưa có Murf API key — nhập và lưu key ở mục Đổi giọng.');
+  if(!selectedVoice) throw new Error('Chưa chọn giọng Murf — bấm "Tải danh sách giọng" rồi chọn 1 giọng.');
+  const prep=await murfPrepAudio(blob);
+  const fname=(name||'audio').replace(/\.\w+$/,'')+'.wav';
+  let lastErr;
+  for(let attempt=1;attempt<=3;attempt++){
+    const fd=new FormData();
+    fd.append('file',prep.blob,fname); fd.append('voice_id',selectedVoice.voiceId);
+    fd.append('format','WAV'); fd.append('sample_rate','44100'); fd.append('channel_type','MONO');
+    fd.append('encode_output_as_base64','true');
+    let res;
+    try{ res=await fetch(`${MURF_API}/voice-changer/convert`,{method:'POST',headers:{'api-key':murfApiKey},body:fd}); }
+    catch(e){ lastErr=new Error('Không kết nối được Murf (mạng chập chờn hoặc bị chặn).'); if(onStatus) onStatus('Mạng lỗi — thử lại lần '+(attempt+1)+'/3…'); await new Promise(r=>setTimeout(r,2500*attempt)); continue; }
+    let j=null; try{ j=await res.json(); }catch(_){}
+    if(res.ok&&j){
+      let out=null;
+      if(j.encoded_audio){ const bin=atob(j.encoded_audio), u=new Uint8Array(bin.length); for(let k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k); out=new Blob([u],{type:'audio/wav'}); }
+      else if(j.audio_file){ const ar=await fetch(j.audio_file); if(ar.ok) out=await ar.blob(); }
+      if(out&&out.size>1000) return {blob:out,trimmed:prep.trimmed,warning:j.warning||''};
+      lastErr=new Error('Murf trả về kết quả rỗng');
+    }else{
+      lastErr=new Error(murfErrText(res.status,j));
+      if(![429,500,502,503,504].includes(res.status)) throw lastErr; // lỗi do key/tham số → không thử lại
+    }
+    if(attempt<3){ if(onStatus) onStatus('Murf bận ('+(res&&res.status||'')+') — tự thử lại lần '+(attempt+1)+'/3…'); await new Promise(r=>setTimeout(r,3000*attempt)); }
+  }
+  throw lastErr||new Error('Đổi giọng thất bại');
+}
 async function convertSegment(seg){
   if(!murfApiKey){ showMurfErr('Vui lòng nhập và lưu API key trước.'); return; }
   if(!selectedVoice){ showMurfErr('Vui lòng chọn một giọng trong danh sách trước.'); return; }
-  seg.converting=true; renderSegments();
+  seg.converting=true; seg.convertMsg='Đang đổi giọng…'; seg.convertErrMsg=''; renderSegments();
   try{
-    const fd=new FormData();
-    fd.append('file', seg.blob, seg.name);
-    fd.append('voice_id', selectedVoice.voiceId);
-    fd.append('format','WAV');
-    fd.append('sample_rate','44100');
-    fd.append('channel_type','MONO');
-    fd.append('encode_output_as_base64','true');
-    const res=await fetch(`${MURF_API}/voice-changer/convert`,{method:'POST',headers:{'api-key':murfApiKey},body:fd});
-    if(!res.ok){
-      let msg='HTTP '+res.status;
-      try{ const j=await res.json(); if(j&&(j.errorMessage||j.message)) msg+=': '+(j.errorMessage||j.message); }catch(_){}
-      throw new Error(msg);
-    }
-    const data=await res.json();
-    let convBlob=null;
-    if(data.encoded_audio){
-      const bin=atob(data.encoded_audio);
-      const bytes=new Uint8Array(bin.length);
-      for(let k=0;k<bin.length;k++) bytes[k]=bin.charCodeAt(k);
-      convBlob=new Blob([bytes],{type:'audio/wav'});
-    }else if(data.audio_file){
-      const ar=await fetch(data.audio_file);
-      if(!ar.ok) throw new Error('Không tải được file kết quả (HTTP '+ar.status+')');
-      convBlob=await ar.blob();
-    }else{
-      throw new Error('Không nhận được audio kết quả từ Murf');
-    }
+    const r=await murfConvertBlob(seg.blob,seg.name,m=>{ seg.convertMsg=m; renderSegments(); });
     if(seg.convertedUrl) URL.revokeObjectURL(seg.convertedUrl);
-    seg.convertedBlob=convBlob;
-    seg.convertedUrl=URL.createObjectURL(convBlob);
+    seg.convertedBlob=r.blob;
+    seg.convertedUrl=URL.createObjectURL(r.blob);
     seg.convertedName=seg.name.replace(/\.wav$/i,'')+'_giong_'+selectedVoice.voiceId+'.wav';
     seg.convertedVoiceName=selectedVoice.label;
     seg.convertError=false;
+    if(r.trimmed) showMurfErr('Lưu ý: "'+seg.name+'" dài hơn 179,5 giây nên phần cuối đã được cắt cho vừa giới hạn của Murf.',true);
     if(db&&seg.id!=null){
       await dbPut({id:seg.id,blob:seg.blob,dur:seg.dur,name:seg.name,created:seg.created,
         convertedBlob:seg.convertedBlob,convertedName:seg.convertedName,convertedVoiceName:seg.convertedVoiceName});
     }
   }catch(e){
-    seg.convertError=true;
-    showMurfErr('Lỗi đổi giọng "'+seg.name+'": '+e.message+(/Failed to fetch/i.test(e.message)?' — có thể do CORS hoặc API key sai.':''));
+    seg.convertError=true; seg.convertErrMsg=e.message;
+    showMurfErr('Lỗi đổi giọng "'+seg.name+'": '+e.message);
   }
-  seg.converting=false;
+  seg.converting=false; seg.convertMsg='';
   renderSegments();
 }
 
@@ -1565,7 +1615,6 @@ function renderMerged(){
         <button class="btn-mini dl" id="btnDlMerged">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg> Tải về
         </button>
-        <button class="btn-mini ins" id="btnInsMerged" title="Chèn vào tab Lồng tiếng video">🎬 Chèn</button>
         <button class="btn-mini del" id="btnDelMerged">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0l1 13h8l1-13"/></svg> Xóa file nối
         </button>
@@ -1580,7 +1629,6 @@ function renderMerged(){
     playingAudio.play();
     renderSegments(); renderMerged();
   };
-  $('btnInsMerged').onclick=()=>dubInsertAudio(mergedFile.blob, mergedFile.name, 'merged');
   $('btnDlMerged').onclick=()=>{
     const l=document.createElement('a'); l.href=mergedFile.url; l.download=mergedFile.name; l.click();
   };
@@ -1596,20 +1644,21 @@ function renderMerged(){
 
 
 /* =====================================================================
-   TAB LỒNG TIẾNG VIDEO — DreamFace · DreamAPI LipSync (api.newportai.com)
+   TAB LỒNG TIẾNG VIDEO — engine Kie volcengine/video-to-video-lip-sync + ghép trực tiếp
    ===================================================================== */
 const DF_BASE='https://api.newportai.com', DF_HOST='api.newportai.com';
 const DUB_KEY_DEFAULT='sk-cf339132b28c4e11bd95adfe332c1ba0'; // key DreamAPI nhúng sẵn
 const DUB_KEY_OLD=['sk-1182b5bd89a847018aa60edff2f59cb1','sk-ws-H.YXXXIDD.QSzv.MEUCICoqZC5vObARhY1b9LDpREq_N0WoP95aJCsK-eRAjzZiAiEAujTpwSeOUyGQnuEF8eVuzS-YPbSamK1iGr6vLpSzus4'];
 const DUB_PROXY_DEFAULT='https://long-tieng.idecocorp2015.workers.dev';
-const DF_MODELS={lipsync2:{path:'/api/async/lipsync/2.0',label:'LipSync 2.0'},lipsync1:{path:'/api/async/lipsync',label:'LipSync 1.0'}};
+const DF_MODELS={kie_lite:{label:'Khớp môi AI · Kie Lite'},kie_basic:{label:'Khớp môi AI · Kie Basic'},local:{label:'Ghép tiếng trực tiếp (miễn phí)'},lipsync2:{label:'DreamFace LipSync 2.0 (cũ)'},lipsync1:{label:'DreamFace LipSync 1.0 (cũ)'}};
+const DUB_ENGINES=['kie_lite','kie_basic','local'];
 const DUB_MAX_AUDIO=180, DUB_MIN_DUR=2, DUB_VIDEO_MAX=180;
 const DUB_ST={dub_videos:'dub_videos',dub_audios:'dub_audios',dub_jobs:'dub_jobs'};
 const DF_URL_TTL=20*3600e3; // dùng lại link file đã upload trong 20 giờ
 
 let dubKey=localStorage.getItem('dub_api_key')||DUB_KEY_DEFAULT;
 if(DUB_KEY_OLD.includes(dubKey)){ dubKey=DUB_KEY_DEFAULT; localStorage.setItem('dub_api_key',dubKey); }
-let dubModel=localStorage.getItem('dub_model')||'lipsync2'; if(!DF_MODELS[dubModel]) dubModel='lipsync2';
+let dubModel=localStorage.getItem('dub_model')||'kie_lite'; if(!DUB_ENGINES.includes(dubModel)){ dubModel='kie_lite'; localStorage.setItem('dub_model',dubModel); }
 let dubProxy=localStorage.getItem('dub_proxy')||DUB_PROXY_DEFAULT;
 let dfViaProxy=localStorage.getItem('df_via_proxy')==='1'; // nhớ: gọi trực tiếp bị CORS → dùng proxy
 let dubVideos=[], dubAudios=[], dubJobs=[];
@@ -1653,11 +1702,10 @@ const dubKeyInput=$('dubKeyInput'), dubModelSel=$('dubModel'), dubProxyInput=$('
 dubKeyInput.value=dubKey; dubModelSel.value=dubModel; dubProxyInput.value=dubProxy;
 $('dubWorkerText').value=$('workerSrc').textContent.trim();
 function setConn(kind,msg){ const el=$('dubConnStatus'); el.className='conn-status show '+kind; el.textContent=msg; }
-function dubKeyProblem(k){
-  k=(k||'').trim();
-  if(!k) return 'Chưa nhập API key DreamAPI.';
-  if(/^sk-(ws|sp)[-.]/i.test(k)) return 'Đây là key Alibaba Token Plan, không phải key DreamFace. Lấy key tại api.newportai.com (dạng sk- + 32 ký tự).';
-  if(!/^sk-[A-Za-z0-9]{16,}$/.test(k)) return 'API key có định dạng lạ ('+k.slice(0,6)+'…). Key DreamAPI có dạng sk- + 32 ký tự chữ/số.';
+function dubKeyProblem(){
+  if(dubModel==='local') return '';
+  let k=''; try{ k=kieKey; }catch(_){}
+  if(!k) return 'Chưa có Kie API key — nhập ở tab Video AI → ⚙️ Cài đặt Kie API.';
   return '';
 }
 dubKeyInput.addEventListener('input',()=>{ const kp=dubKeyProblem(dubKeyInput.value); if(kp) setConn('bad','⚠ '+kp); else $('dubConnStatus').classList.remove('show'); });
@@ -1675,7 +1723,8 @@ function readDubSettings(){
 function renderProxyChip(){
   const c=$('proxyChip');
   c.className='proxy-chip ok'; c.onclick=null;
-  c.textContent='🟢 '+DF_MODELS[dubModel].label+' · '+(dfViaProxy&&dubProxy?'qua Proxy '+dubProxy.replace(/^https?:\/\//,''):'gọi trực tiếp DreamAPI'+(dubProxy?' (dự phòng: Proxy)':''));
+  c.textContent='🟢 '+DF_MODELS[dubModel].label+(dubModel==='local'?' · xử lý ngay trên máy':' · Kie '+((()=>{try{return kieViaProxy}catch(_){return false}})()?'qua Proxy':'gọi trực tiếp'));
+  document.querySelectorAll('[data-eng]').forEach(b=>b.classList.toggle('active',b.dataset.eng===dubModel||(b.dataset.eng==='kie_lite'&&dubModel==='kie_basic')));
 }
 function openDubGuide(){
   setMode('dub'); const s=$('dubSet'); s.open=true;
@@ -1756,15 +1805,16 @@ $('dubSaveSet').onclick=async()=>{
 };
 $('dubTestConn').onclick=async()=>{
   if(!readDubSettings()) return;
-  const kp=dubKeyProblem(dubKey); if(kp){ setConn('bad','✕ '+kp); return; }
-  setConn('wait','Đang kiểm tra kết nối DreamAPI…');
+  if(!kieKey){ setConn('bad','✕ Chưa có Kie API key (tab Video AI → Cài đặt).'); return; }
+  setConn('wait','Đang kiểm tra Kie…');
   try{
-    const d=await dfCall('/api/remaining_credits',{},true);
-    const cr=d.remainingCredits??d.remaining_credits??d.credits??d.balance??(typeof d==='number'?d:null);
-    setConn('ok','✓ Kết nối tốt — API key hợp lệ'+(cr!=null?' · Credit còn lại: '+cr:'')+(dfViaProxy?' (qua Proxy)':' (gọi trực tiếp)')+'. Có thể tạo video lồng tiếng.');
+    const cr=await kieGet('/api/v1/chat/credit');
+    setConn('ok','✓ Kie kết nối tốt'+(cr!=null?' · Credit còn lại: '+cr:'')+(kieViaProxy?' (qua Proxy)':' (gọi trực tiếp)')+'. Có thể lồng tiếng khớp khẩu hình.');
   }catch(e){ setConn('bad','✕ '+e.message); }
 };
-dubModelSel.onchange=()=>{ dubModel=dubModelSel.value; localStorage.setItem('dub_model',dubModel); renderProxyChip(); };
+function setDubEngine(m){ if(!DUB_ENGINES.includes(m)) return; dubModel=m; dubModelSel.value=m; localStorage.setItem('dub_model',m); renderProxyChip(); }
+dubModelSel.onchange=()=>setDubEngine(dubModelSel.value);
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-eng]'); if(b) setDubEngine(b.dataset.eng); });
 renderProxyChip();
 
 /* ---------- Firebase Realtime: lưu & đồng bộ API key + Proxy + model ---------- */
@@ -1804,7 +1854,7 @@ function applyRemoteConfig(c,from){
   if(c.murfKey){ murfApiKey=c.murfKey; murfKeyInput.value=c.murfKey; localStorage.setItem('murf_api_key',c.murfKey); }
   if(c.kieKey){ kieKey=c.kieKey; kieKeyInput.value=c.kieKey; localStorage.setItem('kie_api_key',c.kieKey); }
   if(c.apiKey){ dubKey=c.apiKey; dubKeyInput.value=c.apiKey; localStorage.setItem('dub_api_key',c.apiKey); }
-  if(c.model&&DF_MODELS[c.model]){ dubModel=c.model; dubModelSel.value=c.model; localStorage.setItem('dub_model',c.model); }
+  if(c.model&&DUB_ENGINES.includes(c.model)){ dubModel=c.model; dubModelSel.value=c.model; localStorage.setItem('dub_model',c.model); }
   if(typeof c.proxy==='string'){ dubProxy=c.proxy; dubProxyInput.value=c.proxy; localStorage.setItem('dub_proxy',c.proxy); }
   renderProxyChip();
   const when=c.updatedAt?new Date(c.updatedAt).toLocaleString('vi-VN'):'';
@@ -1995,40 +2045,79 @@ $('btnDubCreate').onclick=()=>{
   if(kp){ showDubMsg(kp); const s=$('dubSet'); s.open=true; setConn('bad','✕ '+kp); s.scrollIntoView({behavior:'smooth'}); return; }
   createDubJob(v,a,$('dubEnhance').checked,dubModel);
 };
+/* ===== ENGINE LỒNG TIẾNG MỚI (thay DreamFace) =====
+   • kie_lite / kie_basic : Kie · volcengine/video-to-video-lip-sync — AI sửa khẩu hình theo giọng (≈8 credit/giây)
+   • local                : Ghép tiếng trực tiếp trên máy — thay tiếng video bằng giọng mới, miễn phí            */
+async function audioForKie(blob,name){
+  // Kie giới hạn audio ≤10MB → WAV quá lớn thì hạ xuống 16kHz mono
+  if(blob.size<=9.5*1048576) return {blob,name};
+  const ac=new (window.AudioContext||window.webkitAudioContext)(); const buf=await ac.decodeAudioData(await blob.arrayBuffer()); ac.close();
+  const sr=16000, oc=new OfflineAudioContext(1,Math.ceil(buf.duration*sr),sr);
+  const s=oc.createBufferSource(); s.buffer=buf; s.connect(oc.destination); s.start(0);
+  const r=await oc.startRendering(); const d=r.getChannelData(0);
+  return {blob:encodeWAV([d],sr,d.length),name:name.replace(/\.\w+$/,'')+'_16k.wav'};
+}
+async function ensureKieUploaded(rec,store,kind){
+  if(rec.kieUrl&&rec.kieExp>Date.now()) return rec.kieUrl;
+  let up={blob:rec.blob,name:rec.name};
+  if(kind==='audio') up=await audioForKie(rec.blob,rec.name);
+  if(kind==='video'&&/webm/i.test(rec.blob.type||rec.name)) throw new Error('Kie không nhận video WEBM — hãy dùng bản 480p (MP4) hoặc video MP4/MOV.');
+  rec.kieUrl=await kieUpload(up.blob,up.name); rec.kieExp=Date.now()+20*3600e3; await dubSave(store,rec);
+  return rec.kieUrl;
+}
+/* Ghép tiếng trực tiếp: phát video (lặp nếu ngắn hơn giọng), vẽ lên canvas, ghi kèm audio mới */
+async function muxLocal(videoBlob,audioBlob,onProg){
+  const ac=new (window.AudioContext||window.webkitAudioContext)();
+  const abuf=await ac.decodeAudioData(await audioBlob.arrayBuffer());
+  const v=document.createElement('video'), vu=URL.createObjectURL(videoBlob);
+  v.src=vu; v.muted=true; v.playsInline=true; v.loop=true; v.preload='auto';
+  await new Promise((res,rej)=>{ v.onloadedmetadata=res; v.onerror=()=>rej(new Error('Không đọc được video')); });
+  const W=v.videoWidth&~1, H=v.videoHeight&~1;
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H; const c=cv.getContext('2d');
+  const vs=cv.captureStream(30), dest=ac.createMediaStreamDestination();
+  const src=ac.createBufferSource(); src.buffer=abuf; src.connect(dest);
+  const mime=['video/mp4;codecs=avc1.640028,mp4a.40.2','video/mp4;codecs=avc1,mp4a','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(m=>window.MediaRecorder&&MediaRecorder.isTypeSupported(m));
+  if(!mime) throw new Error('Trình duyệt không hỗ trợ ghi video (hãy dùng Chrome/Edge)');
+  const mr=new MediaRecorder(new MediaStream([...vs.getVideoTracks(),...dest.stream.getAudioTracks()]),{mimeType:mime,videoBitsPerSecond:5000000,audioBitsPerSecond:160000});
+  const chunks=[]; mr.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+  const stopped=new Promise(r=>mr.onstop=r);
+  let running=true; const draw=()=>c.drawImage(v,0,0,W,H);
+  v.currentTime=0; await new Promise(r=>{ v.onseeked=r; setTimeout(r,400); }); draw();
+  mr.start(500); await ac.resume(); await v.play();
+  const t0=ac.currentTime+0.05; src.start(t0);
+  const loop=()=>{ if(!running) return; draw(); if(onProg) onProg(Math.min(1,(ac.currentTime-t0)/abuf.duration)); requestAnimationFrame(loop); }; loop();
+  await new Promise(r=>{ src.onended=r; setTimeout(r,(abuf.duration+5)*1000); });
+  running=false; draw(); await new Promise(r=>setTimeout(r,150));
+  mr.stop(); await stopped; v.pause(); ac.close(); vs.getTracks().forEach(t=>t.stop()); URL.revokeObjectURL(vu);
+  const type=mime.split(';')[0];
+  return {blob:new Blob(chunks,{type}),ext:type==='video/mp4'?'mp4':'webm'};
+}
 async function createDubJob(v,a,enhance,model){
-  model=DF_MODELS[model]?model:'lipsync2';
+  model=DF_MODELS[model]?model:'kie_lite';
+  const local=model==='local';
   const job={videoId:v.id,audioId:a.id,videoName:v.name,audioName:a.name,audioDur:a.dur,enhance,model,
-             status:'UPLOADING',msg:'Đang tải video lên DreamFace…',created:Date.now()};
+             status:local?'RUNNING':'UPLOADING',msg:local?'Đang ghép tiếng trên máy…':'Đang tải video lên Kie…',created:Date.now()};
   await dubSave(DUB_ST.dub_jobs,job);
   dubJobs.unshift(job); renderJobs();
-  showDubMsg('Đã gửi yêu cầu — video sẽ xuất hiện trong danh sách bên dưới.',true);
+  showDubMsg(local?'Đang ghép tiếng trực tiếp — giữ tab này mở.':'Đã gửi yêu cầu khớp khẩu hình AI — video sẽ hiện bên dưới.',true);
   try{
-    const vurl=await ensureUploaded(v,DUB_ST.dub_videos);
-    job.msg='Đang tải audio lên DreamFace…'; updateJobRow(job);
-    const aurl=await ensureUploaded(a,DUB_ST.dub_audios);
-    job.msg='Đang gửi yêu cầu tạo video…'; updateJobRow(job);
-    const body=model==='lipsync2'
-      ? {srcVideoUrl:vurl,audioUrl:aurl,videoParams:{video_width:0,video_height:0,video_enhance:enhance?1:0,fps:'25'}}
-      : {srcVideoUrl:vurl,audioUrl:aurl,videoParams:{video_width:0,video_height:0,video_enhance:!!enhance}};
-    // Máy chủ bận (13015, tài khoản miễn phí bị xếp hàng) → tự thử lại, không báo lỗi ngay
-    const BUSY_MAX=20, BUSY_WAIT=30;
-    let r=null;
-    for(let tryN=1;;tryN++){
-      try{ r=await dfCall(DF_MODELS[model].path,body); break; }
-      catch(e){
-        const busy=/^\[(13015|429)\]|busy|rate limit/i.test(e.message);
-        if(!busy||tryN>=BUSY_MAX||!dubJobs.includes(job)) throw new Error(busy?'Máy chủ DreamFace vẫn bận sau '+BUSY_MAX+' lần thử. Tài khoản miễn phí bị xếp hàng giờ cao điểm — nạp thêm credit tại api.newportai.com hoặc thử lại sau. ('+e.message+')':e.message);
-        for(let s=BUSY_WAIT;s>0;s--){
-          if(!dubJobs.includes(job)) throw new Error('Đã hủy');
-          job.status='PENDING';
-          job.msg=`DreamFace đang bận (tài khoản miễn phí phải xếp hàng) — tự gửi lại sau ${s}s · lần ${tryN}/${BUSY_MAX}`;
-          if(s%5===0||s===BUSY_WAIT) updateJobRow(job);
-          await new Promise(res=>setTimeout(res,1000));
-        }
-        job.msg='Đang gửi lại yêu cầu tạo video…'; updateJobRow(job);
-      }
+    if(local){
+      let last=-1;
+      const r=await muxLocal(v.blob,a.blob,p=>{ const pc=Math.round(p*100); if(pc-last>=10){ last=pc; job.msg='Đang ghép tiếng trên máy… '+pc+'%'; updateJobRow(job); } });
+      job.resultBlob=r.blob; job.blobUrl=URL.createObjectURL(r.blob); job.ext=r.ext;
+      job.status='SUCCEEDED'; job.finished=Date.now(); job.msg='';
+      await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job);
+      showDubMsg('Đã ghép tiếng xong (miễn phí).',true);
+      return;
     }
-    if(!r||!r.taskId) throw new Error('Không nhận được mã tác vụ (taskId)');
+    const vurl=await ensureKieUploaded(v,DUB_ST.dub_videos,'video');
+    job.msg='Đang tải giọng lên Kie…'; updateJobRow(job);
+    const aurl=await ensureKieUploaded(a,DUB_ST.dub_audios,'audio');
+    job.msg='Đang gửi yêu cầu khớp khẩu hình…'; updateJobRow(job);
+    const input={video_url:vurl,audio_url:aurl,mode:model==='kie_basic'?'basic':'lite',separate_vocal:false};
+    if(model!=='kie_basic') input.align_audio=true; // giọng dài hơn video → tự lặp video
+    const r=await kiePost('/api/v1/jobs/createTask',{model:'volcengine/video-to-video-lip-sync',input});
+    if(!r||!r.taskId) throw new Error('Kie không trả về taskId');
     job.taskId=r.taskId; job.status='PENDING'; job.msg='Đang xếp hàng…';
     await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job);
     pollJob(job);
@@ -2038,39 +2127,32 @@ async function createDubJob(v,a,enhance,model){
 }
 async function pollJob(job){
   if(!job.taskId||dubPolling.has(job)) return; dubPolling.add(job);
-  let errCount=0;
+  const lbl={waiting:'Đang chờ…',queuing:'Đang xếp hàng…',generating:'AI đang khớp khẩu hình theo giọng…'};
   while(dubJobs.includes(job)){
-    await new Promise(r=>setTimeout(r,6000));
-    if(!dubJobs.includes(job)) break;
+    await new Promise(r=>setTimeout(r,6000)); if(!dubJobs.includes(job)) break;
     try{
-      const d=await dfCall('/api/getAsyncResult',{taskId:job.taskId});
-      const t=d.task||{}; const st=t.status; errCount=0;
-      if(st===3){
-        const vid=(d.videos||[])[0];
-        if(!vid||!vid.videoUrl){ job.status='FAILED'; job.msg='Tác vụ xong nhưng không có video trả về'; await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); break; }
-        job.resultUrl=vid.videoUrl; job.finished=Date.now(); job.status='SUCCEEDED';
+      const d=await kieGet('/api/v1/jobs/recordInfo?taskId='+encodeURIComponent(job.taskId));
+      if(d.state==='success'){
+        let urls=[]; try{ urls=(JSON.parse(d.resultJson||'{}').resultUrls)||[]; }catch(_){}
+        if(!urls[0]) throw new Error('Kie báo xong nhưng không có link video');
+        job.resultUrl=urls[0]; job.finished=Date.now(); job.status='SUCCEEDED'; job.credits=d.creditsConsumed;
         job.msg='Đang lưu video về máy…'; updateJobRow(job);
         await saveResultBlob(job); job.msg='';
         await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job);
-        showDubMsg('Video lồng tiếng đã xong: '+job.audioName,true);
+        showDubMsg('Video khớp khẩu hình đã xong: '+job.audioName,true);
         fbPushVideo(job);
         break;
       }
-      if(st===4){
-        job.status='FAILED'; job.msg='DreamFace báo lỗi'+(t.errorCode?' ['+t.errorCode+']':'')+': '+(t.reason||'tạo video thất bại')+' (taskId '+job.taskId+')';
-        await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); break;
-      }
-      job.status=st===0?'PENDING':'RUNNING';
-      job.msg=st===0?'Đang xếp hàng chờ xử lý…':'AI đang dựng khẩu hình theo audio…';
-      await dubSave(DUB_ST.dub_jobs,job);
-    }catch(e){
-      errCount++; job.msg='Lỗi kiểm tra trạng thái ('+e.message+') — sẽ thử lại';
-      if(/401|API key/.test(e.message)&&errCount>=3){ job.status='FAILED'; await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); break; }
-    }
+      if(d.state==='fail'){ job.status='FAILED'; job.msg='Kie báo lỗi: '+(d.failMsg||'thất bại')+(d.failCode?' ['+d.failCode+']':''); await dubSave(DUB_ST.dub_jobs,job); updateJobRow(job); break; }
+      job.status=d.state==='generating'?'RUNNING':'PENDING';
+      const pr=d.progress!=null&&d.progress!==''?' '+Math.round(+d.progress*(+d.progress<=1?100:1))+'%':'';
+      job.msg=(lbl[d.state]||'Đang xử lý…')+pr; await dubSave(DUB_ST.dub_jobs,job);
+    }catch(e){ job.msg='Lỗi kiểm tra trạng thái ('+e.message+') — sẽ thử lại'; }
     updateJobRow(job);
   }
   dubPolling.delete(job);
 }
+
 async function saveResultBlob(job){
   if(!job.resultUrl) return false;
   const tries=[job.resultUrl];
@@ -2133,7 +2215,7 @@ jobList.onclick=async e=>{
   const a=b.dataset.ja;
   if(a==='dl'){
     if(!job.blobUrl){ b.disabled=true; b.textContent='Đang tải…'; await saveResultBlob(job); if(job.blobUrl) await dubSave(DUB_ST.dub_jobs,job); }
-    if(job.blobUrl){ const l=document.createElement('a'); l.href=job.blobUrl; l.download=`long_tieng_${safeName(job.audioName.replace(/\.\w+$/,''))}_${stampStr()}.mp4`; l.click(); }
+    if(job.blobUrl){ const l=document.createElement('a'); l.href=job.blobUrl; l.download=`long_tieng_${safeName(job.audioName.replace(/\.\w+$/,''))}_${stampStr()}.${job.ext||'mp4'}`; l.click(); }
     else window.open(job.resultUrl,'_blank');
     updateJobRow(job);
   }
@@ -2169,12 +2251,13 @@ async function dubRestore(){
     if(!dubAudios.some(a=>a.id===dubSelAudio)) dubSelAudio=dubAudios[0]?dubAudios[0].id:null;
     for(const j of dubJobs){
       // job cũ của Alibaba (không có model) hoặc bị gián đoạn khi đang upload → đánh dấu lỗi
-      if(!j.model&&['PENDING','RUNNING','UPLOADING'].includes(j.status)){ j.status='FAILED'; j.msg='Job của bản cũ (Alibaba) — bấm Thử lại để tạo bằng DreamFace.'; dubSave(DUB_ST.dub_jobs,j); }
+      if((!j.model||/^lipsync/.test(j.model))&&['PENDING','RUNNING','UPLOADING'].includes(j.status)){ j.status='FAILED'; j.msg='Job của bản cũ (DreamFace/Alibaba) — bấm Thử lại để làm bằng Kie.'; dubSave(DUB_ST.dub_jobs,j); }
+      else if(j.model==='local'&&j.status==='RUNNING'){ j.status='FAILED'; j.msg='Ghép tiếng bị gián đoạn (trang đóng) — bấm Thử lại.'; dubSave(DUB_ST.dub_jobs,j); }
       else if(j.status==='UPLOADING'||(['PENDING','RUNNING'].includes(j.status)&&!j.taskId)){ j.status='FAILED'; j.msg='Bị gián đoạn khi tải lên (trang bị đóng) — bấm Thử lại.'; dubSave(DUB_ST.dub_jobs,j); }
     }
   }catch(e){ console.warn('Khôi phục dữ liệu lồng tiếng lỗi:',e); }
   renderDubVideos(); renderDubAudios(); renderJobs();
-  dubJobs.filter(j=>j.model&&['PENDING','RUNNING'].includes(j.status)&&j.taskId).forEach(pollJob);
+  dubJobs.filter(j=>/^kie_/.test(j.model||'')&&['PENDING','RUNNING'].includes(j.status)&&j.taskId).forEach(pollJob);
 }
 restoreP.then(dubRestore);
 
@@ -2269,6 +2352,16 @@ const G_ST={img:'grok_images',job:'grok_jobs'};
 let kieKey=localStorage.getItem('kie_api_key')||KIE_KEY_DEFAULT;
 let kieViaProxy=localStorage.getItem('kie_via_proxy')==='1';
 let gImages=[], gJobs=[], gSelImg=+localStorage.getItem('g_sel_img')||null;
+let gSrc=localStorage.getItem('g_src')||'text'; // 'text' | 'image'
+function setGSrc(s){
+  gSrc=s==='image'?'image':'text'; localStorage.setItem('g_src',gSrc);
+  document.querySelectorAll('.g-src-btn').forEach(b=>b.classList.toggle('active',b.dataset.src===gSrc));
+  $('gImgBox').style.display=gSrc==='image'?'':'none';
+  $('gStep2Title').textContent=gSrc==='image'?'Mô tả chuyển động':'Mô tả video (nhân vật, bối cảnh, hành động)';
+  $('gStep2Hint').textContent=gSrc==='image'?'Grok Imagine · image-to-video':'Grok Imagine · text-to-video';
+  updGBtn();
+}
+document.querySelectorAll('.g-src-btn').forEach(b=>b.onclick=()=>setGSrc(b.dataset.src));
 const gPolling=new Set();
 function gMsg(m,ok){const el=$('grokMsg');el.textContent=m;el.style.color=ok?'var(--green)':'var(--red)';el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),ok?3500:9000);}
 function kieConn(kind,msg){const el=$('kieConnStatus');el.className='conn-status show '+kind;el.textContent=msg;}
@@ -2362,7 +2455,7 @@ giGrid.onclick=e=>{
   const c=e.target.closest('[data-gid]'); if(!c) return;
   gSelImg=+c.dataset.gid; localStorage.setItem('g_sel_img',gSelImg); renderGImages();
 };
-function updGBtn(){ $('btnGrokCreate').disabled=!(gImages.find(x=>x.id===gSelImg)&&$('gPrompt').value.trim()); }
+function updGBtn(){ const okImg=gSrc!=='image'||gImages.find(x=>x.id===gSelImg); $('btnGrokCreate').disabled=!(okImg&&$('gPrompt').value.trim()); }
 $('gPrompt').addEventListener('input',()=>{ updGBtn(); try{localStorage.setItem('g_prompt',$('gPrompt').value);}catch(_){} });
 $('gPrompt').value=localStorage.getItem('g_prompt')||'';
 ['gMode','gDuration','gAspect'].forEach(id=>{ const el=$(id), v=localStorage.getItem('g_'+id); if(v) el.value=v; el.onchange=()=>localStorage.setItem('g_'+id,el.value); });
@@ -2370,24 +2463,79 @@ $('gPrompt').value=localStorage.getItem('g_prompt')||'';
 
 /* --- Tạo video + nâng cấp 720p --- */
 $('btnGrokCreate').onclick=()=>{
-  const im=gImages.find(x=>x.id===gSelImg), prompt=$('gPrompt').value.trim();
-  if(!im||!prompt){ gMsg('Chọn ảnh và nhập mô tả trước.'); return; }
+  const im=gSrc==='image'?gImages.find(x=>x.id===gSelImg):null, prompt=$('gPrompt').value.trim();
+  if(!prompt){ gMsg('Nhập mô tả video trước.'); return; }
+  if(gSrc==='image'&&!im){ gMsg('Chế độ "Từ ảnh" cần chọn 1 ảnh — hoặc chuyển sang "Từ văn bản".'); return; }
   if(!kieKey){ gMsg('Chưa nhập Kie API key.'); $('grokSet').open=true; return; }
-  if($('gAutoDub').checked&&!dubAudios.find(a=>a.id===dubSelAudio)) gMsg('Lưu ý: tab Lồng tiếng chưa chọn audio — video sẽ chỉ được chèn qua, chưa tạo lồng tiếng.');
-  createGJob(im,{prompt,mode:$('gMode').value,duration:$('gDuration').value,aspect:$('gAspect').value,autoUp:$('gAutoUp').checked,autoDub:$('gAutoDub').checked});
+  createGJob(im,{prompt,mode:$('gMode').value,duration:$('gDuration').value,aspect:$('gAspect').value,autoUp:$('gAutoUp').checked,autoDub:false});
 };
 async function createGJob(im,o){
-  const job={imgId:im.id,imgName:im.name,...o,status:'UPLOADING',msg:'Đang tải ảnh lên Kie…',created:Date.now()};
+  const isText=!im;
+  const job={src:isText?'text':'image',imgId:im?im.id:null,imgName:im?im.name:'van_ban.txt',...o,status:isText?'GEN':'UPLOADING',msg:isText?'Đang gửi yêu cầu tạo video 480p…':'Đang tải ảnh lên Kie…',created:Date.now()};
   await dubSave(G_ST.job,job); gJobs.unshift(job); renderGJobs();
   gMsg('Đã gửi yêu cầu — video sẽ hiện trong danh sách bên dưới.',true);
   try{
-    if(!(im.kieUrl&&im.kieExp>Date.now())){ im.kieUrl=await kieUpload(im.blob,im.name); im.kieExp=Date.now()+20*3600e3; await dubSave(G_ST.img,im); }
-    job.msg='Đang gửi yêu cầu tạo video 480p…'; updGRow(job);
-    const r=await kiePost('/api/v1/jobs/createTask',{model:'grok-imagine/image-to-video',input:{image_urls:[im.kieUrl],prompt:o.prompt,mode:o.mode,duration:String(o.duration),resolution:'480p',aspect_ratio:o.aspect}});
+    let r;
+    const base={prompt:o.prompt,mode:o.mode,duration:String(o.duration),resolution:'480p',aspect_ratio:o.aspect};
+    if(isText){
+      r=await kiePost('/api/v1/jobs/createTask',{model:'grok-imagine/text-to-video',input:base});
+    }else{
+      if(!(im.kieUrl&&im.kieExp>Date.now())){ im.kieUrl=await kieUpload(im.blob,im.name); im.kieExp=Date.now()+20*3600e3; await dubSave(G_ST.img,im); }
+      job.msg='Đang gửi yêu cầu tạo video 480p…'; updGRow(job);
+      r=await kiePost('/api/v1/jobs/createTask',{model:'grok-imagine/image-to-video',input:{image_urls:[im.kieUrl],...base}});
+    }
     if(!r||!r.taskId) throw new Error('Kie không trả về taskId');
     job.taskId=r.taskId; job.status='GEN'; job.msg='Đang xếp hàng…'; await dubSave(G_ST.job,job); updGRow(job);
     pollG(job,'gen');
   }catch(e){ job.status='FAILED'; job.msg=e.message; await dubSave(G_ST.job,job); updGRow(job); }
+}
+/* Nâng 720p NGAY TRÊN MÁY: phát video 480p, vẽ từng khung lên canvas 720p (nội suy chất lượng cao),
+   ghi lại kèm tiếng gốc bằng MediaRecorder → không gọi Kie, không tốn credit. */
+async function upscaleLocal(blob,onProg){
+  const v=document.createElement('video'); const vu=URL.createObjectURL(blob);
+  v.src=vu; v.playsInline=true; v.preload='auto'; v.crossOrigin='anonymous';
+  await new Promise((res,rej)=>{ v.onloadedmetadata=res; v.onerror=()=>rej(new Error('Không đọc được video 480p')); });
+  const w=v.videoWidth,h=v.videoHeight, s=720/Math.min(w,h);
+  if(!w||!h) throw new Error('Video không có kích thước');
+  if(s<=1.01){ URL.revokeObjectURL(vu); return {blob,w,h,ext:'mp4',same:true}; }
+  const W=Math.round(w*s/2)*2, H=Math.round(h*s/2)*2;
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const c=cv.getContext('2d'); c.imageSmoothingEnabled=true; c.imageSmoothingQuality='high';
+  const vs=cv.captureStream(30);
+  const ac=new (window.AudioContext||window.webkitAudioContext)(); const dest=ac.createMediaStreamDestination();
+  try{ ac.createMediaElementSource(v).connect(dest); }catch(_){}
+  const stream=new MediaStream([...vs.getVideoTracks(),...dest.stream.getAudioTracks()]);
+  const mime=['video/mp4;codecs=avc1.640028,mp4a.40.2','video/mp4;codecs=avc1,mp4a','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(m=>window.MediaRecorder&&MediaRecorder.isTypeSupported(m));
+  if(!mime) throw new Error('Trình duyệt không hỗ trợ ghi video (hãy dùng Chrome/Edge)');
+  const mr=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:6000000,audioBitsPerSecond:128000});
+  const chunks=[]; mr.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+  const stopped=new Promise(r=>mr.onstop=r);
+  const draw=()=>{ c.filter='contrast(1.04) saturate(1.05)'; c.drawImage(v,0,0,W,H); };
+  let running=true;
+  const loop=()=>{ if(!running) return; draw(); if(onProg&&v.duration) onProg(v.currentTime/v.duration);
+    if(v.requestVideoFrameCallback) v.requestVideoFrameCallback(loop); else requestAnimationFrame(loop); };
+  v.currentTime=0; await new Promise(r=>{ v.onseeked=r; setTimeout(r,400); });
+  draw(); mr.start(500); try{ await ac.resume(); }catch(_){}
+  await v.play(); loop();
+  await new Promise(r=>{ v.onended=r; setTimeout(r,(v.duration+5)*1000); });
+  running=false; draw(); await new Promise(r=>setTimeout(r,150));
+  mr.stop(); await stopped; ac.close(); vs.getTracks().forEach(t=>t.stop()); URL.revokeObjectURL(vu);
+  const type=mime.split(';')[0];
+  return {blob:new Blob(chunks,{type}),w:W,h:H,ext:type==='video/mp4'?'mp4':'webm'};
+}
+async function startLocalUpscale(job){
+  try{
+    if(!job.blob480&&job.url480){ job.blob480=await gFetchBlob(job.url480); refreshGBlobUrls(job); }
+    if(!job.blob480) throw new Error('Chưa tải được video 480p về máy');
+    job.upStatus='RUN'; job.upMsg='Đang nâng 720p trên máy (miễn phí)… giữ tab này mở'; updGRow(job);
+    let last=0;
+    const r=await upscaleLocal(job.blob480,p=>{ const pc=Math.round(p*100); if(pc-last>=10){ last=pc; job.upMsg='Đang nâng 720p trên máy… '+pc+'%'; updGRow(job); } });
+    if(job.u720){ URL.revokeObjectURL(job.u720); delete job.u720; }
+    job.blob720=r.blob; job.url720=null; job.upExt=r.ext; job.upMethod='local'; job.upSize=r.w+'×'+r.h;
+    job.upStatus='DONE'; job.upMsg=''; refreshGBlobUrls(job);
+    await dubSave(G_ST.job,job); updGRow(job); gMsg('Đã nâng 720p trên máy ('+r.w+'×'+r.h+') — không tốn credit.',true);
+  }catch(e){ job.upStatus='FAIL'; job.upMsg='Nâng 720p trên máy lỗi: '+e.message; await dubSave(G_ST.job,job); updGRow(job); }
+  afterGDone(job);
 }
 async function startUpscale(job){
   if(!job.taskId){ gMsg('Video này chưa có mã tác vụ gốc nên không nâng cấp được.'); return; }
@@ -2413,9 +2561,9 @@ async function pollG(job,kind){
         if(!urls[0]) throw new Error('Kie báo xong nhưng không có link video');
         const blob=await gFetchBlob(urls[0]);
         if(kind==='gen'){ job.url480=urls[0]; job.blob480=blob; job.status='DONE'; job.msg=''; }
-        else{ job.url720=urls[0]; job.blob720=blob; job.upStatus='DONE'; job.upMsg=''; }
+        else{ if(job.u720){ URL.revokeObjectURL(job.u720); delete job.u720; } job.url720=urls[0]; job.blob720=blob; job.upExt='mp4'; job.upMethod='kie'; job.upStatus='DONE'; job.upMsg=''; }
         refreshGBlobUrls(job); await dubSave(G_ST.job,job); updGRow(job);
-        if(kind==='gen'){ gMsg('Video 480p đã xong'+(job.autoUp?' — đang nâng cấp 720p…':''),true); if(job.autoUp) startUpscale(job); else afterGDone(job); }
+        if(kind==='gen'){ gMsg('Video 480p đã xong'+(job.autoUp?' — đang nâng 720p trên máy…':''),true); if(job.autoUp) startLocalUpscale(job); else afterGDone(job); }
         else{ gMsg('Đã nâng cấp 720p xong.',true); afterGDone(job); }
         break;
       }
@@ -2459,7 +2607,8 @@ async function gInsertToDub(job,andCreate){
   if(!blob){ const u=job.url720||job.url480; blob=await gFetchBlob(u); if(blob){ if(job.url720) job.blob720=blob; else job.blob480=blob; refreshGBlobUrls(job); await dubSave(G_ST.job,job); } }
   if(!blob){ gMsg('Chưa tải được video về máy để chèn (link bị chặn) — bấm Tải về rồi upload ở tab Lồng tiếng.'); return; }
   try{
-    const name=`grok_${safeName(job.imgName.replace(/\.\w+$/,''))}_${res}_${job.created}.mp4`;
+    const ext=res==='720p'&&job.upExt?job.upExt:'mp4';
+    const name=`grok_${safeName(job.imgName.replace(/\.\w+$/,''))}_${res}_${job.created}.${ext}`;
     const v=await addDubVideoBlob(blob,name);
     job.inserted=true; await dubSave(G_ST.job,job); updGRow(job);
     setMode('dub'); window.scrollTo({top:0,behavior:'smooth'});
@@ -2470,13 +2619,13 @@ async function gInsertToDub(job,andCreate){
     }else showDubMsg('Đã chèn video AI ('+res+') vào tab Lồng tiếng.',true);
   }catch(e){ gMsg('Chèn lỗi: '+e.message); }
 }
-function afterGDone(job){ if(job.autoDub&&!job.inserted&&(job.blob480||job.blob720||job.url480)) gInsertToDub(job,true); }
+function afterGDone(job){ if(false&&job.autoDub&&!job.inserted&&(job.blob480||job.blob720||job.url480)) gInsertToDub(job,true); }
 
 /* --- Danh sách video AI --- */
 const gJobList=$('gJobList');
 function gJobHTML(j){
   const run=['UPLOADING','GEN'].includes(j.status), up=j.upStatus;
-  const st=run?'<span class="st run">⏳ Đang tạo</span>':j.status==='DONE'?(up==='RUN'?'<span class="st run">⏫ Nâng 720p</span>':'<span class="st ok">✓ '+(up==='DONE'?'720p':'480p')+'</span>'):'<span class="st fail">✕ Lỗi</span>';
+  const st=run?'<span class="st run">⏳ Đang tạo</span>':j.status==='DONE'?(up==='RUN'?'<span class="st run">⏫ Nâng 720p</span>':'<span class="st ok">✓ '+(up==='DONE'?'720p'+(j.upMethod==='local'?' (máy)':j.upMethod==='kie'?' (AI Kie)':''):'480p')+'</span>'):'<span class="st fail">✕ Lỗi</span>';
   const t=new Date(j.created), tstr=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0')+' '+t.getDate()+'/'+(t.getMonth()+1);
   let body='', acts='';
   if(j.status==='DONE'){
@@ -2485,9 +2634,8 @@ function gJobHTML(j){
     if(up==='RUN') body+=`<div class="job-msg" style="margin-top:6px"><span class="spinner" style="width:13px;height:13px"></span>${esc(j.upMsg||'Đang nâng cấp 720p…')}</div>`;
     if(up==='FAIL') body+=`<div class="job-msg fail" style="margin-top:6px">${esc(j.upMsg)}</div>`;
     if(!(j.blob720||j.blob480)) body+='<div class="job-msg" style="margin-top:6px">⚠ Video chưa lưu về máy — link Kie chỉ giữ trong thời gian ngắn, hãy tải về hoặc chèn sớm.</div>';
-    acts+=`<button class="btn-mini ins" data-ga="ins">🎬 Chèn qua Lồng tiếng</button>`;
-    acts+=`<button class="btn-mini conv" data-ga="insgo">⚡ Chèn &amp; lồng tiếng ngay</button>`;
-    if(up!=='DONE'&&up!=='RUN') acts+=`<button class="btn-mini" data-ga="up">⏫ Nâng cấp 720p</button>`;
+    if(up!=='RUN'&&!(up==='DONE')) acts+=`<button class="btn-mini" data-ga="uplocal">⏫ 720p miễn phí (máy)</button>`;
+    if(up!=='RUN'&&j.upMethod!=='kie') acts+=`<button class="btn-mini" data-ga="up" title="Dùng model grok-imagine/upscale của Kie — tốn credit">⏫ 720p AI Kie (tốn credit)</button>`;
     acts+=`<button class="btn-mini dl" data-ga="dl">⬇ Tải ${b.res}</button>`;
   }else if(run){
     body=`<div class="job-msg"><span class="spinner" style="width:13px;height:13px"></span>${esc(j.msg||'Đang xử lý…')}</div>`;
@@ -2498,8 +2646,8 @@ function gJobHTML(j){
   acts+=`<button class="btn-mini del" data-ga="del">✕ Xóa</button>`;
   return `<div class="job-card" data-gjid="${j.id}">
     <div class="job-head"><div class="meta">
-      <div class="name">🖼️ ${esc(j.imgName)}${j.inserted?' <span class="src-badge murf">đã chèn</span>':''}</div>
-      <div class="sub">${tstr} · ${esc(j.duration)}s · ${esc(j.aspect)} · ${esc(j.mode)}${j.autoUp?' · auto 720p':''}</div>
+      <div class="name">${j.src==='text'?'📝 Từ văn bản':'🖼️ '+esc(j.imgName)}</div>
+      <div class="sub">${tstr} · ${esc(j.duration)}s · ${esc(j.aspect)} · ${esc(j.mode)}${j.autoUp?' · tự nâng 720p trên máy':''}</div>
       <div class="g-prompt-view">${esc(j.prompt)}</div>
     </div>${st}</div>
     <div class="job-body">${body}</div>
@@ -2522,14 +2670,16 @@ gJobList.onclick=async e=>{
   const a=b.dataset.ga;
   if(a==='ins') gInsertToDub(job,false);
   if(a==='insgo') gInsertToDub(job,true);
-  if(a==='up') startUpscale(job);
+  if(a==='up'){ if(confirm('Nâng 720p bằng AI của Kie sẽ TRỪ CREDIT Kie. Tiếp tục?')) startUpscale(job); }
+  if(a==='uplocal') startLocalUpscale(job);
   if(a==='dl'){
     const bb=gBest(job);
-    if(bb.blob){ const l=document.createElement('a'); l.href=URL.createObjectURL(bb.blob); l.download=`grok_${safeName(job.imgName.replace(/\.\w+$/,''))}_${bb.res}_${stampStr()}.mp4`; l.click(); }
+    if(bb.blob){ const l=document.createElement('a'); l.href=URL.createObjectURL(bb.blob); l.download=`grok_${safeName(job.imgName.replace(/\.\w+$/,''))}_${bb.res}_${stampStr()}.${bb.res==='720p'&&job.upExt?job.upExt:'mp4'}`; l.click(); }
     else window.open(bb.url,'_blank');
   }
   if(a==='retry'){
-    const im=gImages.find(x=>x.id===job.imgId); if(!im){ gMsg('Ảnh gốc đã bị xóa.'); return; }
+    const im=job.src==='text'?null:gImages.find(x=>x.id===job.imgId);
+    if(job.src!=='text'&&!im){ gMsg('Ảnh gốc đã bị xóa.'); return; }
     gJobs=gJobs.filter(x=>x!==job); if(db&&job.id!=null) idbDel(G_ST.job,job.id).catch(()=>{});
     createGJob(im,{prompt:job.prompt,mode:job.mode,duration:job.duration,aspect:job.aspect,autoUp:job.autoUp,autoDub:job.autoDub});
   }
@@ -2556,9 +2706,16 @@ async function grokRestore(){
   }catch(e){ console.warn('Khôi phục Video AI lỗi:',e); } }
   renderGImages(); renderGJobs();
   gJobs.filter(j=>j.status==='GEN'&&j.taskId).forEach(j=>pollG(j,'gen'));
-  gJobs.filter(j=>j.upStatus==='RUN'&&j.upTaskId).forEach(j=>pollG(j,'up'));
+  gJobs.filter(j=>j.upStatus==='RUN'&&j.upTaskId&&j.upMethod!=='local').forEach(j=>pollG(j,'up'));
+  gJobs.filter(j=>j.upStatus==='RUN'&&!j.upTaskId).forEach(j=>{ j.upStatus='FAIL'; j.upMsg='Nâng 720p bị gián đoạn (trang đóng) — bấm "720p miễn phí (máy)" để làm lại.'; dubSave(G_ST.job,j); updGRow(j); });
 }
+setGSrc(gSrc);
 restoreP.then(grokRestore);
+
+
+$('fbSlot').appendChild(document.querySelector('.fb-box'));
+setMode('grok');
+
 
 drawWave();
 </script>
